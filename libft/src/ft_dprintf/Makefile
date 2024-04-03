@@ -30,11 +30,8 @@ $(OBJECT_DIR)%.o 	: $(SOURCE_DIR)%.c $(DEPENDENCIES)
 	$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
 
 clean:
-ifneq ("$(wildcard $(OBJECTS))","")
-	rm $(OBJECTS)
-endif
 ifneq ("$(wildcard $(OBJECT_DIR))","")
-	-rmdir $(OBJECT_DIR)
+	rm -rf $(OBJECT_DIR)
 endif
 
 fclean:	clean

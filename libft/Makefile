@@ -1,4 +1,4 @@
-MAKE			:=	make --no-print-directory
+MAKE			:=	@make --no-print-directory
 CC				:=	cc
 
 CFLAGS			:=	$(DEBUG) -Wall -Wextra -Werror
@@ -49,18 +49,22 @@ $(OBJECTS_DIR)%.o	:	$(SOURCES_DIR)%.c Makefile $(INCLUDES)
 	$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
 
 $(FT_DPRINTF)		:
-	@$(MAKE) -C $(DPRINTF_DIR)
+	$(MAKE) -C $(DPRINTF_DIR)
 
 $(OBJECTS_DIR)	:
 	mkdir $@
 
 clean:
-	@$(MAKE) -C $(DPRINTF_DIR) clean
+	$(MAKE) -C $(DPRINTF_DIR) clean
+ifneq ("$(wildcard $(OBJECTS_DIR))", "")
 	rm -rf $(OBJECTS_DIR)
+endif
 
 fclean:	clean
-	@$(MAKE) -C $(DPRINTF_DIR) fclean
-	rm -f $(NAME)
+	$(MAKE) -C $(DPRINTF_DIR) fclean
+ifneq ("$(wildcard $(NAME))", "")
+	rm -rf $(NAME)
+endif
 
 re:	fclean
-	@$(MAKE) all
+	$(MAKE) all

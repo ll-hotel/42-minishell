@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   display_prompt.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/03 18:41:31 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/04/03 18:40:21 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/04/03 18:41:18 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include <readline/readline.h>
 
-char	*display_prompt(void);
-
-#endif
+char	*display_prompt(void)
+{
+	return (readline("[minishell] "));
+}
