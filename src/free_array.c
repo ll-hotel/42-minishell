@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   llst.h                                             :+:      :+:    :+:   */
+/*   free_array.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 19:35:45 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/17 22:54:23 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/04/17 23:54:21 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/04/18 00:05:54 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LLST_H
-# define LLST_H
+#include <stdlib.h>
 
-typedef struct s_llst_head	t_llst_head;
-typedef struct s_llst		t_llst;
-
-struct	s_llst_head
+void	free_array(void **ptr)
 {
-	t_llst	*first;
-};
+	void	*const p = ptr;
 
-struct	s_llst
-{
-	t_llst	*next;
-};
-
-void	llst_addfront(t_llst_head *lst, t_llst *element);
-void	llst_addback(t_llst_head *lst, t_llst *element);
-void	llst_clear(t_llst_head *lst, void (*f)(void *));
-long	llst_len(t_llst_head *lst);
-
-#endif
+	if (ptr)
+	{
+		while (*ptr)
+			free(*(ptr++));
+		free(p);
+	}
+}

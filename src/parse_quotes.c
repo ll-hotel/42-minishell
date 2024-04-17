@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:54:37 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/17 21:59:31 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/17 23:56:13 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_llst	*parse_quotes(char **cuts)
 	long		j;
 
 	arg_lst.first = char_array_to_token(cuts);
+	free_array((void **)cuts);
 	if (!arg_lst.first)
 		return (NULL);
 	i = 0;
