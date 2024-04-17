@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 17:21:03 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/04/18 00:48:49 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/18 00:57:41 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ size_t	quote_reader(char *line, ssize_t i, char quote_type)
 		i = i + 1;
 	if (line[i] == quote_type)
 		return (i);
-	printf("Quote error\n");
+	ft_dprintf(2, "Quote error\n");
 	return (-1);
 }
 
