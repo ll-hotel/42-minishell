@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:34 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/03/17 15:34:07 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:28:22 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ int						ft_toupper(int c);
 
 typedef struct s_list
 {
-	void				*content;
 	struct s_list		*next;
+	void				*content;
 }						t_list;
 
 t_list					*ft_lstnew(void *content);

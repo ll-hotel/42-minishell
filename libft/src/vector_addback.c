@@ -6,13 +6,14 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 13:26:10 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/01 14:03:43 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:38:52 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector.h"
 
-void	*ft_realloc(void *p, uint64_t old_size, uint64_t n);
+void	*ft_realloc(void *p, unsigned long old_size, unsigned long n);
+void	*ft_memmove(void *p1, void *p2, unsigned long n);
 
 void	*vec_addback(t_vec *vec, void *elem)
 {

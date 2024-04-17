@@ -5,14 +5,36 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/03 18:40:21 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/03 18:41:18 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/04/17 19:17:03 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/04/17 19:19:07 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "minishell.h"
 #include <readline/readline.h>
+#include <readline/history.h>
+
+static int	is_only_space(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] && is_space(str[i]))
+		i++;
+	if (!str[i])
+		return (1);
+	return (0);
+}
 
 char	*display_prompt(void)
 {
-	return (readline("[minishell] "));
+	char	*input;
+
+	input = readline("[\e[96m\e[1mminiChell\e[0m\e[39m]-$ ");
+	if (input && !is_only_space(input))
+	{
+		add_history(input);
+		return (input);
+	}
+	return (NULL);
 }

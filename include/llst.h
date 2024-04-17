@@ -1,36 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vector_clear.c                                     :+:      :+:    :+:   */
+/*   llst.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/01 13:36:05 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/16 16:35:00 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/04/17 19:35:45 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/04/17 20:23:35 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.h"
-#include "basics.h"
-#include <stdlib.h>
+#ifndef LLST_H
+# define LLST_H
 
-void	vec_clear(t_vec *vec, void (*del)(void *))
+typedef struct s_llst_head	t_llst_head;
+typedef struct s_llst		t_llst;
+
+struct	s_llst_head
 {
-	uint64_t	i;
+	t_llst	*first;
+};
 
-	if (vec->array)
-	{
-		if (del)
-		{
-			i = -1;
-			while (++i < vec->size)
-				(*del)(*(void **)vec_at(vec, i));
-		}
-		ft_memset(vec->array, 0, vec->size * vec->elem_size);
-		free(vec->array);
-	}
-	vec->array = (void *)0;
-	vec->size = 0;
-	vec->allocated_size = 0;
-	vec->elem_size = 0;
-}
+struct	s_llst
+{
+	t_llst	*next;
+};
+
+void	llst_addfront(t_llst_head *lst, t_llst *element);
+void	llst_addback(t_llst_head *lst, t_llst *element);
+void	llst_clear(t_llst_head *lst, void (*f)(void *));
+
+#endif

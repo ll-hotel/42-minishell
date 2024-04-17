@@ -12,7 +12,7 @@ INCLUDES		:=	libft.h \
 					$(addprefix $(SOURCES_DIR), \
 					basics.h get_next_line.h \
 					) \
-					$(DPRINTF_DIR)ft_dprintf.h 
+					$(DPRINTF_DIR)ft_dprintf.h
 
 
 FT_DPRINTF		:=	$(DPRINTF_DIR)ft_dprintf.o

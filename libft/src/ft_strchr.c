@@ -6,19 +6,16 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:59:46 by ll-hotel          #+#    #+#             */
-/*   Updated: 2023/11/09 13:23:26 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/16 16:56:29 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 char	*ft_strchr(const char *s, int c)
 {
-	char	*p;
-
-	p = (char *)s;
-	c = (char)c;
-	while (*p && *p != c)
-		p++;
-	if (*p == c)
-		return (p);
+	c &= 0xff;
+	while (*s && *s != c)
+		s++;
+	if (*s == c)
+		return ((char *)s);
 	return (0);
 }
