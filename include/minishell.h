@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/17 23:55:10 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/18 00:47:27 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,15 @@ typedef struct s_cutter
 {
 	size_t	word_len;
 	int		start_word;
-	int		nb_args;
+	int		nb_words;
 }	t_cutter;
 
-int		args_counter(char *str);
-char	**init_args_array(char *args);
-char	**cutter(char *args);
-t_llst	*parse_quotes(char **cuts);
+char	**cutter(char *line);
+char	**cutter_init_words(char *line);
+t_llst	*init_args(char *line);
+size_t	quote_reader(char *str, ssize_t i, char quote_type);
 
+t_llst	*parse_quotes(char **cuts);
 
 /*	----	UTILS	----	*/
 
