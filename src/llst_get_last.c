@@ -1,34 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   llst_get_last.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 22:26:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/28 02:45:37 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/04/20 17:15:45 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/04/20 17:16:42 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "llst.h"
 
-int	env_init(t_env *env, char *const *penv)
+void	*llst_get_last(t_llst_head *lst)
 {
-	long	i;
-	void	*var;
+	t_llst	*element;
 
-	env->last_return_value = 0;
-	env->vars.first = NULL;
-	i = 0;
-	while (penv[i])
-	{
-		var = env_var_new(penv[i++]);
-		if (!var)
-		{
-			llst_clear(&env->vars, &env_var_delete);
-			return (0);
-		}
-		llst_addback(&env->vars, var);
-	}
-	return (1);
+	element = lst->first;
+	if (element)
+		while (element->next)
+			element = element->next;
+	return (element);
 }

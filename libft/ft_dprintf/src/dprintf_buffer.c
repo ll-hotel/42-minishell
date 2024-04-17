@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 12:48:12 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/03/17 21:34:30 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/24 16:19:05 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_buffer_cat(t_buffer *buffer, int fd, const char *s)
 	c = *s;
 	while (c)
 	{
-		if (*length >= BUFFERSIZE)
+		if (*length >= DPRINTF_BUFFERSIZE)
 			ft_buffer_flush(buffer, fd);
 		string[(*length)++] = c;
 		if (c == '\n')
@@ -59,7 +59,7 @@ int	ft_buffer_cat_perc(t_buffer *buffer, int fd, const char *s)
 	c = *s;
 	while (c && c != '%')
 	{
-		if (*length >= BUFFERSIZE)
+		if (*length >= DPRINTF_BUFFERSIZE)
 			ft_buffer_flush(buffer, fd);
 		string[(*length)++] = c;
 		if (c == '\n')

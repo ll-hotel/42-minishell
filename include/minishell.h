@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/19 00:00:52 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/28 02:45:01 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,22 @@ typedef struct s_env
 
 int		env_init(t_env *env, char *const *penv);
 void	*env_var_new(char *p);
+void	*env_var_get(t_env *env, char *name);
 void	env_var_delete(void *var);
 
 /*	----	TOKEN	----	*/
 
 enum	e_token_type
 {
-	TOKEN_WORD,
 	TOKEN_SPACE,
-	TOKEN_SIMPLE_QUOTE = '\'',
-	TOKEN_DOUBLE_QUOTE = '\"',
+	TOKEN_WORD,
+	TOKEN_OPERATOR,
+	TOKEN_SIMPLE_QUOTE,
+	TOKEN_DOUBLE_QUOTE,
 	TOKEN_DOLLAR,
-	TOKEN_OPERATOR
+	TOKEN_ENV_VAR,
+	TOKEN_REDIRECT,
+	TOKEN_PIPE
 };
 
 typedef struct s_token
@@ -59,7 +63,6 @@ typedef struct s_token
 void	*token_new(char *str, int type);
 void	token_delete(void *token);
 t_llst	*char_array_to_token(char **cuts);
-
 
 /*	----	CUTTER	----	*/
 
@@ -75,7 +78,17 @@ char	**cutter_init_words(char *line);
 t_llst	*init_args(char *line);
 size_t	quote_reader(char *str, ssize_t i, char quote_type);
 
+/*	----	LEXER	----	*/
+
 void	*lexer_on_cuts(char **cuts);
+void	*lexer_operator(char *str, int *i);
+void	*lexer_word(char *str, int *i);
+int		is_operator(int c);
+
+/*	----	PARSER	----	*/
+
+void	*parser(t_llst_head *tokens_head, t_env *env);
+char	*parser_assemble(t_token *token);
 
 /*	----	UTILS	----	*/
 

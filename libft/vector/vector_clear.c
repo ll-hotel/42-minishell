@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   vector_clear.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 22:26:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/28 02:45:37 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/04/01 13:36:05 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/04/24 17:39:00 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "vector.h"
+#include "basics.h"
+#include <stdlib.h>
 
-int	env_init(t_env *env, char *const *penv)
+void	vec_clear(t_vec *vec, void (*del)(void *))
 {
-	long	i;
-	void	*var;
+	unsigned long	i;
 
-	env->last_return_value = 0;
-	env->vars.first = NULL;
-	i = 0;
-	while (penv[i])
+	if (vec->array)
 	{
-		var = env_var_new(penv[i++]);
-		if (!var)
+		if (del)
 		{
-			llst_clear(&env->vars, &env_var_delete);
-			return (0);
+			i = -1;
+			while (++i < vec->size)
+				(*del)(*(void **)vec_at(vec, i));
 		}
-		llst_addback(&env->vars, var);
+		ft_memset(vec->array, 0, vec->size * vec->elem_size);
+		free(vec->array);
 	}
-	return (1);
+	vec->array = (void *)0;
+	vec->size = 0;
+	vec->allocated_size = 0;
+	vec->elem_size = 0;
 }

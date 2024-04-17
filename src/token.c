@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:17:10 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/18 00:01:56 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/27 15:38:18 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,14 @@
 
 void	token_delete(void *token)
 {
-	free(((t_token *)token)->str);
+	if (!token)
+		return ;
+	if (((t_token *)token)->str)
+	{
+		free(((t_token *)token)->str);
+		((t_token *)token)->str = NULL;
+	}
+	free(token);
 }
 
 void	*token_new(char *str, int type)
