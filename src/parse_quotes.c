@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/15 14:54:37 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/18 02:14:25 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:22:26 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,25 +94,62 @@ long	parse_env_var(t_env *env, char **str, char *str_j)
 	str_j[i] = 0;
 	var = env_find_var(env, str_j + 1);
 	str_j[i] = tmp;
+	ft_memmove(str_j, str_j + i, ft_strlen(str_j + i) + 1);
 	if (!var || !var->value)
-	{
-		ft_memmove(str_j, str_j + i, ft_strlen(str_j + i) + 1);
 		return (i);
-	}
+
+	// Realloc str to contain env var value
+
 	var_value_length = ft_strlen(var->value);
-	tmp = ft_strlen(*str);
-	tmp = (long)ft_realloc(*str, tmp, tmp + var_value_length - i);
+	i = ft_strlen(*str);
+	tmp = (long)ft_realloc(*str, i, i + var_value_length + 1);
 	if (!tmp)
 		return (-1);
 	*str = (void *)tmp;
+	
+	// Insert env var value
+	
+	ft_memmove(*str + var_value_length, *str, i);
+	ft_memmove(*str, var->value, var_value_length);
+
 	return (i);
 }
 
-void		*insert_new_args(t_token *arg)
+void	*insert_new_args(t_token *arg, int start, int end)
 {
+	int		len;
+	char	*str;
 	void	*token;
 	long	i;
 
+	str = arg->str;
+	len = ft_strlen(str);
 	i = 0;
-	while (
+	while (str[i])
+	{
+		while (is_space(str[i]))
+			i += 1;
+		ft_memmove(str, str + i, len - i + 1);
+		i = 0;
+		while (str[i] && !is_space(str[i]))
+			i += 1;
+		if (is_space(str[i]))
+		{
+			arg->str = ft_substr(str, 0, i);
+			if (!arg->str)
+				return (NULL);
+			arg->type = arg->str[0];
+			ft_memmove(str, str + i, len - i + 1);
+			i = 0;
+		}
+		if (i == 0)
+		{
+			token = token_new(NULL, 0);
+			if (!token)
+				return (NULL);
+			llst_addfront((t_llst_head *)arg, token);
+			arg = arg->next;
+		}
+	}
+	return (arg);
 }
