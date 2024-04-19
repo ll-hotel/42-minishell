@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:17:10 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/17 20:30:10 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/18 00:01:56 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	token_delete(void *token)
 {
 	free(((t_token *)token)->str);
-	free(token);
 }
 
 void	*token_new(char *str, int type)
@@ -40,7 +39,7 @@ t_llst	*char_array_to_token(char **cuts)
 	lst.first = NULL;
 	while (*cuts)
 	{
-		token = token_new(*cuts, **cuts);
+		token = token_new(ft_strdup(*cuts), **cuts);
 		if (!token)
 		{
 			llst_clear(&lst, &token_delete);

@@ -14,15 +14,19 @@ IFLAGS		:=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
 LFLAGS		:=	-L$(LIBFT_DIR) -lft -lreadline
 
 OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
-				main.c \
-				display_prompt.c \
 				cutter.c \
-				welcome.c \
-				parse_quotes.c \
 				cutter_utils.c \
-				token.c \
+				display_prompt.c \
+				env.c \
+				env_var.c \
+				free_array.c \
+				lexer_on_cuts.c \
 				llst_addback.c \
 				llst_clear.c \
+				llst_len.c \
+				main.c \
+				token.c \
+				welcome.c \
 				)
 DEPS		:=	$(OBJECTS:.o=.d)
 

@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 20:28:44 by ll-hotel          #+#    #+#             */
-/*   Updated: 2023/11/09 14:13:46 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/17 23:27:14 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,9 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	len *= start <= l;
 	if (len > l - start)
 		len = l - start;
-	if (len == l - start)
-		p = malloc(sizeof(char) * (l - start + 1));
-	else
-		p = malloc(sizeof(char) * (len + 1));
+	p = malloc(sizeof(char) * (len + 1));
 	if (!p || !s)
-		return (0);
+		return (NULL);
 	i = -1;
 	while (++i < len && s[start + i])
 		p[i] = s[start + i];
