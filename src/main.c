@@ -6,23 +6,46 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/18 01:28:31 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/19 00:07:12 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#if 0
+#define DISPLAY_TOKENS
+#ifdef DISPLAY_TOKENS
+static char	*token_type_str(int type)
+{
+	if (type == TOKEN_WORD)
+		return ("word");
+	if (type == TOKEN_SIMPLE_QUOTE)
+		return ("simple quote");
+	if (type == TOKEN_DOUBLE_QUOTE)
+		return ("double quote");
+	if (type == TOKEN_OPERATOR)
+		return ("operator");
+	if (type == TOKEN_SPACE)
+		return ("space");
+	if (type == TOKEN_DOLLAR)
+		return ("dollar");
+	return ("???");
+}
+
 static void	display_tokens(void *p)
 {
 	t_token	*token;
-	int			i;
+	int		i;
 
+	if (!p)
+		return ;
 	i = 0;
 	token = p;
 	while (token)
 	{
-		ft_dprintf(2, "token [%d] %s\n", token->type, token->str);
+		ft_dprintf(2, "token[%d] (%s)", i++, token_type_str(token->type));
+		if (token->str)
+			ft_dprintf(2, " %s", token->str);
+		ft_dprintf(2, "\n");
 		token = token->next;
 	}
 }
@@ -48,7 +71,10 @@ int	main(int argc, const char **argv, char *const *penv)
 	while (line)
 	{
 		cuts = cutter(line);
-		args.first = parse_quotes(cuts);
+		args.first = lexer_on_cuts(cuts);
+#ifdef DISPLAY_TOKENS
+		display_tokens(args.first);
+#endif
 		llst_clear(&args, &token_delete);
 		line = display_prompt();
 	}

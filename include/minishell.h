@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/18 00:47:27 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/19 00:00:52 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,16 @@ void	env_var_delete(void *var);
 
 /*	----	TOKEN	----	*/
 
+enum	e_token_type
+{
+	TOKEN_WORD,
+	TOKEN_SPACE,
+	TOKEN_SIMPLE_QUOTE = '\'',
+	TOKEN_DOUBLE_QUOTE = '\"',
+	TOKEN_DOLLAR,
+	TOKEN_OPERATOR
+};
+
 typedef struct s_token
 {
 	void	*next;
@@ -65,7 +75,7 @@ char	**cutter_init_words(char *line);
 t_llst	*init_args(char *line);
 size_t	quote_reader(char *str, ssize_t i, char quote_type);
 
-t_llst	*parse_quotes(char **cuts);
+void	*lexer_on_cuts(char **cuts);
 
 /*	----	UTILS	----	*/
 
