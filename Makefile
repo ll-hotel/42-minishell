@@ -25,6 +25,7 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				llst_clear.c \
 				llst_len.c \
 				main.c \
+				parser.c \
 				token.c \
 				welcome.c \
 				)

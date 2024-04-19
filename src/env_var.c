@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/17 23:29:45 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/19 20:40:42 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,17 @@ void	*env_var_new(char *penv_var)
 		if (!var->value)
 			return (NULL);
 	}
+	return (var);
+}
+
+void	*env_var_get(t_env *env, char *name)
+{
+	int const	name_len = ft_strlen(name);
+	t_env_var	*var;
+
+	var = (t_env_var *)env->vars.first;
+	while (var && ft_strncmp(var->name, name, name_len + 1))
+		var = var->next;
 	return (var);
 }
 

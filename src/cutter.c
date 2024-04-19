@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 05:41:47 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/04/18 00:48:13 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/19 17:34:09 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,10 @@ static void	new_word(char *args, char **args_array, t_cutter *vars)
 			vars->start_word, vars->word_len);
 		if (!args_array[vars->nb_words])
 			return ;
+		vars->nb_words++;
 	}
 	vars->word_len = 0;
 	vars->start_word = -1;
-	vars->nb_words++;
 }
 
 static void	worder(char *args, size_t *word_len, ssize_t *i, int *start_index)

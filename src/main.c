@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/19 00:07:12 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/19 16:26:48 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ static char	*token_type_str(int type)
 		return ("simple quote");
 	if (type == TOKEN_DOUBLE_QUOTE)
 		return ("double quote");
-	if (type == TOKEN_OPERATOR)
-		return ("operator");
+	if (type == TOKEN_PIPE)
+		return ("pipe");
+	if (type == TOKEN_REDIRECT)
+		return ("redirect");
 	if (type == TOKEN_SPACE)
 		return ("space");
 	if (type == TOKEN_DOLLAR)
@@ -44,7 +46,7 @@ static void	display_tokens(void *p)
 	{
 		ft_dprintf(2, "token[%d] (%s)", i++, token_type_str(token->type));
 		if (token->str)
-			ft_dprintf(2, " %s", token->str);
+			ft_dprintf(2, "\t    %s", token->str);
 		ft_dprintf(2, "\n");
 		token = token->next;
 	}
@@ -72,8 +74,14 @@ int	main(int argc, const char **argv, char *const *penv)
 	{
 		cuts = cutter(line);
 		args.first = lexer_on_cuts(cuts);
+		for (int i = 0; cuts && cuts[i]; i++)
+			ft_dprintf(2, "CUT %d // %s\n", i, cuts[i]);
 #ifdef DISPLAY_TOKENS
 		display_tokens(args.first);
+		char	*command = parser_assemble((t_token *)args.first);
+		ft_dprintf(2, "COMMAND -> `%s`\n", command);
+		if (command)
+			free(command);
 #endif
 		llst_clear(&args, &token_delete);
 		line = display_prompt();

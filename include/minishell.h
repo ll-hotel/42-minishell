@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/19 00:00:52 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/19 20:40:56 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,18 +35,21 @@ typedef struct s_env
 
 int		env_init(t_env *env, char *const *penv);
 void	*env_var_new(char *p);
+void	*env_var_get(t_env *env, char *name);
 void	env_var_delete(void *var);
 
 /*	----	TOKEN	----	*/
 
 enum	e_token_type
 {
-	TOKEN_WORD,
 	TOKEN_SPACE,
-	TOKEN_SIMPLE_QUOTE = '\'',
-	TOKEN_DOUBLE_QUOTE = '\"',
+	TOKEN_WORD,
+	TOKEN_OPERATOR,
+	TOKEN_SIMPLE_QUOTE,
+	TOKEN_DOUBLE_QUOTE,
 	TOKEN_DOLLAR,
-	TOKEN_OPERATOR
+	TOKEN_REDIRECT,
+	TOKEN_PIPE
 };
 
 typedef struct s_token
@@ -75,7 +78,16 @@ char	**cutter_init_words(char *line);
 t_llst	*init_args(char *line);
 size_t	quote_reader(char *str, ssize_t i, char quote_type);
 
+
+/*	----	LEXER	----	*/
+
 void	*lexer_on_cuts(char **cuts);
+
+
+/*	----	PARSER	----	*/
+
+char	*parser_assemble(t_token *token);
+
 
 /*	----	UTILS	----	*/
 
