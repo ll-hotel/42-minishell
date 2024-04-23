@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/19 20:40:56 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/20 15:41:59 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,9 @@ size_t	quote_reader(char *str, ssize_t i, char quote_type);
 /*	----	LEXER	----	*/
 
 void	*lexer_on_cuts(char **cuts);
+void	*lexer_operator(char *str, int *i);
+void	*lexer_word(char *str, int *i);
+int		is_operator(int c);
 
 
 /*	----	PARSER	----	*/

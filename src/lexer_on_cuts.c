@@ -6,16 +6,13 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 23:04:25 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/19 16:21:08 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/20 15:42:03 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static void	*lexer_on_cut(t_llst_head *token_lst, char *cut);
-static void	*lexer_operator(char *str, int *i);
-static void	*lexer_word(char *str, int *i);
-static int	is_operator(int c);
 
 void	*lexer_on_cuts(char **cuts)
 {
@@ -63,46 +60,4 @@ static void	*lexer_on_cut(t_llst_head *token_lst, char *cut)
 		llst_addback(token_lst, token);
 	}
 	return (token);
-}
-
-static void	*lexer_operator(char *str, int *i)
-{
-	char const	op = str[(*i)++];
-	char		*tmp;
-
-	if (op == '$')
-		return (token_new(NULL, TOKEN_DOLLAR));
-	else if (op == '\'')
-		return (token_new(NULL, TOKEN_SIMPLE_QUOTE));
-	else if (op == '\"')
-		return (token_new(NULL, TOKEN_DOUBLE_QUOTE));
-	else if (op == '|')
-		return (token_new(NULL, TOKEN_PIPE));
-	else if (op == '<' || op == '>')
-	{
-		tmp = ft_substr(&op, 0, 1);
-		if (tmp)
-			return (token_new(tmp, TOKEN_REDIRECT));
-	}
-	return (NULL);
-}
-
-static void	*lexer_word(char *str, int *i)
-{
-	const int	start = *i;
-	char		*tmp;
-
-	while (str[*i] && !is_space(str[*i]) && !is_operator(str[*i]))
-		*i += 1;
-	tmp = ft_substr(str, start, *i - start);
-	if (tmp)
-		return (token_new(tmp, TOKEN_WORD));
-	return (NULL);
-}
-
-static int	is_operator(int c)
-{
-	return (c == '$' \
-			|| c == '\'' || c == '\"' \
-			|| c == '|' || c == '<' || c == '>');
 }

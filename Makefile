@@ -21,11 +21,14 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				env_var.c \
 				free_array.c \
 				lexer_on_cuts.c \
+				lexer_utils.c \
 				llst_addback.c \
 				llst_clear.c \
+				llst_get_last.c \
 				llst_len.c \
 				main.c \
 				parser.c \
+				parser_assemble.c \
 				token.c \
 				welcome.c \
 				)
