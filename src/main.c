@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/19 16:26:48 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/24 18:17:07 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,17 @@ static void	display_tokens(void *p)
 }
 #endif
 
+void	ft_free_parray(void **array)
+{
+	unsigned long	i;
+
+	i = 0;
+	if (array)
+		while (array[i])
+			free(array[i++]);
+	free(array);
+}
+
 int	main(int argc, const char **argv, char *const *penv)
 {
 	t_env		env;
@@ -76,6 +87,7 @@ int	main(int argc, const char **argv, char *const *penv)
 		args.first = lexer_on_cuts(cuts);
 		for (int i = 0; cuts && cuts[i]; i++)
 			ft_dprintf(2, "CUT %d // %s\n", i, cuts[i]);
+		ft_free_parray((void **)cuts);
 #ifdef DISPLAY_TOKENS
 		display_tokens(args.first);
 		char	*command = parser_assemble((t_token *)args.first);
