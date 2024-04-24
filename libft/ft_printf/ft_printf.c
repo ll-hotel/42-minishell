@@ -6,11 +6,12 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 15:39:41 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/03/17 15:27:23 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:38:00 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
+#include "basics.h"
 #include <stdarg.h>
 #include <unistd.h>
 
@@ -33,11 +34,11 @@ static int	to_next_symbol(const char *f)
 
 int	ft_printf(const char *format, ...)
 {
-	const uint64_t	len = ft_strlen(format);
-	va_list			args;
-	uint64_t		l;
-	int				count;
-	int				tmp;
+	const unsigned long	len = ft_strlen(format);
+	va_list				args;
+	unsigned long		l;
+	int					count;
+	int					tmp;
 
 	va_start(args, format);
 	l = 0;

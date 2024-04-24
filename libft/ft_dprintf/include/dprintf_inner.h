@@ -6,13 +6,13 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 19:14:37 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/03/17 21:35:03 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/24 16:17:51 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DPRINTF_INNER_H
 # define DPRINTF_INNER_H
-# define BUFFERSIZE 4096
+# define DPRINTF_BUFFERSIZE 4096
 # define FD_NUMBER 127
 # include <stdarg.h>
 # include <stdint.h>
@@ -21,7 +21,7 @@
 
 struct s_buffer
 {
-	char		string[FD_NUMBER][BUFFERSIZE];
+	char		string[FD_NUMBER][DPRINTF_BUFFERSIZE];
 	int32_t		length[FD_NUMBER];
 	int			fd;
 };

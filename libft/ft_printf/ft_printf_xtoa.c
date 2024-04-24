@@ -6,13 +6,13 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 09:43:57 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/03/17 15:33:53 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:38:44 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "basics.h"
 
-char	*ft_xtoa(uint64_t value, short ox, short capital)
+char	*ft_xtoa(unsigned long value, short ox, short capital)
 {
 	const char *const	set = "0123456789abcdef";
 	short				i;

@@ -6,14 +6,14 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 20:52:27 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/03/17 16:24:23 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:36:49 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdlib.h>
 
-void	*ft_realloc(void *p, uint64_t old_size, uint64_t n)
+void	*ft_realloc(void *p, unsigned long old_size, unsigned long n)
 {
 	void	*new;
 

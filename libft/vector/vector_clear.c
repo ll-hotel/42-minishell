@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 13:36:05 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/16 16:35:00 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:39:00 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 void	vec_clear(t_vec *vec, void (*del)(void *))
 {
-	uint64_t	i;
+	unsigned long	i;
 
 	if (vec->array)
 	{
