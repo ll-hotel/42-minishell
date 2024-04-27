@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/19 20:40:42 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/27 18:24:42 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	*env_var_new(char *penv_var)
 {
 	t_env_var		*var;
 	unsigned int	i;
-	
+
 	var = ft_calloc(1, sizeof(*var));
 	if (!var)
 		return (NULL);
@@ -50,7 +50,7 @@ void	*env_var_new(char *penv_var)
 		return (NULL);
 	if (penv_var[i] == '=')
 	{
-		var->value = ft_substr(penv_var, i + 1, ft_strlen(penv_var) - i - 1); 
+		var->value = ft_substr(penv_var, i + 1, ft_strlen(penv_var) - i - 1);
 		if (!var->value)
 			return (NULL);
 	}

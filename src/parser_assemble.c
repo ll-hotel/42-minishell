@@ -6,42 +6,49 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 15:34:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/20 15:34:30 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/27 18:21:14 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static char	*_joiner(char *str_left, char *str_right, int type);
+
 char	*parser_assemble(t_token *token)
 {
 	char	*str;
-	void	*joined;
+	char	*joined;
 
 	str = ft_calloc(1, sizeof(*str));
 	if (!str)
 		return (NULL);
 	while (token)
 	{
-		joined = NULL;
-		if (token->type == TOKEN_WORD)
-			joined = ft_strjoin(str, token->str);
-		else if (token->type == TOKEN_REDIRECT)
-			joined = ft_strjoin(str, token->str);
-		else if (token->type == TOKEN_SPACE)
-			joined = ft_strjoin(str, " ");
-		else if (token->type == TOKEN_DOLLAR)
-			joined = ft_strjoin(str, "$");
-		else if (token->type == TOKEN_SIMPLE_QUOTE)
-			joined = ft_strjoin(str, "\'");
-		else if (token->type == TOKEN_DOUBLE_QUOTE)
-			joined = ft_strjoin(str, "\"");
-		else if (token->type == TOKEN_PIPE)
-			joined = ft_strjoin(str, "|");
-		free(str);
+		joined = _joiner(str, token->str, token->type);
 		if (!joined)
 			return (NULL);
-		str = joined;
+		if (joined != str)
+			str = (free(str), joined);
 		token = token->next;
 	}
 	return (str);
+}
+
+static char	*_joiner(char *str_left, char *str_right, int type)
+{
+	if (type == TOKEN_WORD)
+		return (ft_strjoin(str_left, str_right));
+	else if (type == TOKEN_REDIRECT)
+		return (ft_strjoin(str_left, str_right));
+	else if (type == TOKEN_SPACE)
+		return (ft_strjoin(str_left, " "));
+	else if (type == TOKEN_DOLLAR)
+		return (ft_strjoin(str_left, "$"));
+	else if (type == TOKEN_SIMPLE_QUOTE)
+		return (ft_strjoin(str_left, "\'"));
+	else if (type == TOKEN_DOUBLE_QUOTE)
+		return (ft_strjoin(str_left, "\""));
+	else if (type == TOKEN_PIPE)
+		return (ft_strjoin(str_left, "|"));
+	return (str_left);
 }

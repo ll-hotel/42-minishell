@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 16:22:18 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/16 16:27:26 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/27 18:14:48 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	welcome_test_subject(void)
 {
-	ft_putstr_fd( \
+	ft_putstr_fd(\
 "             \033[0;34m.,-:;//;:=,\n\
          . :H@@@MM@M#H/.,+%;,\n\
       ,/X+ +M@@M@MM%=,-%HMMM@X/,\n\
