@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/20 15:41:59 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/27 18:30:26 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ enum	e_token_type
 	TOKEN_SIMPLE_QUOTE,
 	TOKEN_DOUBLE_QUOTE,
 	TOKEN_DOLLAR,
+	TOKEN_ENV_VAR,
 	TOKEN_REDIRECT,
 	TOKEN_PIPE
 };
@@ -63,7 +64,6 @@ void	*token_new(char *str, int type);
 void	token_delete(void *token);
 t_llst	*char_array_to_token(char **cuts);
 
-
 /*	----	CUTTER	----	*/
 
 typedef struct s_cutter
@@ -78,7 +78,6 @@ char	**cutter_init_words(char *line);
 t_llst	*init_args(char *line);
 size_t	quote_reader(char *str, ssize_t i, char quote_type);
 
-
 /*	----	LEXER	----	*/
 
 void	*lexer_on_cuts(char **cuts);
@@ -86,11 +85,10 @@ void	*lexer_operator(char *str, int *i);
 void	*lexer_word(char *str, int *i);
 int		is_operator(int c);
 
-
 /*	----	PARSER	----	*/
 
+void	*parser(t_llst_head *tokens_head, t_env *env);
 char	*parser_assemble(t_token *token);
-
 
 /*	----	UTILS	----	*/
 

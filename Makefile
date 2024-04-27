@@ -24,6 +24,7 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				lexer_utils.c \
 				llst_addback.c \
 				llst_clear.c \
+				llst_delone.c \
 				llst_get_last.c \
 				llst_len.c \
 				main.c \
@@ -56,8 +57,7 @@ define normitest
 	fi
 endef
 
-.PHONY: all clean fclean re
-
+.PHONY: all
 all	:	$(NAME)
 
 -include $(DEPS)
@@ -74,17 +74,20 @@ $(OBJECT_DIR):
 $(OBJECT_DIR)%.o:	$(SOURCE_DIR)%.c | $(OBJECT_DIR)
 	$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
 
+.PHONY: clean
 clean:
-	$(MAKE) -C $(LIBFT_DIR) clean
+	$(MAKE) -sC $(LIBFT_DIR) clean
 ifneq ("$(wildcard $(OBJECT_DIR))", "")
 	rm -rf $(OBJECT_DIR)
 endif
 
+.PHONY: fclean
 fclean:	clean
-	$(MAKE) -C $(LIBFT_DIR) fclean
+	$(MAKE) -sC $(LIBFT_DIR) fclean
 ifneq ("$(wildcard $(NAME))", "")
 	rm -f $(NAME)
 endif
 
+.PHONY: re
 re:	fclean
 	$(MAKE) all
