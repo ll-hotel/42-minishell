@@ -6,7 +6,11 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/04/27 18:24:42 by ll-hotel         ###   ########.fr       */
+=======
+/*   Updated: 2024/04/17 23:29:45 by ll-hotel         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +42,11 @@ void	*env_var_new(char *penv_var)
 {
 	t_env_var		*var;
 	unsigned int	i;
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> main
 	var = ft_calloc(1, sizeof(*var));
 	if (!var)
 		return (NULL);
@@ -50,13 +58,18 @@ void	*env_var_new(char *penv_var)
 		return (NULL);
 	if (penv_var[i] == '=')
 	{
+<<<<<<< HEAD
 		var->value = ft_substr(penv_var, i + 1, ft_strlen(penv_var) - i - 1);
+=======
+		var->value = ft_substr(penv_var, i + 1, ft_strlen(penv_var) - i - 1); 
+>>>>>>> main
 		if (!var->value)
 			return (NULL);
 	}
 	return (var);
 }
 
+<<<<<<< HEAD
 void	*env_var_get(t_env *env, char *name)
 {
 	int const	name_len = ft_strlen(name);
@@ -68,6 +81,8 @@ void	*env_var_get(t_env *env, char *name)
 	return (var);
 }
 
+=======
+>>>>>>> main
 void	env_var_delete(void *var)
 {
 	free(((t_env_var *)var)->name);

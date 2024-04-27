@@ -47,6 +47,7 @@ t_llst	*char_array_to_token(char **cuts)
 	while (*cuts)
 	{
 		token = token_new(ft_strdup(*cuts), **cuts);
+		token = token_new(ft_strdup(*cuts), **cuts);
 		if (!token)
 		{
 			llst_clear(&lst, &token_delete);

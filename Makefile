@@ -16,22 +16,9 @@ LFLAGS		:=	-L$(LIBFT_DIR) -lft -lreadline
 OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				cutter.c \
 				cutter_utils.c \
-				display_prompt.c \
-				env.c \
-				env_var.c \
-				free_array.c \
-				lexer_on_cuts.c \
-				lexer_utils.c \
+				token.c \
 				llst_addback.c \
 				llst_clear.c \
-				llst_delone.c \
-				llst_get_last.c \
-				llst_len.c \
-				main.c \
-				parser.c \
-				parser_assemble.c \
-				token.c \
-				welcome.c \
 				)
 DEPS		:=	$(OBJECTS:.o=.d)
 
