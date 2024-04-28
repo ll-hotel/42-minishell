@@ -6,17 +6,17 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 16:47:41 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/03/02 10:00:23 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:37:27 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "basics.h"
 #include <stdlib.h>
 
-static uint64_t	_sep_count(const char *str, char c)
+static unsigned long	_sep_count(const char *str, char c)
 {
-	uint64_t	r;
-	uint64_t	j;
+	unsigned long	r;
+	unsigned long	j;
 
 	r = 0;
 	j = 0;
@@ -31,9 +31,9 @@ static uint64_t	_sep_count(const char *str, char c)
 	return (r);
 }
 
-static void	_free_arr(char **arr, uint64_t i)
+static void	_free_arr(char **arr, unsigned long i)
 {
-	uint64_t	j;
+	unsigned long	j;
 
 	j = 0;
 	while (j <= i)
@@ -41,9 +41,10 @@ static void	_free_arr(char **arr, uint64_t i)
 	free(arr);
 }
 
-static uint64_t	_substr(const char *str, char c, char **arr, uint64_t i)
+static unsigned long	_substr(const char *str, char c, char **arr, \
+		unsigned long i)
 {
-	uint64_t	j;
+	unsigned long	j;
 
 	j = 0;
 	while (str[j] && str[j] != c)
@@ -60,11 +61,11 @@ static uint64_t	_substr(const char *str, char c, char **arr, uint64_t i)
 
 char	**ft_split(const char *str, char c)
 {
-	const uint64_t	sep_count = _sep_count(str, c);
-	char			**arr;
-	uint64_t		i;
-	uint64_t		j;
-	uint64_t		offset;
+	const unsigned long	sep_count = _sep_count(str, c);
+	char				**arr;
+	unsigned long		i;
+	unsigned long		j;
+	unsigned long		offset;
 
 	if (!str)
 		return (0);

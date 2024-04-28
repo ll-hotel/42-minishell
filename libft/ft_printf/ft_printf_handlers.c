@@ -6,11 +6,11 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/27 03:56:34 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/03/17 15:34:43 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/24 17:38:28 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "basics.h"
 #include <stdarg.h>
 #include <stdlib.h>
 
@@ -51,11 +51,11 @@ int	handle_special(const char f, va_list *args)
 
 	s = 0;
 	if (f == 'p')
-		s = ft_xtoa(va_arg(*args, uint64_t), 1, 0);
+		s = ft_xtoa(va_arg(*args, unsigned long), 1, 0);
 	else if (f == 'X' || f == 'x')
-		s = ft_xtoa(va_arg(*args, uint32_t), 0, f == 'X');
+		s = ft_xtoa(va_arg(*args, unsigned int), 0, f == 'X');
 	else if (f == 'u')
-		s = ft_utoa(va_arg(*args, uint32_t));
+		s = ft_utoa(va_arg(*args, unsigned int));
 	len = 0;
 	if (s)
 	{

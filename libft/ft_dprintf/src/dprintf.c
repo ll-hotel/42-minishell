@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 19:13:27 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/03/17 21:44:37 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/24 16:21:01 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "dprintf_inner.h"
 
 static void	_init_buf(int must_init, \
-		char string[FD_NUMBER][BUFFERSIZE], \
+		char string[FD_NUMBER][DPRINTF_BUFFERSIZE], \
 		int length[FD_NUMBER]);
 
 int	ft_dprintf(int fd, const char *format, ...)
@@ -47,11 +47,11 @@ int	ft_dprintf(int fd, const char *format, ...)
 }
 
 static void	_init_buf(int must_init, \
-		char string[FD_NUMBER][BUFFERSIZE], \
+		char string[FD_NUMBER][DPRINTF_BUFFERSIZE], \
 		int length[FD_NUMBER])
 {
 	if (!must_init)
 		return ;
-	ft_bzero((char *)string, FD_NUMBER * BUFFERSIZE);
+	ft_bzero((char *)string, FD_NUMBER * DPRINTF_BUFFERSIZE);
 	ft_bzero((char *)length, FD_NUMBER * sizeof(*length));
 }

@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 12:51:53 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/03/17 21:34:10 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/24 16:20:41 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int32_t	ft_char(t_buffer *buffer, int fd, char c)
 {
-	if (buffer->length[fd] >= BUFFERSIZE)
+	if (buffer->length[fd] >= DPRINTF_BUFFERSIZE)
 		ft_buffer_flush(buffer, fd);
 	buffer->string[fd][(buffer->length[fd])++] = c;
 	if (c == '\n')
