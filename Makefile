@@ -11,6 +11,7 @@ LIBFT		:=	$(LIBFT_DIR)libft.a
 
 CFLAGS		:=	-Wall -Wextra -Werror
 IFLAGS		:=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
+DFLAGS		:=
 LFLAGS		:=	-L$(LIBFT_DIR) -lft -lreadline
 
 OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
@@ -20,6 +21,7 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				env.c \
 				env_var.c \
 				free_array.c \
+				grammary_checker.c \
 				lexer_on_cuts.c \
 				lexer_utils.c \
 				llst_addback.c \
@@ -63,7 +65,7 @@ all	:	$(NAME)
 -include $(DEPS)
 
 $(NAME)	: 	$(LIBFT) $(OBJECTS)
-	$(CC) $(CFLAGS) $(IFLAGS) -o $@ $(OBJECTS) $(LFLAGS)
+	$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ $(OBJECTS) $(LFLAGS)
 
 $(LIBFT)::
 	$(MAKE) -C $(LIBFT_DIR)
@@ -72,7 +74,7 @@ $(OBJECT_DIR):
 	mkdir $@
 
 $(OBJECT_DIR)%.o:	$(SOURCE_DIR)%.c | $(OBJECT_DIR)
-	$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<
 
 .PHONY: clean
 clean:
