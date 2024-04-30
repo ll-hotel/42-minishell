@@ -11,6 +11,7 @@ LIBFT		:=	$(LIBFT_DIR)libft.a
 
 CFLAGS		:=	-Wall -Wextra -Werror -g3
 IFLAGS		:=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
+DFLAGS		:=
 LFLAGS		:=	-L$(LIBFT_DIR) -lft -lreadline
 
 OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
@@ -21,6 +22,7 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				env.c \
 				env_var.c \
 				free_array.c \
+				grammary_checker.c \
 				lexer_on_cuts.c \
 				lexer_utils.c \
 				llst_addback.c \

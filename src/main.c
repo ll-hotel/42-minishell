@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/28 02:45:44 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:01:50 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	ft_free_parray(void **array)
 	free(array);
 }
 
+t_command	*create_command(t_token	*token);
+
 int	main(int argc, const char **argv, char *const *penv)
 {
 	t_env		env;
@@ -68,6 +70,7 @@ int	main(int argc, const char **argv, char *const *penv)
 	void		*tmp;
 	char		*line;
 	char		**cuts;
+	t_command	*cmd;
 
 	if (argc != 1)
 	{
@@ -82,17 +85,33 @@ int	main(int argc, const char **argv, char *const *penv)
 	while ((line = display_prompt()))
 	{
 		cuts = cutter(line);
-		args.first = lexer_on_cuts(cuts);
 		for (int i = 0; cuts && cuts[i]; i++)
 			ft_dprintf(2, "CUT %d // %s\n", i, cuts[i]);
+		if (cuts)
+			args.first = lexer_on_cuts(cuts);
 		ft_free_parray((void **)cuts);
+		if (cuts)
+			cuts = NULL;
+
 		tmp = parser(&args, &env);
 		ft_dprintf(2, "\n--    --    QUOTES HANDLED    --    --\n\n");
 		display_tokens(tmp);
+
+		(void)cmd;
+		cmd = create_command((t_token *)args.first);
+		if (cmd)
+		{
+			for (int i = 0; vec_at(&cmd->arguments, i); i++)
+				ft_dprintf(1, "%s ", *(char **)(vec_at(&cmd->arguments, i)));
+			vec_clear(&cmd->arguments, &free);
+			cmd = (free(cmd), NULL);
+		}
+
 		tmp = parser_assemble(tmp);
 		ft_dprintf(2, "\nCOMMAND -> `%s`\n", tmp);
 		if (tmp)
-			free(tmp);
+			tmp = (free(tmp), NULL);
+
 		llst_clear(&args, &token_delete);
 	}
 	llst_clear(&env.vars, &env_var_delete);
