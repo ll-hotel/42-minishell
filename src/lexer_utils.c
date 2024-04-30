@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 15:38:30 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/20 15:41:04 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/30 10:22:56 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	*lexer_word(char *str, int *i)
 	const int	start = *i;
 	char		*tmp;
 
-	while (str[*i] && !is_space(str[*i]) && !is_operator(str[*i]))
+	while (str[*i] && !is_operator(str[*i]))
 		*i += 1;
 	tmp = ft_substr(str, start, *i - start);
 	if (tmp)
