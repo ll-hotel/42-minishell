@@ -102,4 +102,9 @@ int		is_space(char c);
 int		is_quote(char c);
 void	free_array(void **ptr);
 
+/*	----	Buildtsdsfins	----	*/
+
+void	echo(char *str);
+void	pwd(void);
+
 #endif
