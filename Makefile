@@ -11,7 +11,11 @@ LIBFT		:=	$(LIBFT_DIR)libft.a
 
 CFLAGS		=	-Wall -Wextra -Werror
 IFLAGS		:=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
+<<<<<<< HEAD
 DFLAGS		:=	-MMD -MP
+=======
+DFLAGS		:=
+>>>>>>> e9941ce (Grammary checker (#19))
 LFLAGS		:=	-L$(LIBFT_DIR) -lft -lreadline
 
 ifneq ("$(DEBUG)", "")
@@ -76,7 +80,7 @@ all	:	$(NAME)
 
 $(NAME)	: 	$(LIBFT) $(OBJECTS)
 	@$(call percent)
-	$(CC) $(CFLAGS) $(IFLAGS) -o $@ $(OBJECTS) $(LFLAGS)
+	$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ $(OBJECTS) $(LFLAGS)
 
 $(LIBFT)::
 	$(MAKE) -C $(LIBFT_DIR)
@@ -86,7 +90,7 @@ $(OBJECT_DIR):
 
 $(OBJECT_DIR)%.o:	$(SOURCE_DIR)%.c | $(OBJECT_DIR)
 	@$(call percent)
-	$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<
 
 .PHONY: clean
 clean:
