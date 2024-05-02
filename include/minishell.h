@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/30 11:41:05 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/02 14:26:52 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,16 +90,9 @@ int		is_operator(int c);
 void	*parser(t_llst_head *tokens_head, t_env *env);
 char	*parser_assemble(t_token *token);
 
-/*	----	COMMAND_CREATOR	----	*/
+/*	----	GRAMMARY_CHECKER	----	*/
 
-typedef struct s_command
-{
-	void	*next;
-	char	*executable;
-	t_vec	arguments;
-	char	*file_in;
-	char	*file_out;
-}	t_command;
+int		grammary_checker(t_token *token);
 
 /*	----	UTILS	----	*/
 

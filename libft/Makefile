@@ -36,22 +36,22 @@ $(NAME): $(OBJECTS)
 	ar -rc $@ $(OBJECTS)
 
 $(BASICS)::
-	$(MAKE) -C $(BASICS_DIR)
+	$(MAKE) -sC $(BASICS_DIR)
 
 $(FT_PRINTF)::
-	$(MAKE) -C $(PRINTF_DIR)
+	$(MAKE) -sC $(PRINTF_DIR)
 
 $(FT_DPRINTF)::
-	$(MAKE) -C $(DPRINTF_DIR)
+	$(MAKE) -sC $(DPRINTF_DIR)
 
 $(GET_NEXT_LINE)::
-	$(MAKE) -C $(GNL_DIR)
+	$(MAKE) -sC $(GNL_DIR)
 
 $(VECTOR)::
-	$(MAKE) -C $(VECTOR_DIR)
+	$(MAKE) -sC $(VECTOR_DIR)
 
 $(EXTRA)::
-	$(MAKE) -C $(EXTRA_DIR)
+	$(MAKE) -sC $(EXTRA_DIR)
 
 $(OBJECT_DIR):
 	mkdir $@
