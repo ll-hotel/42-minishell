@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/02 15:08:16 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:51:23 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,12 @@ int	main(int argc, const char **argv, char *const *penv)
 	while ((line = display_prompt()))
 	{
 		cuts = cutter(line);
-#if CUTS
-		for (int i = 0; cuts && cuts[i]; i++)
-			ft_dprintf(2, "CUT %d // %s\n", i, cuts[i]);
-#endif
 		if (cuts)
+		{
 			args.first = lexer_on_cuts(cuts);
-		ft_free_parray((void **)cuts);
-		if (cuts)
+			ft_free_parray((void **)cuts);
 			cuts = NULL;
-#if TOKENIZER
-		tmp = parser(&args, &env);
-		ft_dprintf(2, "\n--    --    QUOTES HANDLED    --    --\n\n");
-		display_tokens(tmp);
-#endif
+		}
 		if (grammary_checker((t_token *)args.first))
 		{
 #if 1
@@ -122,12 +114,6 @@ int	main(int argc, const char **argv, char *const *penv)
 		}
 		else
 			ft_dprintf(2, "Invalid command\n");
-#if ASSEMBLE
-		tmp = parser_assemble(tmp);
-		ft_dprintf(2, "\nCOMMAND -> `%s`\n", tmp);
-		if (tmp)
-			tmp = (free(tmp), NULL);
-#endif
 		llst_clear(&args, &token_delete);
 	}
 	llst_clear(&env.vars, &env_var_delete);

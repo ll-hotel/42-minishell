@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/02 14:58:38 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:58:03 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int	argv_count(t_vec *vec_argv)
 	int	count;
 
 	count = 0;
-	while (vec_at(vec_argv, count) && *(char **)vec_at(vec_argv, count))
+	while (((char **)vec_argv->array)[count])
 		count += 1;
 	return (count);
 }
