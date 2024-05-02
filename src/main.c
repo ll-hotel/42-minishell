@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/28 02:45:44 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:32:48 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,23 @@ int	main(int argc, const char **argv, char *const *penv)
 	while ((line = display_prompt()))
 	{
 		cuts = cutter(line);
-		args.first = lexer_on_cuts(cuts);
 		for (int i = 0; cuts && cuts[i]; i++)
 			ft_dprintf(2, "CUT %d // %s\n", i, cuts[i]);
+		if (cuts)
+			args.first = lexer_on_cuts(cuts);
 		ft_free_parray((void **)cuts);
+		if (cuts)
+			cuts = NULL;
+
 		tmp = parser(&args, &env);
 		ft_dprintf(2, "\n--    --    QUOTES HANDLED    --    --\n\n");
 		display_tokens(tmp);
+
 		tmp = parser_assemble(tmp);
 		ft_dprintf(2, "\nCOMMAND -> `%s`\n", tmp);
 		if (tmp)
-			free(tmp);
+			tmp = (free(tmp), NULL);
+
 		llst_clear(&args, &token_delete);
 	}
 	llst_clear(&env.vars, &env_var_delete);

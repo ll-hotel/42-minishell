@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/27 18:24:42 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/04/30 12:00:53 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	env_var_delete(void *var)
 {
 	free(((t_env_var *)var)->name);
 	free(((t_env_var *)var)->value);
+	free(var);
 }
 
 static char	*env_var_join(t_env_var *var)

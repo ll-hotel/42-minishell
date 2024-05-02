@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/02 10:57:23 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/02 14:26:52 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,10 @@ int		is_operator(int c);
 
 void	*parser(t_llst_head *tokens_head, t_env *env);
 char	*parser_assemble(t_token *token);
+
+/*	----	GRAMMARY_CHECKER	----	*/
+
+int		grammary_checker(t_token *token);
 
 /*	----	UTILS	----	*/
 
