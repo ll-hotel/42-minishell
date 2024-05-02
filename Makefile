@@ -17,10 +17,13 @@ LFLAGS		:=	-L$(LIBFT_DIR) -lft -lreadline
 OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				cutter.c \
 				cutter_utils.c \
+				command.c \
+				command_creator.c \
 				display_prompt.c \
 				env.c \
 				env_var.c \
 				free_array.c \
+				ft_free.c \
 				grammary_checker.c \
 				lexer_on_cuts.c \
 				lexer_utils.c \
