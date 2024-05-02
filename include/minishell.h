@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/28 02:45:01 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/02 10:57:23 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,10 @@ char	*display_prompt(void);
 int		is_space(char c);
 int		is_quote(char c);
 void	free_array(void **ptr);
+
+/*	----	Buildtsdsfins	----	*/
+
+void	echo(char *str);
+void	pwd(void);
 
 #endif

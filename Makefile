@@ -9,7 +9,7 @@ OBJECT_DIR	:=	.obj/
 LIBFT_DIR	:=	libft/
 LIBFT		:=	$(LIBFT_DIR)libft.a
 
-CFLAGS		:=	-Wall -Wextra -Werror
+CFLAGS		:=	-Wall -Wextra -Werror -g3
 IFLAGS		:=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
 LFLAGS		:=	-L$(LIBFT_DIR) -lft -lreadline
 
@@ -17,6 +17,7 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				cutter.c \
 				cutter_utils.c \
 				display_prompt.c \
+				echo.c \
 				env.c \
 				env_var.c \
 				free_array.c \
@@ -30,18 +31,20 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				main.c \
 				parser.c \
 				parser_assemble.c \
+				pwd.c \
 				token.c \
 				welcome.c \
 				)
 DEPS		:=	$(OBJECTS:.o=.d)
 
+NB_FILES = $(words $(OBJECTS))
 GREEN="\033[0;32m"
 RED="\033[0;31m"
 BLUE="\033[0;34m"
 END_COLOUR="\033[0m"
 
 define percent
-	@echo -n $(BLUE)"[$$(echo "scale=2; $$(find $(OBJ_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(GREEN)
+	@echo -n $(GREEN)"[$$(echo "scale=2; $$(find $(OBJECT_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(END_COLOUR)
 endef
 
 define prompt
@@ -63,6 +66,7 @@ all	:	$(NAME)
 -include $(DEPS)
 
 $(NAME)	: 	$(LIBFT) $(OBJECTS)
+	@$(call percent)
 	$(CC) $(CFLAGS) $(IFLAGS) -o $@ $(OBJECTS) $(LFLAGS)
 
 $(LIBFT)::
@@ -72,6 +76,7 @@ $(OBJECT_DIR):
 	mkdir $@
 
 $(OBJECT_DIR)%.o:	$(SOURCE_DIR)%.c | $(OBJECT_DIR)
+	@$(call percent)
 	$(CC) $(CFLAGS) $(IFLAGS) -o $@ -c $<
 
 .PHONY: clean
