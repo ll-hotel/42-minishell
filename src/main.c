@@ -6,12 +6,16 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/30 12:01:50 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/02 15:08:16 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#define CUTS 0
+#define TOKENIZER 0
+#define ASSEMBLE 0
 
+#if TOKENIZER
 static char	*token_type_str(int type)
 {
 	if (type == TOKEN_WORD)
@@ -49,6 +53,7 @@ static void	display_tokens(void *p)
 		token = token->next;
 	}
 }
+#endif
 
 void	ft_free_parray(void **array)
 {
@@ -61,15 +66,15 @@ void	ft_free_parray(void **array)
 	free(array);
 }
 
-t_command	*create_command(t_token	*token);
-
 int	main(int argc, const char **argv, char *const *penv)
 {
+#if TOKENIZER | ASSEMBLE
+	void		*tmp;
+#endif
+	char		**cuts;
 	t_env		env;
 	t_llst_head	args;
-	void		*tmp;
 	char		*line;
-	char		**cuts;
 	t_command	*cmd;
 
 	if (argc != 1)
@@ -85,33 +90,44 @@ int	main(int argc, const char **argv, char *const *penv)
 	while ((line = display_prompt()))
 	{
 		cuts = cutter(line);
+#if CUTS
 		for (int i = 0; cuts && cuts[i]; i++)
 			ft_dprintf(2, "CUT %d // %s\n", i, cuts[i]);
+#endif
 		if (cuts)
 			args.first = lexer_on_cuts(cuts);
 		ft_free_parray((void **)cuts);
 		if (cuts)
 			cuts = NULL;
-
+#if TOKENIZER
 		tmp = parser(&args, &env);
 		ft_dprintf(2, "\n--    --    QUOTES HANDLED    --    --\n\n");
 		display_tokens(tmp);
-
-		(void)cmd;
-		cmd = create_command((t_token *)args.first);
-		if (cmd)
+#endif
+		if (grammary_checker((t_token *)args.first))
 		{
-			for (int i = 0; vec_at(&cmd->arguments, i); i++)
-				ft_dprintf(1, "%s ", *(char **)(vec_at(&cmd->arguments, i)));
-			vec_clear(&cmd->arguments, &free);
-			cmd = (free(cmd), NULL);
+#if 1
+			cmd = command_creator((t_token *)args.first);
+			if (cmd)
+			{
+				for (int i = 0; i < cmd->argc; i++)
+					printf("%s%c", cmd->argv[i], \
+							' ' * (i + 1 < cmd->argc) + '\n' * (i + 1 == cmd->argc));
+				command_free(cmd);
+				cmd = NULL;
+			}
+			else
+				ft_dprintf(2, "Failed to create command\n");
+#endif
 		}
-
+		else
+			ft_dprintf(2, "Invalid command\n");
+#if ASSEMBLE
 		tmp = parser_assemble(tmp);
 		ft_dprintf(2, "\nCOMMAND -> `%s`\n", tmp);
 		if (tmp)
 			tmp = (free(tmp), NULL);
-
+#endif
 		llst_clear(&args, &token_delete);
 	}
 	llst_clear(&env.vars, &env_var_delete);

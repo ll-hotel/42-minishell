@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:24:44 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:25:01 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,12 +94,26 @@ char	*parser_assemble(t_token *token);
 
 int		grammary_checker(t_token *token);
 
+/*	----	COMMAND		----	*/
+
+typedef struct s_command
+{
+	void	*next;
+	char	**argv;
+	int		argc;
+	int		reserved;
+}	t_command;
+
+void	*command_creator(t_token *token);
+void	command_free(t_command *command);
+
 /*	----	UTILS	----	*/
 
 void	welcome_test_subject(void);
 char	*display_prompt(void);
 int		is_space(char c);
 int		is_quote(char c);
+void	*ft_free(void *p);
 void	free_array(void **ptr);
 
 /*	----	Buildtsdsfins	----	*/
