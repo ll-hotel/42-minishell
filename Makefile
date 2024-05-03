@@ -15,6 +15,7 @@ DFLAGS		:=
 LFLAGS		:=	-L$(LIBFT_DIR) -lft -lreadline
 
 OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
+				cd.c \
 				cutter.c \
 				cutter_utils.c \
 				display_prompt.c \

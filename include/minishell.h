@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/02 14:26:52 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/03 16:19:22 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-
+# include <string.h>
+# include <errno.h>
 /*	----	ENVIRONMENT	----	*/
 
 typedef struct s_env_var
@@ -106,5 +107,6 @@ void	free_array(void **ptr);
 
 void	echo(char *str);
 void	pwd(void);
+void	cd(char *path);
 
 #endif
