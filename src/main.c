@@ -6,16 +6,15 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/02 15:51:23 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/04 16:47:32 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #define CUTS 0
-#define TOKENIZER 0
-#define ASSEMBLE 0
+#define TOKENS 1
 
-#if TOKENIZER
+#if TOKENS
 static char	*token_type_str(int type)
 {
 	if (type == TOKEN_WORD)
@@ -34,25 +33,6 @@ static char	*token_type_str(int type)
 		return ("dollar");
 	return ("???");
 }
-
-static void	display_tokens(void *p)
-{
-	t_token	*token;
-	int		i;
-
-	if (!p)
-		return ;
-	i = 0;
-	token = p;
-	while (token)
-	{
-		ft_dprintf(2, "[%d] (%s)", i++, token_type_str(token->type));
-		if (token->str)
-			ft_dprintf(2, "\t    %s", token->str);
-		ft_dprintf(2, "\n");
-		token = token->next;
-	}
-}
 #endif
 
 void	ft_free_parray(void **array)
@@ -68,9 +48,6 @@ void	ft_free_parray(void **array)
 
 int	main(int argc, const char **argv, char *const *penv)
 {
-#if TOKENIZER | ASSEMBLE
-	void		*tmp;
-#endif
 	char		**cuts;
 	t_env		env;
 	t_llst_head	args;
@@ -92,18 +69,21 @@ int	main(int argc, const char **argv, char *const *penv)
 		cuts = cutter(line);
 		if (cuts)
 		{
-			args.first = lexer_on_cuts(cuts);
+			args.first = (t_llst *)lexer_on_cuts(cuts);
 			ft_free_parray((void **)cuts);
 			cuts = NULL;
 		}
+		for (t_token *token = (t_token *)args.first; token; token = token->next)
+			printf("%s\t\t`%s'\n", token_type_str(token->type), token->str ? token->str : "");
+		printf("\n");
 		if (grammary_checker((t_token *)args.first))
 		{
 #if 1
-			cmd = command_creator((t_token *)args.first);
+			cmd = command_creator((t_token *)args.first, &env);
 			if (cmd)
 			{
 				for (int i = 0; i < cmd->argc; i++)
-					printf("%s%c", cmd->argv[i], \
+					printf("`%s'%c", cmd->argv[i], \
 							' ' * (i + 1 < cmd->argc) + '\n' * (i + 1 == cmd->argc));
 				command_free(cmd);
 				cmd = NULL;

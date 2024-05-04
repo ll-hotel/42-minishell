@@ -6,15 +6,15 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 23:04:25 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/24 18:15:06 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/04 16:24:04 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	*lexer_on_cut(t_llst_head *token_lst, char *cut);
+static t_token	*lexer_on_cut(t_llst_head *token_lst, char *cut);
 
-void	*lexer_on_cuts(char **cuts)
+t_token	*lexer_on_cuts(char **cuts)
 {
 	t_llst_head	token_lst;
 	void		*space;
@@ -39,25 +39,31 @@ void	*lexer_on_cuts(char **cuts)
 		}
 		llst_addback(&token_lst, space);
 	}
-	return (token_lst.first);
+	return ((t_token *)token_lst.first);
 }
 
-static void	*lexer_on_cut(t_llst_head *token_lst, char *cut)
+static t_token	*lexer_on_cut(t_llst_head *token_lst, char *cut)
 {
-	void	*token;
+	t_token	*token;
+	char	simple_quoted;
 	int		i;
 
+	simple_quoted = 0;
 	i = 0;
 	while (cut[i])
 	{
 		token = NULL;
 		if (is_operator(cut[i]))
+		{
+			if (cut[i] == '\'')
+				simple_quoted = !simple_quoted;
 			token = lexer_operator(cut, &i);
+		}
 		else
-			token = lexer_word(cut, &i);
+			token = lexer_word(cut, &i, simple_quoted);
 		if (!token)
 			return (NULL);
-		llst_addback(token_lst, token);
+		llst_addback(token_lst, (t_llst *)token);
 	}
 	return (token);
 }
