@@ -11,7 +11,7 @@ LIBFT		:=	$(LIBFT_DIR)libft.a
 
 CFLAGS		=	-Wall -Wextra -Werror
 IFLAGS		:=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
-DFLAGS		:=	-MMD
+DFLAGS		:=	-MMD -MP
 LFLAGS		:=	-L$(LIBFT_DIR) -lft -lreadline
 
 ifneq ("$(DEBUG)", "")

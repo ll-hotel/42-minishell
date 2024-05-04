@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/04 16:55:39 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/04 19:20:28 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ t_command	*command_creator(t_token *token, t_env *env)
 			if (!arg || !vec_addback(&vec_argv, arg))
 				return (vec_clear(&vec_argv, NULL), ft_free(cmd));
 		}
-		token = token->next;
+		if (token)
+			token = token->next;
 	}
 	cmd->argc = vec_argv.size;
 	cmd->argv = ft_calloc(cmd->argc + 1, sizeof(*cmd->argv));
@@ -50,10 +51,10 @@ static char	*loop(t_token **token, t_env *env)
 	void	*tmp;
 
 	tmp = "";
-	if (token[0]->type == TOKEN_DOLLAR && token[0]->next)
+	if (token[0]->type == TOKEN_DOLLAR)
 	{
 		*token = token[0]->next;
-		if (token[0]->type != TOKEN_WORD)
+		if (!*token || token[0]->type != TOKEN_WORD)
 			return (ft_strdup("$"));
 		return (ft_strdup("ENV_VAR"));
 	}
