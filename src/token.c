@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:17:10 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/27 15:38:18 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/04 15:19:34 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	token_delete(void *token)
 	free(token);
 }
 
-void	*token_new(char *str, int type)
+t_token	*token_new(char *str, int type)
 {
 	t_token	*token;
 
@@ -39,7 +39,7 @@ void	*token_new(char *str, int type)
 t_llst	*char_array_to_token(char **cuts)
 {
 	t_llst_head	lst;
-	void		*token;
+	t_token		*token;
 
 	if (!cuts)
 		return (NULL);
@@ -52,7 +52,7 @@ t_llst	*char_array_to_token(char **cuts)
 			llst_clear(&lst, &token_delete);
 			return (NULL);
 		}
-		llst_addback(&lst, token);
+		llst_addback(&lst, (t_llst *)token);
 		cuts += 1;
 	}
 	return (lst.first);

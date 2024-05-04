@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/02 14:35:06 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/04 14:45:02 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	grammary_checker(t_token *token)
 	next_command_offset = check_for_one_command(token);
 	while (next_command_offset > 0)
 	{
-		printf("%d\n", next_command_offset);
 		while (next_command_offset > 0)
 		{
 			next_command_offset -= 1;

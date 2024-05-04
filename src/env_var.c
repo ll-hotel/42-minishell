@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/30 12:00:53 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/04 15:18:21 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	**env_to_array(t_env *env)
 	if (!penv)
 		return (NULL);
 	i = 0;
-	var = (void *)env->vars.first;
+	var = (t_env_var *)env->vars.first;
 	while (i < env_var_nb)
 	{
 		penv[i++] = env_var_join(var);
@@ -34,7 +34,7 @@ char	**env_to_array(t_env *env)
 	return (penv);
 }
 
-void	*env_var_new(char *penv_var)
+t_env_var	*env_var_new(char *penv_var)
 {
 	t_env_var		*var;
 	unsigned int	i;
@@ -57,7 +57,7 @@ void	*env_var_new(char *penv_var)
 	return (var);
 }
 
-void	*env_var_get(t_env *env, char *name)
+t_env_var	*env_var_get(t_env *env, char *name)
 {
 	int const	name_len = ft_strlen(name);
 	t_env_var	*var;
