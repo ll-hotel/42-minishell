@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/02 14:26:52 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/04 12:48:02 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-
+# include <string.h>
+# include <errno.h>
 /*	----	ENVIRONMENT	----	*/
 
 typedef struct s_env_var
@@ -101,10 +102,16 @@ char	*display_prompt(void);
 int		is_space(char c);
 int		is_quote(char c);
 void	free_array(void **ptr);
+short	is_void_command(char *full_command, char *command_word);
 
 /*	----	Buildtsdsfins	----	*/
 
-void	echo(char *str);
-void	pwd(void);
+void	echo(char *command);
+void	pwd(char *command);
+void	cd(char *command, t_env *env);
+
+/*	----	Exec	----	*/
+
+void	chooser(char *command, t_env *env);
 
 #endif
