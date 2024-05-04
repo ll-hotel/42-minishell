@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/04 16:51:39 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/04 16:55:39 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_command	*command_creator(t_token *token, t_env *env)
 	if (!cmd)
 		return (NULL);
 	vec_new(&vec_argv, sizeof(char *));
-	while (token)
+	while (token && token->type != TOKEN_PIPE)
 	{
 		if (token->type != TOKEN_SPACE)
 		{
