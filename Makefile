@@ -23,6 +23,8 @@ CFLAGS += $(DEBUG)
 endif
 
 OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
+				cd.c \
+				chooser.c \
 				cutter.c \
 				cutter_utils.c \
 				command.c \
