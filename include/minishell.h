@@ -17,7 +17,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-
+# include <string.h>
+# include <errno.h>
 /*	----	ENVIRONMENT	----	*/
 
 typedef struct s_env_var	t_env_var;
@@ -118,5 +119,16 @@ int		is_space(char c);
 int		is_quote(char c);
 void	*ft_free(void *p);
 void	free_array(void **ptr);
+short	is_void_command(char *full_command, char *command_word);
+
+/*	----	Buildtsdsfins	----	*/
+
+void	echo(char *command);
+void	pwd(char *command);
+void	cd(char *command, t_env *env);
+
+/*	----	Exec	----	*/
+
+void	chooser(char *command, t_env *env);
 
 #endif

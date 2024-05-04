@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-#define CUTS 0
 #define TOKENS 1
 
 #if TOKENS
@@ -78,7 +77,6 @@ int	main(int argc, const char **argv, char *const *penv)
 		printf("\n");
 		if (grammary_checker((t_token *)args.first))
 		{
-#if 1
 			cmd = command_creator((t_token *)args.first, &env);
 			if (cmd)
 			{
@@ -90,7 +88,6 @@ int	main(int argc, const char **argv, char *const *penv)
 			}
 			else
 				ft_dprintf(2, "Failed to create command\n");
-#endif
 		}
 		else
 			ft_dprintf(2, "Invalid command\n");
