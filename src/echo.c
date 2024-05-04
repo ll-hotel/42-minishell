@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/26 20:38:07 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/02 09:58:09 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/04 12:47:42 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,14 @@
 static void	param(char *str, char **printed, char *backslash);
 static int	is_param(char *str);
 
-void	echo(char *str)
+void	echo(char *command)
 {
 	char	backslash;
 	char	*printed;
 
-	if (ft_strncmp(str, "echo", 4) || (!is_space(str[4]) && str[4]))
-		return ;
 	printed = "";
 	backslash = '\n';
-	param(str, &printed, &backslash);
+	param(command, &printed, &backslash);
 	while (is_param(printed))
 		param(printed, &printed, &backslash);
 	printf("%s%c", printed, backslash);

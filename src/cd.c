@@ -6,31 +6,28 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/03 16:16:00 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/04 12:13:56 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd(char *path)
+void	cd(char *command, t_env *env)
 {
-	char	*home;
-	size_t	i;
+	char		*new_path;
+	t_env_var	*home;
 
-	if (!ft_strncmp(path, "cd", 2))
+	if (!ft_strncmp(command, "cd", 2))
 	{
-		i = 2;
-		while (path[i] && is_space(path[i]))
-			i++;
-		if (!path[i])
+		if (is_void_command(command, "cd"))
 		{
-			home = getenv("HOME");
-			if (home)
-				chdir(home);
+			home = env_var_get(env, "HOME");
+			if (home->value)
+				chdir(home->value);
 			return ;
 		}
-		home = path + i;
-		if (chdir(home) == -1)
+		new_path = command + 3;
+		if (chdir(new_path) == -1)
 			printf("%s\n", strerror(errno));
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 10:05:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/03 20:07:31 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/04 11:45:01 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,16 @@ void	malloc_checker(void *ptr)
 	}
 }
 
-
-
-void	pwd(void)
+void	pwd(char *command)
 {
 	char	*buff;
 	size_t	size;
 
+	if (!is_void_command(command, "pwd"))
+	{
+		write(2, "pwd : too many arguments\n", 25);
+		return ;
+	}
 	size = 128;
 	buff = ft_calloc(size, sizeof(char));
 	malloc_checker(buff);
