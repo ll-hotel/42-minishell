@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:29:15 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/24 20:29:55 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/05/24 20:29:58 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,15 @@ int		is_quote(char c);
 void	*ft_free(void *p);
 void	free_array(void **ptr);
 short	is_void_command(char *full_command, char *command_word);
+short	is_valid_command(char *full_command, char *command_word);
 
-/*	----	Buildtsdsfins	----	*/
+/*	----	Builtins	----	*/
 
 void	echo(char *command);
 void	pwd(char *command);
 void	cd(char *command, t_env *env);
+void	env_command(char *command, t_env *env);
+void	export(char *command, t_env *env);
 
 /*	----	Exec	----	*/
 

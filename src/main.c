@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:28:57 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:29:48 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,17 @@ int	main(int argc, const char **argv, char *const *penv)
 			cmd = command_creator((t_token *)args.first, &env);
 			if (cmd)
 			{
+				free(line);
+				line = ft_strdup("");
 				for (int i = 0; i < cmd->argc; i++)
+				{
 					printf("`%s'%c", cmd->argv[i], \
 							' ' * (i + 1 < cmd->argc) + '\n' * (i + 1 == cmd->argc));
+					line = ft_strjoin(line, cmd->argv[i]);
+					if (i + 1 < cmd->argc)
+						line = ft_strjoin(line, " ");
+				}
+				chooser(line, &env);
 				command_free(cmd);
 				cmd = NULL;
 			}
