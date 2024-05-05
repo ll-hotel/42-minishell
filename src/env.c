@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:26:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/04 15:16:11 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/05 11:59:03 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,19 @@ int	env_init(t_env *env, char *const *penv)
 		llst_addback(&env->vars, (t_llst *)var);
 	}
 	return (1);
+}
+
+void	env_command(char *command, t_env *env)
+{
+	t_env_var	*vars;
+
+	if (is_void_command(command, "env"))
+	{
+		vars = (t_env_var *) env->vars.first;
+		while (vars->next)
+		{
+			printf("%s=%s\n",vars->name , vars->value);
+			vars = vars->next;
+		}
+	}
 }
