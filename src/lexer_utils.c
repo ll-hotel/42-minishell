@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 15:38:30 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/30 10:22:56 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/04 15:35:17 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,24 @@ int	is_operator(int c)
 			|| c == '|' || c == '<' || c == '>');
 }
 
-void	*lexer_word(char *str, int *i)
+t_token	*lexer_word(char *str, int *i, char single_quoted)
 {
 	const int	start = *i;
 	char		*tmp;
 
-	while (str[*i] && !is_operator(str[*i]))
-		*i += 1;
+	if (single_quoted)
+		while (str[*i] && str[*i] != '\'')
+			*i += 1;
+	else
+		while (str[*i] && !is_operator(str[*i]))
+			*i += 1;
 	tmp = ft_substr(str, start, *i - start);
 	if (tmp)
 		return (token_new(tmp, TOKEN_WORD));
 	return (NULL);
 }
 
-void	*lexer_operator(char *str, int *i)
+t_token	*lexer_operator(char *str, int *i)
 {
 	char const	op = str[(*i)++];
 	char		*tmp;

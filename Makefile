@@ -9,21 +9,28 @@ OBJECT_DIR	:=	.obj/
 LIBFT_DIR	:=	libft/
 LIBFT		:=	$(LIBFT_DIR)libft.a
 
-CFLAGS		:=	-Wall -Wextra -Werror -g3
+CFLAGS		=	-Wall -Wextra -Werror
 IFLAGS		:=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
-DFLAGS		:=
+DFLAGS		:=	-MMD -MP
 LFLAGS		:=	-L$(LIBFT_DIR) -lft -lreadline
+
+ifneq ("$(DEBUG)", "")
+CFLAGS += $(DEBUG)
+endif
 
 OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				cd.c \
 				chooser.c \
 				cutter.c \
 				cutter_utils.c \
+				command.c \
+				command_creator.c \
 				display_prompt.c \
 				echo.c \
 				env.c \
 				env_var.c \
 				free_array.c \
+				ft_free.c \
 				grammary_checker.c \
 				lexer_on_cuts.c \
 				lexer_utils.c \
@@ -33,8 +40,6 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				llst_get_last.c \
 				llst_len.c \
 				main.c \
-				parser.c \
-				parser_assemble.c \
 				pwd.c \
 				token.c \
 				welcome.c \
