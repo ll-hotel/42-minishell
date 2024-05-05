@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:34 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/24 17:34:57 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/23 10:59:41 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@
 # include "include/get_next_line.h"
 # include "include/vector.h"
 
-char	*ft_itoa_base(int n, const char *base_a);
 void	*ft_realloc(void *p, unsigned long old_size, unsigned long n);
+int		ft_strichr(char *str, int c);
+int		ft_isspace(int c);
+int		ft_isblank(int c);
+void	*ft_memdup(void *p, unsigned long size);
 
 #endif

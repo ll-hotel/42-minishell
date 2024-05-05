@@ -1,33 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   msh_pwd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/06 08:03:01 by lrichaud         ###   ########lyon.fr   */
+/*   Created: 2024/05/02 10:05:58 by lrichaud          #+#    #+#             */
+/*   Updated: 2024/05/22 20:14:02 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd(char *command, t_env *env)
+int	msh_pwd(t_command *cmd)
 {
-	char		*new_path;
-	t_env_var	*home;
+	char	*buff;
+	size_t	size;
 
-	if (!ft_strncmp(command, "cd", 2))
+	if (cmd->argc > 1)
 	{
-		if (is_void_command(command, "cd"))
-		{
-			home = env_var_get(env, "HOME");
-			if (!home || chdir(home->value) == -1)
-				write(2, "miniChell: cd: HOME not set\n", 28);
-			return ;
-		}
-		new_path = command + 3;
-		if (chdir(new_path) == -1)
-			printf("%s\n", strerror(errno));
+		write(2, "pwd : too many arguments\n", 25);
+		return (1);
 	}
+	size = 128;
+	buff = ft_calloc(size, sizeof(char));
+	if (!buff)
+		return (1);
+	while (!getcwd(buff, size) && size < __INT_MAX__)
+	{
+		free(buff);
+		size *= 2;
+		buff = ft_calloc(size, sizeof(char));
+		if (!buff)
+			return (1);
+	}
+	if (buff[0] != '\0')
+		printf("%s\n", buff);
+	free(buff);
+	return (0);
 }

@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_strichr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 19:54:05 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/22 19:11:31 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/22 13:18:04 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/05/22 13:23:53 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned long	ft_strlcpy(char *dest, const char *src, unsigned long size)
+int	ft_strichr(const char *str, int c)
 {
-	unsigned long	i;
+	int	i;
 
 	i = 0;
-	if (size)
-	{
-		i -= 1;
-		while (++i < size - 1 && src[i])
-			dest[i] = src[i];
-		dest[i] = 0;
-	}
-	while (src[i])
+	while (str[i] && str[i] != c)
 		i += 1;
 	return (i);
 }

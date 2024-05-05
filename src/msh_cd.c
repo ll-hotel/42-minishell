@@ -1,40 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   display_prompt.c                                   :+:      :+:    :+:   */
+/*   msh_cd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 19:17:03 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/28 08:13:42 by lrichaud         ###   ########lyon.fr   */
+/*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
+/*   Updated: 2024/05/22 20:09:34 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
-static int	is_only_space(char *str)
+int	msh_cd(t_command *cmd, t_env *env)
 {
-	size_t	i;
+	char		*new_path;
+	t_env_var	*home;
 
-	i = 0;
-	while (str[i] && ft_isblank(str[i]))
-		i++;
-	if (!str[i])
-		return (1);
-	return (0);
-}
-
-char	*display_prompt(void)
-{
-	char	*input;
-
-	input = readline("[\001\e[96m\e[1m\002miniChell\001\e[0m\e[39m\002]-$ ");
-	if (input && !is_only_space(input))
+	if (cmd->argc == 1)
 	{
-		add_history(input);
-		return (input);
+		home = env_var_get(env, "HOME");
+		if (!home || chdir(home->value) == -1)
+			write(2, "miniChell: cd: HOME not set\n", 28);
+		return (0);
 	}
-	return (NULL);
+	new_path = cmd->argv[1];
+	if (chdir(new_path) == -1)
+	{
+		perror("minishell");
+		return (1);
+	}
+	return (0);
 }

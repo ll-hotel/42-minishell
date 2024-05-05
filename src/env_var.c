@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:31:16 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:35:33 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,24 @@ static char	*env_var_join(t_env_var *var);
 char	**env_to_array(t_env *env)
 {
 	const long	env_var_nb = llst_len(&env->vars);
-	t_env_var	*var;
-	char		**penv;
+	t_llst_head	var_lst;
+	char		**envp;
 	long		i;
 
-	penv = ft_calloc(env_var_nb + 1, sizeof(*penv));
-	if (!penv)
+	envp = ft_calloc(env_var_nb + 1, sizeof(*envp));
+	if (!envp)
 		return (NULL);
 	i = 0;
-	var = (t_env_var *)env->vars.first;
+	var_lst = env->vars;
 	while (i < env_var_nb)
 	{
-		penv[i++] = env_var_join(var);
-		var = var->next;
+		envp[i++] = env_var_join((t_env_var *)var_lst.first);
+		var_lst.first = var_lst.first->next;
 	}
-	return (penv);
+	return (envp);
 }
 
-t_env_var	*env_var_new(char *penv_var)
+t_env_var	*env_var_new(char *envp_var)
 {
 	t_env_var		*var;
 	unsigned int	i;
@@ -43,16 +43,16 @@ t_env_var	*env_var_new(char *penv_var)
 	if (!var)
 		return (NULL);
 	i = 0;
-	while (penv_var[i] && penv_var[i] != '=')
+	while (envp_var[i] && envp_var[i] != '=')
 		i += 1;
-	var->name = ft_substr(penv_var, 0, i);
+	var->name = ft_substr(envp_var, 0, i);
 	if (!var->name)
 		return (NULL);
-	if (penv_var[i] == '=')
+	if (envp_var[i] == '=')
 	{
-		var->value = ft_substr(penv_var, i + 1, ft_strlen(penv_var) - i - 1);
+		var->value = ft_substr(envp_var, i + 1, ft_strlen(envp_var) - i - 1);
 		if (!var->value)
-			return (env_var_delete(var), NULL);
+			return (env_var_free(var), NULL);
 	}
 	return (var);
 }
@@ -68,7 +68,7 @@ t_env_var	*env_var_get(t_env *env, char *name)
 	return (var);
 }
 
-void	env_var_delete(void *var)
+void	env_var_free(void *var)
 {
 	ft_free(((t_env_var *)var)->name);
 	ft_free(((t_env_var *)var)->value);
@@ -84,13 +84,13 @@ static char	*env_var_join(t_env_var *var)
 	name_len = ft_strlen(var->name);
 	str_len = name_len;
 	if (var->value)
-		str_len += ft_strlen(var->value) + 1;
+		str_len += ft_strlen(var->value) + 2;
 	str = ft_calloc(str_len, sizeof(*str));
 	if (!str)
 		return (NULL);
-	ft_memmove(str, var->name, name_len);
+	ft_strlcat(str, var->name, str_len);
 	if (var->value)
-		str[name_len++] = '=';
-	ft_memmove(str + name_len, var->value, str_len - name_len);
+		str[name_len] = '=';
+	ft_strlcat(str, var->value, str_len);
 	return (str);
 }

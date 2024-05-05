@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 13:26:10 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:26:47 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:33:32 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	*ft_realloc(void *p, unsigned long old_size, unsigned long n);
 void	*ft_memmove(void *p1, void *p2, unsigned long n);
-void	ft_bzero(void *p, unsigned long size);
 
 void	*vec_addback(t_vec *vec, void *elem)
 {
@@ -28,8 +27,6 @@ void	*vec_addback(t_vec *vec, void *elem)
 				vec->allocated_size * vec->elem_size);
 		if (!tmp)
 			return (0);
-		ft_bzero(tmp + vec->size * vec->elem_size, \
-				(vec->allocated_size - vec->size) * vec->elem_size);
 		vec->array = tmp;
 	}
 	if (vec->elem_size > 8)

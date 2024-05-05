@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 15:24:46 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/16 16:36:18 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/07 10:42:32 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ typedef struct s_vector	t_vec;
 
 struct	s_vector
 {
-	void			*array;
-	unsigned long	size;
-	unsigned long	elem_size;
-	unsigned long	allocated_size;
+	void				*array;
+	unsigned long long	size;
+	unsigned long long	elem_size;
+	unsigned long long	allocated_size;
 };
 
 void	vec_new(t_vec *vec, unsigned long elem_size);

@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   llst_next.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 19:54:05 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/22 19:11:31 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/08 17:29:33 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/05/08 17:30:25 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned long	ft_strlcpy(char *dest, const char *src, unsigned long size)
-{
-	unsigned long	i;
+#include "llst.h"
 
-	i = 0;
-	if (size)
-	{
-		i -= 1;
-		while (++i < size - 1 && src[i])
-			dest[i] = src[i];
-		dest[i] = 0;
-	}
-	while (src[i])
-		i += 1;
-	return (i);
+t_llst	*llst_next(t_llst_head *lst)
+{
+	if (lst)
+		return (lst->first);
+	return (0);
 }

@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   ft_isblank.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 19:54:05 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/22 19:11:31 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/22 17:42:25 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/05/22 17:42:43 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned long	ft_strlcpy(char *dest, const char *src, unsigned long size)
+int	ft_isblank(int c)
 {
-	unsigned long	i;
-
-	i = 0;
-	if (size)
-	{
-		i -= 1;
-		while (++i < size - 1 && src[i])
-			dest[i] = src[i];
-		dest[i] = 0;
-	}
-	while (src[i])
-		i += 1;
-	return (i);
+	return (c == ' ' || c == '\t');
 }

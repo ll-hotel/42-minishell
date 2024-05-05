@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:31:04 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:40:08 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,80 +14,100 @@
 # define MINISHELL_H
 # include "libft.h"
 # include "llst.h"
+# include <errno.h>
+# include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
 # include <string.h>
-# include <errno.h>
-/*	----	ENVIRONMENT	----	*/
+# include <unistd.h>
+# include <wait.h>
+# define EXIT_OUT_OF_MEMORY 12
+# define EXIT_BROKEN_PIPE 32
+# define EXIT_CMD_NOT_FOUND 127
+
+/*	----	TYPEDEFS	----	*/
 
 typedef struct s_env_var	t_env_var;
-struct s_env_var
+typedef struct s_env		t_env;
+typedef struct s_minishell	t_msh;
+typedef struct s_token		t_token;
+typedef struct s_command	t_command;
+
+enum	e_token_type
+{
+	TOKEN_WORD,
+	TOKEN_SIMPLE_QUOTE,
+	TOKEN_DOUBLE_QUOTE,
+	TOKEN_ENV_VAR,
+	TOKEN_REDIR_IN,
+	TOKEN_REDIR_OUT,
+	TOKEN_PIPE
+};
+
+/*	----	STRUCT		----	*/
+
+struct	s_env
+{
+	t_llst_head	vars;
+	int			last_exit_status;
+};
+
+struct	s_minishell
+{
+	t_env		env;
+	t_llst_head	args;
+	t_llst_head	cmds;
+};
+
+struct	s_env_var
 {
 	t_env_var	*next;
 	char		*name;
 	char		*value;
 };
 
-typedef struct s_env
-{
-	t_llst_head	vars;
-	int			last_return_value;
-}	t_env;
-
-int			env_init(t_env *env, char *const *penv);
-t_env_var	*env_var_new(char *p);
-t_env_var	*env_var_get(t_env *env, char *name);
-void		env_var_delete(void *var);
-void		free_env(t_env *env);
-
-/*	----	TOKEN	----	*/
-
-enum	e_token_type
-{
-	TOKEN_SPACE,
-	TOKEN_WORD,
-	TOKEN_OPERATOR,
-	TOKEN_SIMPLE_QUOTE,
-	TOKEN_DOUBLE_QUOTE,
-	TOKEN_DOLLAR,
-	TOKEN_ENV_VAR,
-	TOKEN_REDIRECT,
-	TOKEN_PIPE
-};
-
-typedef struct s_token		t_token;
-
-struct s_token
+struct	s_token
 {
 	t_token	*next;
 	char	*str;
 	int		type;
 };
 
-t_token		*token_new(char *str, int type);
-void		token_delete(void *token);
-t_llst		*char_array_to_token(char **cuts);
-
-/*	----	CUTTER	----	*/
-
-typedef struct s_cutter
+struct	s_command
 {
-	size_t	word_len;
-	int		start_word;
-	int		nb_words;
-}	t_cutter;
+	t_command	*next;
+	t_llst_head	redirections;
+	int			fd_in;
+	int			fd_out;
+	char		**path;
+	char		*executable;
+	int			argc;
+	char		**argv;
+	char		**envp;
+};
 
-char		**cutter(char *line);
-char		**cutter_init_words(char *line);
-t_llst		*init_args(char *line);
-size_t		quote_reader(char *str, ssize_t i, char quote_type);
+/*	----	ENVIRONMENT	----	*/
+
+int			env_init(t_env *env, char *const *envp);
+t_env_var	*env_var_get(t_env *env, char *name);
+char		**env_to_array(t_env *env);
+t_env_var	*env_var_new(char *p);
+void		env_var_free(void *var);
+void		free_env(t_env *env);
+
+/*	----	TOKEN	----	*/
+
+t_token		*token_new(char *str, int type);
+void		token_free(void *token);
 
 /*	----	LEXER	----	*/
 
-t_token		*lexer_on_cuts(char **cuts);
-t_token		*lexer_operator(char *str, int *i);
-t_token		*lexer_word(char *str, int *i, char single_quoted);
+t_token		*lexer_line(char *line);
+t_token		*lexer_word(char *line, int *p_i);
+t_token		*lexer_dollar(char *line, int *p_i);
+t_token		*lexer_simple_quote(char *line, int *p_i);
+t_token		*lexer_redirection(char *line, int *p_i);
+//t_token		*lexer_double_quote(char *line, int *p_i);
 int			is_operator(int c);
 
 /*	----	PARSER	----	*/
@@ -95,47 +115,41 @@ int			is_operator(int c);
 void		*parser(t_llst_head *tokens_head, t_env *env);
 char		*parser_assemble(t_token *token);
 
-/*	----	GRAMMARY_CHECKER	----	*/
+/*	----	SYNTAX_CHECKER	----	*/
 
-int			grammary_checker(t_token *token);
+int			syntax_checker(t_token *token);
 
 /*	----	COMMAND		----	*/
 
-typedef struct s_command	t_command;
-struct s_command
-{
-	t_command	*next;
-	char		**argv;
-	int			argc;
-	int			reserved;
-};
-
-t_command	*command_creator(t_token *token, t_env *env);
+t_command	*command_creator(t_llst_head *tokenlst_head, t_env *env);
 void		command_free(void *command);
 
 /*	----	UTILS	----	*/
 
 void		welcome_test_subject(void);
 char		*display_prompt(void);
-int			is_space(char c);
-int			is_quote(char c);
 void		*ft_free(void *p);
-void		free_array(void **ptr);
-short		is_void_command(char *full_command, char *command_word);
-short		is_valid_command(char *full_command, char *command_word);
-void		malloc_checker(void *ptr);
+int			ft_close(int fd);
+void		ft_free_parray(void *array);
 
 /*	----	Builtins	----	*/
 
-void		echo(char *command);
-void		pwd(char *command);
-void		cd(char *command, t_env *env);
-void		env_command(char *command, t_env *env);
-void		export(char *command, t_env *env);
-void		builtins_unset(char *command, t_env *env);
+int			chooser(t_command *cmd, t_msh *msh);
+int			msh_echo(t_command *cmd);
+int			msh_pwd(t_command *cmd);
+int			msh_cd(t_command *cmd, t_env *env);
+int			msh_env(t_command *cmd, t_env *env);
+int			msh_export(t_command *cmd, t_env *env);
+int			msh_unset(t_command *cmd, t_env *env);
+void		msh_exit(t_msh *msh, int status);
 
 /*	----	Exec	----	*/
 
-void		chooser(char *command, t_env *env);
+int			msh_exec(t_msh *msh, t_command *cmd);
+int			msh_exec_pipeline(t_msh *msh, t_command *cmd);
+int			msh_exec_one(t_command *cmd, t_env *env);
+int			msh_exec_open_redirections(t_command *cmd);
+char		**msh_exec_get_path(t_env *env);
+int			msh_exec_find_command(t_command *cmd, char **path);
 
 #endif

@@ -1,28 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/06 19:54:05 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/22 19:11:31 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/22 18:30:43 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/05/22 18:50:33 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-unsigned long	ft_strlcpy(char *dest, const char *src, unsigned long size)
-{
-	unsigned long	i;
+#include "minishell.h"
 
-	i = 0;
-	if (size)
-	{
-		i -= 1;
-		while (++i < size - 1 && src[i])
-			dest[i] = src[i];
-		dest[i] = 0;
-	}
-	while (src[i])
-		i += 1;
-	return (i);
+void	msh_exit(t_msh *msh, int status)
+{
+	llst_clear(&msh->env.vars, &env_var_free);
+	llst_clear(&msh->cmds, &command_free);
+	llst_clear(&msh->args, &token_free);
+	exit(status);
 }

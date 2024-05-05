@@ -1,20 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   grammary_checker.c                                 :+:      :+:    :+:   */
+/*   syntax_checker.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:31:26 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:40:57 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	check_for_one_command(t_token *token);
+static int	syntax_error(int token_type);
 
-int	grammary_checker(t_token *token)
+int	syntax_checker(t_token *token)
 {
 	int	next_command_offset;
 
@@ -28,8 +29,12 @@ int	grammary_checker(t_token *token)
 			next_command_offset -= 1;
 			token = token->next;
 		}
-		if (token && token->type == TOKEN_PIPE)
-			token = token->next;
+		if (!token)
+			continue ;
+		if (token->type == TOKEN_PIPE && \
+				token->next && token->next->type == TOKEN_PIPE)
+			return (syntax_error(token->type));
+		token = token->next;
 		next_command_offset = check_for_one_command(token);
 	}
 	return (next_command_offset == 0);
@@ -42,20 +47,29 @@ static int	check_for_one_command(t_token *token)
 	next_command_offset = 0;
 	if (token)
 	{
-		if (token->type == TOKEN_SPACE)
-		{
+		while (token && (token->type == TOKEN_REDIR_IN \
+					|| token->type == TOKEN_REDIR_OUT))
 			token = token->next;
-			next_command_offset += 1;
-		}
-		if (token && token->type != TOKEN_WORD && \
-			token->type != TOKEN_SIMPLE_QUOTE && \
-			token->type != TOKEN_DOUBLE_QUOTE)
+		if (!token)
 			return (-1);
 		while (token && token->type != TOKEN_PIPE)
 		{
-			token = token->next;
 			next_command_offset += 1;
+			token = token->next;
 		}
 	}
 	return (next_command_offset);
+}
+
+static int	syntax_error(int token_type)
+{
+	char	c;
+
+	c = '|' * (token_type == TOKEN_PIPE) + \
+		'<' * (token_type == TOKEN_REDIR_IN) + \
+		'<' * (token_type == TOKEN_REDIR_OUT) + \
+		'\'' * (token_type == TOKEN_SIMPLE_QUOTE) + \
+		'\"' * (token_type == TOKEN_DOUBLE_QUOTE);
+	ft_dprintf(2, "minishell: syntax error near token `%c'\n", c);
+	return (0);
 }

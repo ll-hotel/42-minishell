@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_array.c                                       :+:      :+:    :+:   */
+/*   ft_free_parray.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 23:54:21 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/27 18:15:43 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/22 14:19:08 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/05/22 14:19:16 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 
-void	free_array(void **ptr)
+void	ft_free_parray(void *array)
 {
-	void *const	p = ptr;
+	void	**p;
 
-	if (ptr)
+	if (array)
 	{
-		while (*ptr)
-			free(*(ptr++));
-		free(p);
+		p = array;
+		if (p)
+			while (*p)
+				free(*(p++));
+		free(array);
 	}
 }

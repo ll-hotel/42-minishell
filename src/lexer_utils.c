@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/20 15:38:30 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/04 15:35:17 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/23 16:46:34 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,41 +19,78 @@ int	is_operator(int c)
 			|| c == '|' || c == '<' || c == '>');
 }
 
-t_token	*lexer_word(char *str, int *i, char single_quoted)
+t_token	*lexer_word(char *line, int *p_i)
 {
-	const int	start = *i;
-	char		*tmp;
+	char	*word;
+	int		word_len;
 
-	if (single_quoted)
-		while (str[*i] && str[*i] != '\'')
-			*i += 1;
-	else
-		while (str[*i] && !is_operator(str[*i]))
-			*i += 1;
-	tmp = ft_substr(str, start, *i - start);
-	if (tmp)
-		return (token_new(tmp, TOKEN_WORD));
+	word_len = 0;
+	while (line[word_len] \
+			&& !ft_isblank(line[word_len]) \
+			&& !is_operator(line[word_len]))
+		word_len += 1;
+	word = ft_substr(line, 0, word_len);
+	*p_i = word_len;
+	if (word)
+		return (token_new(word, TOKEN_WORD));
 	return (NULL);
 }
 
-t_token	*lexer_operator(char *str, int *i)
+t_token	*lexer_dollar(char *line, int *p_i)
 {
-	char const	op = str[(*i)++];
-	char		*tmp;
+	char	*word;
+	int		word_len;
 
-	if (op == '$')
-		return (token_new(NULL, TOKEN_DOLLAR));
-	else if (op == '\'')
-		return (token_new(NULL, TOKEN_SIMPLE_QUOTE));
-	else if (op == '\"')
-		return (token_new(NULL, TOKEN_DOUBLE_QUOTE));
-	else if (op == '|')
-		return (token_new(NULL, TOKEN_PIPE));
-	else if (op == '<' || op == '>')
+	word_len = 0;
+	while (line[word_len] \
+			&& !ft_isblank(line[word_len]) \
+			&& !is_operator(line[word_len]))
+		word_len += 1;
+	word = ft_substr(line, 0, word_len);
+	*p_i = word_len + 1;
+	if (word)
+		return (token_new(word, TOKEN_ENV_VAR));
+	return (NULL);
+}
+
+t_token	*lexer_simple_quote(char *line, int *p_i)
+{
+	char	*word;
+	int		word_len;
+
+	word_len = ft_strichr(line, '\'');
+	word = ft_substr(line, 0, word_len);
+	*p_i = word_len + 1;
+	if (word)
+		return (token_new(word, TOKEN_SIMPLE_QUOTE));
+	return (NULL);
+}
+
+t_token	*lexer_redirection(char *line, int *p_i)
+{
+	const int	type = *line;
+	int			offset;
+	char		*word;
+	int			word_len;
+
+	offset = 1;
+	while (ft_isblank(line[offset]))
+		offset += 1;
+	word_len = offset;
+	while (line[word_len] \
+			&& !ft_isblank(line[word_len]) \
+			&& !is_operator(line[word_len]))
+		word_len += 1;
+	word_len -= offset;
+	if (word_len == 0)
+		return (ft_dprintf(2, "minishell: syntax error near token `<'\n"), NULL);
+	word = ft_substr(line, offset, word_len);
+	*p_i = offset + word_len;
+	if (word)
 	{
-		tmp = ft_substr(&op, 0, 1);
-		if (tmp)
-			return (token_new(tmp, TOKEN_REDIRECT));
+		if (type == '<')
+			return (token_new(word, TOKEN_REDIR_IN));
+		return (token_new(word, TOKEN_REDIR_OUT));
 	}
 	return (NULL);
 }

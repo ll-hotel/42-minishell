@@ -6,106 +6,113 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/04 19:20:28 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/24 18:53:57 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*loop(t_token **token, t_env *env);
+static char	*create_arg(t_command *cmd, t_token *token, t_env *env, int *pnext);
+static char	*arg_env_var(char *token_str, t_env *env);
+static char	*arg_redirect(t_llst_head *redirects, t_token *token);
+static t_command	*create_command(t_token *token, t_env *env);
 
-t_command	*command_creator(t_token *token, t_env *env)
+t_command	*command_creator(t_llst_head *tokenlst_head, t_env *env)
+{
+	t_llst_head	cmdlst_head;
+	void		*cmd;
+	t_token		*token;
+
+	cmdlst_head.first = NULL;
+	token = (t_token *)tokenlst_head->first;
+	while (token)
+	{
+		cmd = create_command(token, env);
+		if (!cmd)
+		{
+			llst_clear(&cmdlst_head, &command_free);
+			return (NULL);
+		}
+		llst_addback(&cmdlst_head, cmd);
+		while (token && token->type != TOKEN_PIPE)
+			token = token->next;
+		if (token)
+			token = token->next;
+	}
+	return ((t_command *)cmdlst_head.first);
+}
+
+static t_command	*create_command(t_token *token, t_env *env)
 {
 	t_command	*cmd;
-	t_vec		vec_argv;
+	t_vec		argv;
 	char		*arg;
+	int			to_next;
 
 	cmd = ft_calloc(1, sizeof(*cmd));
 	if (!cmd)
 		return (NULL);
-	vec_new(&vec_argv, sizeof(char *));
+	vec_new(&argv, sizeof(arg));
 	while (token && token->type != TOKEN_PIPE)
 	{
-		if (token->type != TOKEN_SPACE)
-		{
-			arg = loop(&token, env);
-			if (!arg || !vec_addback(&vec_argv, arg))
-				return (vec_clear(&vec_argv, NULL), ft_free(cmd));
-		}
-		if (token)
-			token = token->next;
+		arg = create_arg(cmd, token, env, &to_next);
+		token = (t_token *)llst_at((t_llst_head *)token, to_next - 1);
+		if ((!arg && !to_next) || \
+				(arg != (char *)1 && !vec_addback(&argv, arg)))
+			return (command_free(cmd), NULL);
 	}
-	cmd->argc = vec_argv.size;
-	cmd->argv = ft_calloc(cmd->argc + 1, sizeof(*cmd->argv));
-	if (!cmd->argv)
-		return (ft_free(cmd));
-	ft_memmove(cmd->argv, vec_argv.array, cmd->argc * sizeof(*cmd->argv));
-	vec_clear(&vec_argv, NULL);
+	if (!vec_addback(&argv, NULL))
+		return (command_free(cmd), NULL);
+	cmd->fd_in = -1;
+	cmd->fd_out = -1;
+	cmd->argv = argv.array;
+	cmd->argc = argv.size - 1;
 	return (cmd);
 }
 
-static char	*loop_double_quotes(t_token **token, t_env *env);
-
-static char	*loop(t_token **token, t_env *env)
+static char	*create_arg(t_command *cmd, t_token *token, t_env *env, int *pnext)
 {
-	void	*tmp;
-
-	tmp = "";
-	if (token[0]->type == TOKEN_DOLLAR)
-	{
-		*token = token[0]->next;
-		if (!*token || token[0]->type != TOKEN_WORD)
-			return (ft_strdup("$"));
-		return (ft_strdup("ENV_VAR"));
-	}
-	if (token[0]->type == TOKEN_WORD)
-		return (ft_strdup(token[0]->str));
-	else if (token[0]->type == TOKEN_SIMPLE_QUOTE && token[0]->next)
-	{
-		*token = token[0]->next;
-		if (token[0]->type == TOKEN_WORD)
-			tmp = token[0]->str;
-		if (token[0]->next && token[0]->next->type == TOKEN_SIMPLE_QUOTE)
-			*token = token[0]->next;
-		return (ft_strdup(tmp));
-	}
-	else if (token[0]->type == TOKEN_DOUBLE_QUOTE)
-		return (loop_double_quotes(token, env));
-	return (NULL);
-}
-
-static char	*loop_double_quotes(t_token **token, t_env *env)
-{
-	char	*tmp;
 	char	*arg;
 
-	(void)(env);
 	arg = NULL;
-	*token = token[0]->next;
-	while (*token && token[0]->type != TOKEN_DOUBLE_QUOTE)
-	{
-		if (token[0]->type == TOKEN_WORD)
-		{
-			tmp = ft_strjoin(arg, token[0]->str);
-			arg = ft_free(arg);
-			if (!tmp)
-				return (NULL);
-			arg = tmp;
-		}
-		else if (token[0]->type == TOKEN_DOLLAR)
-		{
-			*token = token[0]->next;
-			if (token[0]->type != TOKEN_WORD)
-				tmp = ft_strjoin(arg, "$");
-			else
-				tmp = ft_strjoin(arg, token[0]->str);
-			arg = ft_free(arg);
-			if (!tmp)
-				return (NULL);
-			arg = tmp;
-		}
-		if (token[0]->type == TOKEN_WORD)
-			*token = token[0]->next;
-	}
+	*pnext = 1;
+	if (token->type == TOKEN_WORD || token->type == TOKEN_SIMPLE_QUOTE)
+		arg = ft_strdup(token->str);
+	else if (token->type == TOKEN_ENV_VAR)
+		arg = arg_env_var(token->str, env);
+	else if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT)
+		arg = arg_redirect(&cmd->redirections, token);
+	if (!arg)
+		*pnext = 0;
 	return (arg);
+}
+
+static char	*arg_env_var(char *token_str, t_env *env)
+{
+	t_env_var	*evar;
+
+	if (!token_str[0])
+		return (ft_strdup("$"));
+	if (!ft_strncmp(token_str, "?", 2))
+		return (ft_itoa(env->last_exit_status));
+	evar = env_var_get(env, token_str);
+	if (evar)
+		return (ft_strdup(evar->value));
+	return ((char *)1);
+}
+
+static char	*arg_redirect(t_llst_head *redirects, t_token *token)
+{
+	t_token	*token_dup;
+
+	token_dup = ft_memdup(token, sizeof(*token));
+	if (token_dup)
+	{
+		token_dup->next = NULL;
+		token_dup->str = ft_strdup(token->str);
+		if (!token_dup->str)
+			return (ft_free(token_dup));
+		llst_addback(redirects, (t_llst *)token_dup);
+	}
+	return ((char *)(long)(token_dup != NULL));
 }
