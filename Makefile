@@ -1,4 +1,5 @@
 MAKE		:=	@make --no-print-directory
+ECHO		:=	echo -e
 CC			:=	cc
 
 NAME		:=	minishell
@@ -53,19 +54,19 @@ BLUE="\033[0;34m"
 END_COLOUR="\033[0m"
 
 define percent
-	@echo -n $(GREEN)"[$$(echo "scale=2; $$(find $(OBJECT_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(END_COLOUR)
+	@$(ECHO) -n $(GREEN)"[$$(echo "scale=2; $$(find $(OBJECT_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(END_COLOUR)
 endef
 
 define prompt
-	@echo $1"\n================ $2 ================\n"$(END_COLOUR)
+	@$(ECHO) $1"\n================ $2 ================\n"$(END_COLOUR)
 endef
 
 define normitest
-	@echo $(BLUE)"\nTest norminette..."$(END_COLOUR)
+	@$(ECHO) $(BLUE)"\nTest norminette..."$(END_COLOUR)
 	@if norminette $(SOURCE_DIR) $(INCLUDE_DIR) $(LIBFT_DIR) | grep Error; then \
-		echo $(RED)"\n================ Norminette KO ================"$(END_COLOUR); \
+		$(ECHO) $(RED)"\n================ Norminette KO ================"$(END_COLOUR); \
 	else \
-		echo $(GREEN)"\n================ Norminette OK ================"$(END_COLOUR); \
+		$(ECHO) $(GREEN)"\n================ Norminette OK ================"$(END_COLOUR); \
 	fi
 endef
 
