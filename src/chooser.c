@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:10:45 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/05 16:49:37 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/05 17:36:46 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,7 @@ void	chooser(char *command, t_env *env)
 		pwd(command);
 	else if (is_valid_command(command, "env"))
 		env_command(command, env);
+	else if (is_valid_command(command, "export"))
+		export(command, env);
 
 }

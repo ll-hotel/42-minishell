@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/05 16:50:25 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/05 17:36:11 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ int		is_quote(char c);
 void	*ft_free(void *p);
 void	free_array(void **ptr);
 short	is_void_command(char *full_command, char *command_word);
+short	is_valid_command(char *full_command, char *command_word);
 
 /*	----	Builtins	----	*/
 
@@ -127,6 +128,7 @@ void	echo(char *command);
 void	pwd(char *command);
 void	cd(char *command, t_env *env);
 void	env_command(char *command, t_env *env);
+void	export(char *command, t_env *env);
 
 /*	----	Exec	----	*/
 

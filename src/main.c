@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/05 17:04:40 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/05 18:12:33 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ int	main(int argc, const char **argv, char *const *penv)
 					printf("`%s'%c", cmd->argv[i], \
 							' ' * (i + 1 < cmd->argc) + '\n' * (i + 1 == cmd->argc));
 					line = ft_strjoin(line, cmd->argv[i]);
+					if (i + 1 < cmd->argc)
+						line = ft_strjoin(line, " ");
 				}
 				chooser(line, &env);
 				command_free(cmd);
