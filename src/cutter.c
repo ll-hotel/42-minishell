@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 05:41:47 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/04/28 02:43:15 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/06 08:14:46 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char	**cutter(char *line)
 		i++;
 	}
 	new_word(line, words, &cut_vars);
-	free(line);
 	return (words);
 }
 

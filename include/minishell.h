@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/24 20:29:55 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:29:58 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/05/24 20:30:41 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int			env_init(t_env *env, char *const *penv);
 t_env_var	*env_var_new(char *p);
 t_env_var	*env_var_get(t_env *env, char *name);
 void		env_var_delete(void *var);
+void		free_env(t_env *env);
 
 /*	----	TOKEN	----	*/
 
@@ -129,6 +130,7 @@ void	pwd(char *command);
 void	cd(char *command, t_env *env);
 void	env_command(char *command, t_env *env);
 void	export(char *command, t_env *env);
+void	builtins_unset(char *command, t_env *env);
 
 /*	----	Exec	----	*/
 
