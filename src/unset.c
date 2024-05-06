@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/06 08:03:01 by lrichaud         ###   ########lyon.fr   */
+/*   Created: 2024/05/06 06:53:03 by lrichaud          #+#    #+#             */
+/*   Updated: 2024/05/06 08:15:36 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd(char *command, t_env *env)
+void	builtins_unset(char *command, t_env *env)
 {
-	char		*new_path;
-	t_env_var	*home;
+	t_env_var	*vars;
+	t_env_var	*previous_vars;
 
-	if (!ft_strncmp(command, "cd", 2))
+	command = command + 6;
+	vars = (t_env_var *) env->vars.first;
+	while (vars && ft_strncmp(vars->name, command, \
+		ft_strlen(command)))
 	{
-		if (is_void_command(command, "cd"))
-		{
-			home = env_var_get(env, "HOME");
-			if (!home || chdir(home->value) == -1)
-				write(2, "miniChell: cd: HOME not set\n", 28);
-			return ;
-		}
-		new_path = command + 3;
-		if (chdir(new_path) == -1)
-			printf("%s\n", strerror(errno));
+		previous_vars = vars;
+		vars = vars->next;
+	}
+	if (vars)
+	{
+		previous_vars->next = vars->next;
+		env_var_delete(vars);
 	}
 }

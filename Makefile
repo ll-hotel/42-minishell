@@ -30,6 +30,7 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				echo.c \
 				env.c \
 				env_var.c \
+				export.c \
 				free_array.c \
 				ft_free.c \
 				grammary_checker.c \
@@ -43,6 +44,7 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				main.c \
 				pwd.c \
 				token.c \
+				unset.c \
 				welcome.c \
 				)
 DEPS		:=	$(OBJECTS:.o=.d)
