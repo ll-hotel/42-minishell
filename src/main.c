@@ -6,13 +6,12 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/04 16:47:32 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/07 11:14:27 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #define TOKENS 1
-
 #if TOKENS
 static char	*token_type_str(int type)
 {
@@ -34,24 +33,26 @@ static char	*token_type_str(int type)
 }
 #endif
 
-void	ft_free_parray(void **array)
+void	ft_free_parray(void *array)
 {
-	unsigned long	i;
+	void	**p;
 
-	i = 0;
-	if (array)
-		while (array[i])
-			free(array[i++]);
+	p = array;
+	if (p)
+		while (*p)
+			free(*(p++));
 	free(array);
 }
 
+static t_token		*tokenize(char *line);
+static t_command	*get_command(t_token *token_lst, t_env *env);
+
 int	main(int argc, const char **argv, char *const *penv)
 {
-	char		**cuts;
 	t_env		env;
 	t_llst_head	args;
+	t_llst_head	cmds;
 	char		*line;
-	t_command	*cmd;
 
 	if (argc != 1)
 	{
@@ -65,34 +66,47 @@ int	main(int argc, const char **argv, char *const *penv)
 	welcome_test_subject();
 	while ((line = display_prompt()))
 	{
-		cuts = cutter(line);
-		if (cuts)
-		{
-			args.first = (t_llst *)lexer_on_cuts(cuts);
-			ft_free_parray((void **)cuts);
-			cuts = NULL;
-		}
-		for (t_token *token = (t_token *)args.first; token; token = token->next)
-			printf("%s\t\t`%s'\n", token_type_str(token->type), token->str ? token->str : "");
-		printf("\n");
-		if (grammary_checker((t_token *)args.first))
-		{
-			cmd = command_creator((t_token *)args.first, &env);
-			if (cmd)
-			{
-				for (int i = 0; i < cmd->argc; i++)
-					printf("`%s'%c", cmd->argv[i], \
-							' ' * (i + 1 < cmd->argc) + '\n' * (i + 1 == cmd->argc));
-				command_free(cmd);
-				cmd = NULL;
-			}
-			else
-				ft_dprintf(2, "Failed to create command\n");
-		}
-		else
-			ft_dprintf(2, "Invalid command\n");
+		args.first = (t_llst *)tokenize(line);
+		cmds.first = (t_llst *)get_command((t_token *)args.first, &env);
+		llst_clear(&cmds, (void *)&command_free);
 		llst_clear(&args, &token_delete);
 	}
 	llst_clear(&env.vars, &env_var_delete);
 	return (0);
+}
+
+static t_token	*tokenize(char *line)
+{
+	char	**cuts;
+	t_token	*token_lst;
+
+	cuts = cutter(line);
+	if (!cuts)
+		return (NULL);
+	token_lst = lexer_on_cuts(cuts);
+	ft_free_parray(cuts);
+	for (t_token *token = token_lst; token; token = token->next)
+		printf("%s\t\t`%s'\n", token_type_str(token->type), token->str ? token->str : "");
+	printf("\n");
+	return (token_lst);
+}
+
+static t_command	*get_command(t_token *token_lst, t_env *env)
+{
+	t_command	*cmd;
+
+	if (!grammary_checker(token_lst))
+		return (ft_dprintf(2, "Invalid command\n"), NULL);
+	cmd = command_creator(token_lst, env);
+	if (cmd)
+	{
+		for (unsigned long i = 0; i + 1 < cmd->argv.size; i++)
+		{
+			printf("`%s'", ((char **)cmd->argv.array)[i]);
+			printf("%c", i + 2 < cmd->argv.size ? ' ' : '\n');
+		}
+	}
+	else
+		ft_dprintf(2, "Failed to create command\n");
+	return (cmd);
 }
