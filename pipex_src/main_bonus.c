@@ -31,9 +31,9 @@ int	main(int argc, char **argv, char **penv)
 	int		pid;
 
 	if (argc < 5)
-		return (ft_dprintf(2, "Usage: pipex file1 cmd1 cmd2 [cmd3..] file2\n"),\
-				close_fds(1, -1, -1), 1);
-	fd_out = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC, \
+		return (ft_dprintf(2, "Usage: pipex file1 cmd1 cmd2 [cmd3..] file2\n"),
+			close_fds(1, -1, -1), 1);
+	fd_out = open(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC,
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd_out == -1 && fd_in_out_error(&argc, &argv, 0, &fd_out))
 		return (1);
@@ -43,8 +43,8 @@ int	main(int argc, char **argv, char **penv)
 	init_data(&data, argv, penv);
 	pid = fork();
 	if (pid == -1)
-		return (close_fds(1, fd_in, fd_out), free(data.path), \
-				ft_error("fork"), 1);
+		return (close_fds(1, fd_in, fd_out), free(data.path), ft_error("fork"),
+			1);
 	else if (pid == 0)
 		process_child(&data, argc - 3, fd_in, fd_out);
 	else
