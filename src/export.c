@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/08 08:59:03 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/08 09:42:00 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,9 @@ void	export(char *command, t_env *env)
 			llst_addback(&env->vars, (t_llst *) new_env_var);
 		else
 		{
-			if (vars->value)
-				free(vars->value);
 			if (new_env_var->value)
 			{
+				ft_free(vars->value);
 				vars->value = ft_strdup(new_env_var->value);
 				malloc_checker(vars->value);
 			}
