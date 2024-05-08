@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/08 07:45:19 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/08 08:21:12 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void		*ft_free(void *p);
 void		free_array(void **ptr);
 short		is_void_command(char *full_command, char *command_word);
 short		is_valid_command(char *full_command, char *command_word);
+void		malloc_checker(void *ptr);
 
 /*	----	Builtins	----	*/
 

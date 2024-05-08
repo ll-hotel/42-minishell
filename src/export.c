@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/06 06:52:03 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/08 08:59:03 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,8 @@ void	export(char *command, t_env *env)
 	t_env_var	*new_env_var;
 	t_env_var	*vars;
 
-	if (is_valid_command(command, "export"))
+	if (is_valid_command(command, "export") && ft_strchr(command, '='))
 	{
-		write(1, "Debug\n", 6);
 		command = command + 7;
 		new_env_var = env_var_new(command);
 		vars = (t_env_var *) env->vars.first;
@@ -29,6 +28,14 @@ void	export(char *command, t_env *env)
 		if (!vars)
 			llst_addback(&env->vars, (t_llst *) new_env_var);
 		else
-			vars->value = ft_strdup(new_env_var->value);
+		{
+			if (vars->value)
+				free(vars->value);
+			if (new_env_var->value)
+			{
+				vars->value = ft_strdup(new_env_var->value);
+				malloc_checker(vars->value);
+			}
+		}
 	}
 }
