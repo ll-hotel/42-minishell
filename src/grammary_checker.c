@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   grammary_checker.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:27:29 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/24 20:31:26 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,9 @@ static int	check_for_one_command(t_token *token)
 			token = token->next;
 			next_command_offset += 1;
 		}
-		if (token && token->type != TOKEN_WORD && token->type != TOKEN_SIMPLE_QUOTE && \
-				token->type != TOKEN_DOUBLE_QUOTE)
+		if (token && token->type != TOKEN_WORD && \
+			token->type != TOKEN_SIMPLE_QUOTE && \
+			token->type != TOKEN_DOUBLE_QUOTE)
 			return (-1);
 		while (token && token->type != TOKEN_PIPE)
 		{
