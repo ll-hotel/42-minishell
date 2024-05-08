@@ -1,4 +1,5 @@
 MAKE		=	@make --no-print-directory
+ECHO		=	echo
 CC			=	cc
 
 NAME		=	minishell
