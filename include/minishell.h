@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/04 15:34:33 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/08 09:35:30 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,11 @@ typedef struct s_command	t_command;
 struct						s_command
 {
 	t_command				*next;
-	char					**argv;
-	int						argc;
-	int						reserved;
+	t_vec					argv;
 };
 
 t_command					*command_creator(t_token *token, t_env *env);
-void						command_free(void *command);
+void						command_free(t_command *command);
 
 /*	----	UTILS	----	*/
 
@@ -118,7 +116,7 @@ char						*display_prompt(void);
 int							is_space(char c);
 int							is_quote(char c);
 void						*ft_free(void *p);
-void						free_array(void **ptr);
+void						ft_free_parray(void *array);
 short						is_void_command(char *full_command,
 								char *command_word);
 

@@ -1,25 +1,24 @@
-MAKE		:=	@make --no-print-directory
-ECHO		:=	echo -e
-CC			:=	cc
+MAKE		=	@make --no-print-directory
+CC			=	cc
 
-NAME		:=	minishell
+NAME		=	minishell
 
-INCLUDE_DIR	:=	include/
-SOURCE_DIR	:=	src/
-OBJECT_DIR	:=	.obj/
-LIBFT_DIR	:=	libft/
-LIBFT		:=	$(LIBFT_DIR)libft.a
+INCLUDE_DIR	=	include/
+SOURCE_DIR	=	src/
+OBJECT_DIR	=	.obj/
+LIBFT_DIR	=	libft/
+LIBFT		=	$(LIBFT_DIR)libft.a
 
 CFLAGS		=	-Wall -Wextra -Werror
-IFLAGS		:=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
-DFLAGS		:=	-MMD -MP
-LFLAGS		:=	-L$(LIBFT_DIR) -lft -lreadline
+IFLAGS		=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
+DFLAGS		=	-MMD -MP
+LFLAGS		=	-L$(LIBFT_DIR) -lft -lreadline
 
 ifneq ("$(DEBUG)", "")
 CFLAGS += $(DEBUG)
 endif
 
-OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
+OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				cd.c \
 				chooser.c \
 				cutter.c \
@@ -30,7 +29,6 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				echo.c \
 				env.c \
 				env_var.c \
-				free_array.c \
 				ft_free.c \
 				grammary_checker.c \
 				lexer_on_cuts.c \
@@ -45,7 +43,7 @@ OBJECTS		:=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				token.c \
 				welcome.c \
 				)
-DEPS		:=	$(OBJECTS:.o=.d)
+DEPS		=	$(OBJECTS:.o=.d)
 
 NB_FILES = $(words $(OBJECTS))
 GREEN="\033[0;32m"
@@ -91,14 +89,14 @@ $(OBJECT_DIR)%.o:	$(SOURCE_DIR)%.c | $(OBJECT_DIR)
 
 .PHONY: clean
 clean:
-	$(MAKE) -sC $(LIBFT_DIR) clean
+	$(MAKE) -C $(LIBFT_DIR) clean
 ifneq ("$(wildcard $(OBJECT_DIR))", "")
 	rm -rf $(OBJECT_DIR)
 endif
 
 .PHONY: fclean
 fclean:	clean
-	$(MAKE) -sC $(LIBFT_DIR) fclean
+	$(MAKE) -C $(LIBFT_DIR) fclean
 ifneq ("$(wildcard $(NAME))", "")
 	rm -f $(NAME)
 endif
