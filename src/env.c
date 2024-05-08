@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:26:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/06 08:04:37 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/08 08:57:06 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,10 @@ void	env_command(char *command, t_env *env)
 		vars = (t_env_var *) env->vars.first;
 		while (vars)
 		{
-			printf("%s=%s\n", vars->name, vars->value);
+			printf("%s=", vars->name);
+			if (vars->value)
+				printf("%s", vars->value);
+			printf("\n");
 			vars = vars->next;
 		}
 	}

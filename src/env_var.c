@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_var.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/04 15:18:21 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/08 09:52:09 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ t_env_var	*env_var_new(char *penv_var)
 	{
 		var->value = ft_substr(penv_var, i + 1, ft_strlen(penv_var) - i - 1);
 		if (!var->value)
-			return (NULL);
+			return (env_var_delete(var), NULL);
 	}
 	return (var);
 }
@@ -70,9 +70,9 @@ t_env_var	*env_var_get(t_env *env, char *name)
 
 void	env_var_delete(void *var)
 {
-	free(((t_env_var *)var)->name);
-	free(((t_env_var *)var)->value);
-	free(var);
+	ft_free(((t_env_var *)var)->name);
+	ft_free(((t_env_var *)var)->value);
+	ft_free(var);
 }
 
 static char	*env_var_join(t_env_var *var)
