@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/07 10:59:24 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/08 13:39:55 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,28 @@ static char	*arg_tail_double_quoted(t_token **token, t_env *env);
 t_command	*command_creator(t_token *token, t_env *env)
 {
 	t_command	*cmd;
+	t_vec		argv;
 	char		*arg;
 
 	cmd = ft_calloc(1, sizeof(*cmd));
 	if (!cmd)
 		return (NULL);
-	vec_new(&cmd->argv, sizeof(arg));
+	vec_new(&argv, sizeof(arg));
 	while (token && token->type != TOKEN_PIPE)
 	{
 		if (token->type != TOKEN_SPACE)
 		{
 			arg = create_arg(&token, env);
-			if (!arg || !vec_addback(&cmd->argv, arg))
+			if (!arg || !vec_addback(&argv, arg))
 				return (command_free(cmd), NULL);
 		}
 		if (token && token->type == TOKEN_SPACE)
 			token = token->next;
 	}
-	if (!vec_addback(&cmd->argv, NULL))
+	if (!vec_addback(&argv, NULL))
 		command_free(cmd);
+	cmd->argv = argv.array;
+	cmd->argc = argv.size - 1;
 	return (cmd);
 }
 

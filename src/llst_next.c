@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
+/*   llst_next.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/02 14:59:00 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/08 16:06:54 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/08 17:29:33 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/05/08 17:30:25 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "llst.h"
 
-void	command_free(t_command *command)
+t_llst	*llst_next(t_llst_head *lst)
 {
-	if (!command)
-		return ;
-	ft_free(command->executable);
-	ft_free_parray(command->argv);
-	ft_free_parray(command->penv);
-	ft_free_parray(command->path);
-	free(command);
+	if (lst)
+		return (lst->first);
+	return (0);
 }

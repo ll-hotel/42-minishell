@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
+/*   ft_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/02 14:59:00 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/08 16:06:54 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/08 17:09:27 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/05/08 17:43:08 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <unistd.h>
 
-void	command_free(t_command *command)
+int	ft_close(int fd)
 {
-	if (!command)
-		return ;
-	ft_free(command->executable);
-	ft_free_parray(command->argv);
-	ft_free_parray(command->penv);
-	ft_free_parray(command->path);
-	free(command);
+	if (fd >= 0)
+		close(fd);
+	return (-1);
 }
