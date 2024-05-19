@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_forked.c                                     :+:      :+:    :+:   */
+/*   pipex_pipex_forked.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 22:25:16 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/14 17:15:35 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/19 19:23:52 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@ static int	re_open(t_file *file, int *last_in, int *last_out);
 
 int	pipex_forked(t_command *cmd, t_env *env)
 {
+	env->last_return_value = I_AM_CHILD;
 	if (open_redirects(cmd) == RET_ERROR)
 		return (RET_ERROR);
 	cmd->penv = env_to_array(env);
+	printf("CHILD  -  penv: %p\n", cmd->penv);
 	cmd->path = pipex_get_path(env);
+	printf("CHILD  -  path: %p\n", cmd->path);
 	if (pipex_find_command(cmd, cmd->path) == RET_ERROR)
 		return (RET_ERROR);
 	if (cmd->fd_in >= 0)

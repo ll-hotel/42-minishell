@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/14 17:19:57 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/19 19:27:26 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,14 @@ void	ft_free_parray(void *array)
 {
 	void	**p;
 
-	p = array;
-	if (p)
-		while (*p)
-			free(*(p++));
-	free(array);
+	if (array)
+	{
+		p = array;
+		if (p)
+			while (*p)
+				free(*(p++));
+		free(array);
+	}
 }
 
 static t_token		*tokenize(char *line);
@@ -68,8 +71,15 @@ int	main(int argc, const char **argv, char *const *penv)
 	{
 		args.first = (t_llst *)tokenize(line);
 		cmds.first = (t_llst *)get_command((t_token *)args.first, &env);
+		env.last_return_value = pipex((t_command *)cmds.first, &env);
 		llst_clear(&cmds, (void *)&command_free);
 		llst_clear(&args, &token_delete);
+		if (env.last_return_value == I_AM_CHILD)
+		{
+			llst_clear(&env.vars, &env_var_delete);
+			exit(-1);
+		}
+		printf("%d\n", env.last_return_value);
 	}
 	llst_clear(&env.vars, &env_var_delete);
 	return (0);
@@ -105,7 +115,6 @@ static t_command	*get_command(t_token *token_lst, t_env *env)
 			printf("`%s'", cmd->argv[i]);
 			printf("%c", i + 1 < cmd->argc ? ' ' : '\n');
 		}
-		pipex(cmd, env);
 	}
 	else
 		ft_dprintf(2, "Failed to create command\n");

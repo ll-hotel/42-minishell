@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/14 17:18:06 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/19 19:24:07 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# define I_AM_CHILD -128
 
 
 /*	----	ENVIRONMENT	----	*/
