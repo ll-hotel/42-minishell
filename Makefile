@@ -1,5 +1,5 @@
 MAKE		=	@make --no-print-directory
-ECHO		=	echo
+ECHO		=	echo -e
 CC			=	cc
 
 NAME		=	minishell
@@ -11,7 +11,7 @@ LIBFT_DIR	=	libft/
 LIBFT		=	$(LIBFT_DIR)libft.a
 
 CFLAGS		=	-Wall -Wextra -Werror
-IFLAGS		=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
+IFLAGS		=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR) -I$(INCLUDE_DIR)pipex?/
 DFLAGS		=	-MMD -MP
 LFLAGS		=	-L$(LIBFT_DIR) -lft -lreadline
 
@@ -30,6 +30,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				echo.c \
 				env.c \
 				env_var.c \
+				ft_close.c \
 				ft_free.c \
 				grammary_checker.c \
 				lexer_on_cuts.c \
@@ -43,6 +44,12 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				pwd.c \
 				token.c \
 				welcome.c \
+				pipex_command.c \
+				pipex_path.c \
+				pipex_pipex.c \
+				pipex_pipex_forked.c \
+				pipex_process.c \
+				pipex_utils.c \
 				)
 DEPS		=	$(OBJECTS:.o=.d)
 
@@ -82,7 +89,7 @@ $(LIBFT)::
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(OBJECT_DIR):
-	mkdir $@
+	mkdir -p $@
 
 $(OBJECT_DIR)%.o:	$(SOURCE_DIR)%.c | $(OBJECT_DIR)
 	@$(call percent)

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 11:28:11 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/08 18:01:03 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/18 16:29:08 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ void	*pipex_free_parray(void **array)
 	i = -1;
 	if (array)
 		while (array[++i])
-			array[i] = (free(array[i]), NULL);
+			array[i] = ft_free(array[i]);
 	return (NULL);
+}
+
+int pipex_error(char *errmsg)
+{
+	perror(errmsg);
+	return (0);
 }

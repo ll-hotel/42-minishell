@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path.c                                             :+:      :+:    :+:   */
+/*   pipex_path.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:39:40 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/03/20 19:52:19 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/18 17:02:20 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static char	*ft_getenv_var(char *const penv[], const char *var);
-static int	ft_measure_path_len(char *path);
-int			ft_next_subpath(char *path);
+static int	measure_path_len(char *path);
+static int	next_subpath(char *path);
 
-char	**ft_get_path(char **penv)
+char	**pipex_get_path(t_env *env)
 {
 	char	*path;
 	char	**paths;
@@ -24,41 +23,30 @@ char	**ft_get_path(char **penv)
 	int		i;
 	int		tmp;
 
-	path = ft_getenv_var(penv, "PATH");
-	if (!path || !path[5])
+	path = (char *)env_var_get(env, "PATH");
+	if (!path || !((t_env_var *)path)->value)
 		return (NULL);
-	path = ft_strdup(path + 5);
+	path = ft_strdup(((t_env_var *)path)->value);
 	if (!path)
-		return (ft_error("ft_strdup in path"), NULL);
-	path_len = ft_measure_path_len(path);
-	paths = ft_calloc(path_len + 1, sizeof(char *));
+		return (NULL);
+	path_len = measure_path_len(path);
+	paths = ft_calloc(path_len + 1, sizeof(*paths));
 	if (!paths)
-		return (ft_error("ft_calloc in ft_get_path"), NULL);
+		return (pipex_error("ft_calloc in ft_get_path"), NULL);
 	i = -1;
+	tmp = 0;
 	while (++i < path_len)
 	{
-		paths[i] = path;
-		tmp = ft_next_subpath(path);
-		path[tmp] = 0;
+		paths[i] = path + tmp;
+		tmp = next_subpath(path);
+		((char *)path)[tmp] = 0;
+		tmp = next_subpath(path + tmp + 1);
 		path += tmp + 1;
 	}
 	return (paths);
 }
 
-static char	*ft_getenv_var(char *const penv[], const char *var)
-{
-	const int		var_len = ft_strlen(var);
-	unsigned int	i;
-
-	if (!penv)
-		return (NULL);
-	i = 0;
-	while (penv[i] && ft_strncmp(penv[i], var, var_len))
-		i += 1;
-	return (penv[i]);
-}
-
-static int	ft_measure_path_len(char *path)
+static int	measure_path_len(char *path)
 {
 	int	i;
 
@@ -68,7 +56,7 @@ static int	ft_measure_path_len(char *path)
 	return (i);
 }
 
-int	ft_next_subpath(char *path)
+static int	next_subpath(char *path)
 {
 	int	i;
 

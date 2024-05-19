@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/08 17:59:09 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/14 17:18:06 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,5 +154,6 @@ void		cd(char *command, t_env *env);
 /*	----	Exec	----	*/
 
 void		chooser(char *command, t_env *env);
+int			pipex(t_command *cmd, t_env *env);
 
 #endif

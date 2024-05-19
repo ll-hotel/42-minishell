@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
+/*   pipex_command.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:43:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/08 12:56:55 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/18 16:31:16 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ static int	path_len(char *const path);
 static char	*create_executable(char *path, char *call);
 static char	*slash_or_empty_path(t_command *cmd);
 
-int	pipex_find_command(char **path, t_command *cmd)
+int	pipex_find_command(t_command *cmd, char **path)
 {
 	int	i;
 
-	if (!cmd->argv && !cmd->argv[0])
-		return (0);
+	if (!cmd->argv || !cmd->argv[0])
+		return (RET_ERROR);
 	if (!path || ft_strchr(cmd->argv[0], '/'))
 	{
 		cmd->executable = slash_or_empty_path(cmd);
@@ -32,11 +32,11 @@ int	pipex_find_command(char **path, t_command *cmd)
 	{
 		cmd->executable = create_executable(path[i], cmd->argv[0]);
 		if (access(cmd->executable, X_OK) == 0)
-			return (1);
+			return (RET_NICE);
 		cmd->executable = ft_free(cmd->executable);
 	}
 	ft_dprintf(2, "pipex: %s: command not found\n", cmd->argv[0]);
-	return (0);
+	return (RET_ERROR);
 }
 
 static char	*slash_or_empty_path(t_command *cmd)

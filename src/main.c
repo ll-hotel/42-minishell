@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/08 16:06:33 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/14 17:19:57 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,12 @@ static t_command	*get_command(t_token *token_lst, t_env *env)
 	cmd = command_creator(token_lst, env);
 	if (cmd)
 	{
-		for (unsigned long i = 0; i + 1 < cmd->argc; i++)
+		for (int i = 0; i < cmd->argc; i++)
 		{
 			printf("`%s'", cmd->argv[i]);
 			printf("%c", i + 1 < cmd->argc ? ' ' : '\n');
 		}
+		pipex(cmd, env);
 	}
 	else
 		ft_dprintf(2, "Failed to create command\n");

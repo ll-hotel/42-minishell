@@ -1,5 +1,5 @@
 MAKE = @make --no-print-directory
-
+ECHO = echo -e
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 ifneq ("$(DEBUG)", "")
@@ -57,13 +57,12 @@ all: $(NAME)
 .SILENT: $(NAME)
 $(NAME): $(OBJS)
 	ar -rc $@ $(OBJS)
-	echo "\e[33mLibft:  Done!\e[0m"
+	$(ECHO) "\e[33mLibft:  Done!\e[0m"
 
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(dir $@)
-	@echo -n "\e[2m"
-	$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<
-	@echo -n "\e[0m"
+	@$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<
+	@$(ECHO) "\e[2m$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<\e[0m"
 
 .SILENT: clean
 clean:
