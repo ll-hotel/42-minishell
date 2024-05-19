@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SESSION_NAME=42
+
+if [[ $1 = "-s" ]] && [[ $2 != "" ]]; then
+	SESSION_NAME="$2";
+fi
+
+cd ~/p/42/minishell
+tmux new-session -s "$SESSION_NAME" \; split-window -v \; select-pane -U \; split-window -h \; select-pane -L \; attach
