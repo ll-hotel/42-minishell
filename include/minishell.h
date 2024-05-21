@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/21 13:48:49 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:26:44 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ struct	s_env
 	int			am_i_a_child;
 };
 
-int			env_init(t_env *env, char *const *penv);
+int			env_init(t_env *env, char *const *envp);
 t_env_var	*env_var_new(char *p);
 t_env_var	*env_var_get(t_env *env, char *name);
 void		env_var_delete(void *var);

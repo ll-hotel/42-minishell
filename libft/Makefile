@@ -1,5 +1,5 @@
 MAKE = @make --no-print-directory
-ECHO = echo -e
+ECHO = echo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 ifneq ("$(DEBUG)", "")

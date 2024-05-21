@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/21 13:49:05 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:19:23 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	main(int argc, const char **argv, char *const *penv)
 		llst_clear(&args, &token_delete);
 		if (env.am_i_a_child == I_AM_CHILD)
 		{
-			llst_clear(&env.vars, &env_var_delete);
+			//llst_clear(&env.vars, &env_var_delete);
 			exit(-1);
 		}
 		printf("%d\n", env.last_return_value);
@@ -108,7 +108,7 @@ static t_command	*get_command(t_token *token_lst, t_env *env)
 	t_command	*cmd;
 
 	if (!grammary_checker(token_lst))
-		return (ft_dprintf(2, "Invalid command\n"), NULL);
+		return (ft_dprintf(2, "minishell: invalid command\n"), NULL);
 	cmd = command_creator(token_lst, env);
 	if (cmd)
 #if DEBUG
@@ -123,6 +123,6 @@ static t_command	*get_command(t_token *token_lst, t_env *env)
 		;
 #endif
 	else
-		ft_dprintf(2, "Failed to create command\n");
+		ft_dprintf(2, "minishell: failed to create command\n");
 	return (cmd);
 }

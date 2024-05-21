@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/08 13:39:55 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/21 15:00:00 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,20 +99,45 @@ static char	*create_arg_tail(t_token **token, t_env *env)
 	}
 	else if (token[0]->type == TOKEN_DOUBLE_QUOTE)
 		return (arg_tail_double_quoted(token, env));
+	if (!tail)
+		return (ft_dprintf(2, "ERROR: TAIL DOES NOT EXIST\n"), NULL);
 	return (ft_strdup(tail));
 }
 
 static char	*arg_tail_double_quoted(t_token **token, t_env *env)
 {
-	char	*tmp;
-	char	*tail;
+	t_env_var	*var;
+	char		*tmp;
+	char		*tail;
+	long		tail_len;
 
-	(void)tmp;
 	(void)env;
 	tail = NULL;
+	tail_len = 0;
 	token[0] = token[0]->next;
 	while (token[0] && token[0]->type != TOKEN_DOUBLE_QUOTE)
 	{
+		if (token[0]->type == TOKEN_WORD)
+		{
+			tmp = (char *)tail_len;
+			tail_len += ft_strlen(token[0]->str);
+			tmp = ft_realloc(tail, (unsigned long)tmp, tail_len);
+			if (!tmp)
+				return (ft_dprintf(2, "Realloc failed!\n"), NULL);
+			tail = tmp;
+			ft_strlcat(tail, token[0]->str, tail_len);
+		}
+		else if (token[0]->type == TOKEN_ENV_VAR)
+		{
+			var = env_var_get(env, token[0]->str);
+			tmp = (char *)tail_len;
+			tail_len += ft_strlen(var->value);
+			tmp = ft_realloc(tail, (unsigned long)tmp, tail_len);
+			if (!tmp)
+				return (ft_dprintf(2, "Realloc failed!\n"), NULL);
+			tail = tmp;
+			ft_strlcat(tail, var->value, tail_len);
+		}
 	}
 	return (tail);
 }

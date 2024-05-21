@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:43:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/21 13:43:31 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/21 14:10:28 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	pipex_find_command(t_command *cmd, char **path)
 		cmd->executable = create_executable(path[i], cmd->argv[0]);
 		if (access(cmd->executable, X_OK) == 0)
 		{
-			printf("Command found: %s\n", cmd->executable);
+			//printf("Command found: %s\n", cmd->executable);
 			return (RET_NICE);
 		}
 		cmd->executable = ft_free(cmd->executable);
@@ -59,17 +59,17 @@ static char	*create_executable(char *dir, char *program)
 	const long	dir_len = ft_strlen(dir);
 	const long	program_len = ft_strlen(program);
 	const int	slashed = dir[dir_len - 1] == '/';
+	const long	executable_len = dir_len + program_len + !slashed;
 	char		*executable;
 
 	//printf("\tdir_len %li, program_len %li, slashed %d\n", dir_len, program_len, slashed);
-	executable = ft_calloc(program_len + dir_len + !slashed + 1, \
-			sizeof(*executable));
+	executable = ft_calloc(executable_len + 1, sizeof(*executable));
 	if (executable)
 	{
-		ft_strlcpy(executable, dir, dir_len + 1);
+		ft_strlcpy(executable, dir, executable_len + 1);
 		if (!slashed)
 			executable[dir_len] = '/';
-		ft_strlcpy(executable + dir_len + !slashed, program, program_len + 1);
+		ft_strlcat(executable, program, executable_len + 1);
 	}
 	return (executable);
 }
