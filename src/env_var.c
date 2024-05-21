@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/08 09:52:09 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/21 14:30:51 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ static char	*env_var_join(t_env_var *var);
 char	**env_to_array(t_env *env)
 {
 	const long	env_var_nb = llst_len(&env->vars);
-	t_env_var	*var;
+	t_llst_head	var_lst;
 	char		**penv;
 	long		i;
 
-	penv = ft_calloc(env_var_nb + 1, sizeof(*penv));
+	penv = ft_calloc(env_var_nb + 2, sizeof(*penv));
 	if (!penv)
 		return (NULL);
 	i = 0;
-	var = (t_env_var *)env->vars.first;
+	var_lst = env->vars;
 	while (i < env_var_nb)
 	{
-		penv[i++] = env_var_join(var);
-		var = var->next;
+		penv[i++] = env_var_join((t_env_var *)var_lst.first);
+		var_lst.first = var_lst.first->next;
 	}
 	return (penv);
 }

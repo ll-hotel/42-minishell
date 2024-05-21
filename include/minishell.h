@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/08 08:21:12 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/21 14:26:44 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,38 @@
 # define MINISHELL_H
 # include "libft.h"
 # include "llst.h"
+# include <errno.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <unistd.h>
 # include <string.h>
-# include <errno.h>
+# include <unistd.h>
+# define I_AM_CHILD -128
+
+
 /*	----	ENVIRONMENT	----	*/
 
 typedef struct s_env_var	t_env_var;
-struct s_env_var
+struct	s_env_var
 {
 	t_env_var	*next;
 	char		*name;
 	char		*value;
 };
 
-typedef struct s_env
+typedef struct s_env	t_env;
+struct	s_env
 {
 	t_llst_head	vars;
 	int			last_return_value;
-}	t_env;
+	int			am_i_a_child;
+};
 
-int			env_init(t_env *env, char *const *penv);
+int			env_init(t_env *env, char *const *envp);
 t_env_var	*env_var_new(char *p);
 t_env_var	*env_var_get(t_env *env, char *name);
 void		env_var_delete(void *var);
 void		free_env(t_env *env);
+char		**env_to_array(t_env *env);
 
 /*	----	TOKEN	----	*/
 
@@ -56,9 +62,8 @@ enum	e_token_type
 	TOKEN_PIPE
 };
 
-typedef struct s_token		t_token;
-
-struct s_token
+typedef struct s_token	t_token;
+struct	s_token
 {
 	t_token	*next;
 	char	*str;
@@ -76,7 +81,7 @@ typedef struct s_cutter
 	size_t	word_len;
 	int		start_word;
 	int		nb_words;
-}	t_cutter;
+}			t_cutter;
 
 char		**cutter(char *line);
 char		**cutter_init_words(char *line);
@@ -101,17 +106,36 @@ int			grammary_checker(t_token *token);
 
 /*	----	COMMAND		----	*/
 
+enum	e_redirect
+{
+	REDIRECT_IN,
+	REDIRECT_OUT
+};
+
+typedef struct
+{
+	void	*next;
+	char	*name;
+	int		fd;
+	int		way;
+}	t_file;
+
 typedef struct s_command	t_command;
-struct s_command
+struct	s_command
 {
 	t_command	*next;
-	char		**argv;
+	t_llst_head	redirections;
+	int			fd_in;
+	int			fd_out;
+	char		**path;
+	char		*executable;
 	int			argc;
-	int			reserved;
+	char		**argv;
+	char		**penv;
 };
 
 t_command	*command_creator(t_token *token, t_env *env);
-void		command_free(void *command);
+void		command_free(t_command *command);
 
 /*	----	UTILS	----	*/
 
@@ -124,6 +148,8 @@ void		free_array(void **ptr);
 short		is_void_command(char *full_command, char *command_word);
 short		is_valid_command(char *full_command, char *command_word);
 void		malloc_checker(void *ptr);
+int			ft_close(int fd);
+void		ft_free_parray(void *array);
 
 /*	----	Builtins	----	*/
 
@@ -137,5 +163,6 @@ void		builtins_unset(char *command, t_env *env);
 /*	----	Exec	----	*/
 
 void		chooser(char *command, t_env *env);
+int			pipex(t_command *cmd, t_env *env);
 
 #endif

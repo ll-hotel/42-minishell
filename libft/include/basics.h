@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:34 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/27 18:29:51 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:22:10 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void			ft_putendl_fd(char *s, int fd);
 char			**ft_split(const char *s, char c);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strdup(const char *s);
+unsigned long	ft_strlcat(char *dst, const char *src, unsigned long size);
 unsigned long	ft_strlcpy(char *dst, const char *src, unsigned long size);
 void			ft_striteri(char *s, void (*f)(unsigned int, char *));
 unsigned long	ft_strlen(const char *s);

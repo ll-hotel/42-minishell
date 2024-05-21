@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_array.c                                       :+:      :+:    :+:   */
+/*   ft_close.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 23:54:21 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/27 18:15:43 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/08 17:09:27 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/05/08 17:43:08 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include <unistd.h>
 
-void	free_array(void **ptr)
+int	ft_close(int fd)
 {
-	void *const	p = ptr;
-
-	if (ptr)
-	{
-		while (*ptr)
-			free(*(ptr++));
-		free(p);
-	}
+	if (fd >= 0)
+		close(fd);
+	return (-1);
 }

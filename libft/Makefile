@@ -1,83 +1,82 @@
-MAKE			:=	@make --no-print-directory
-CC				:=	cc
+MAKE = @make --no-print-directory
+ECHO = echo
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+ifneq ("$(DEBUG)", "")
+CFLAGS += $(DEBUG)
+endif
+IFLAGS = -Iinclude/
+DFLAGS = -MMD -MP
 
-CFLAGS			:=	$(DEBUG) -Wall -Wextra -Werror
-IFLAGS			:=	-I./ -Iinclude/
+OBJ_DIR = .obj
+BASICS_OBJS = $(patsubst %.c,$(OBJ_DIR)/basics/%.o, \
+			  ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c \
+			  ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c \
+			  ft_itoa_base.c ft_itoa.c ft_log_b.c ft_lstadd_back_bonus.c \
+			  ft_lstadd_front_bonus.c ft_lstclear_bonus.c \
+			  ft_lstdelone_bonus.c ft_lstiter_bonus.c \
+			  ft_lstlast_bonus.c ft_lstmap_bonus.c \
+			  ft_lstnew_bonus.c ft_lstsize_bonus.c \
+			  ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memmove.c \
+			  ft_memset.c ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
+			  ft_putstr.c ft_putstr_fd.c ft_split.c ft_strchr.c \
+			  ft_strdup.c ft_striteri.c ft_strjoin.c ft_strlcat.c \
+			  ft_strlcpy.c ft_strlen.c ft_strmapi.c ft_strncmp.c \
+			  ft_strnstr.c ft_strrchr.c ft_strtrim.c ft_substr.c \
+			  ft_tolower.c ft_toupper.c ft_utoa.c \
+			  )
 
-BASICS_DIR		:=	basics/
-PRINTF_DIR		:=	ft_printf/
-DPRINTF_DIR		:=	ft_dprintf/
-GNL_DIR			:=	get_next_line/
-VECTOR_DIR		:=	vector/
-EXTRA_DIR		:=	extra/
+FT_PRINTF_OBJS = $(patsubst %.c,$(OBJ_DIR)/ft_printf/%.o, \
+				 ft_printf.c ft_printf_handlers.c ft_printf_xtoa.c)				 
 
-BASICS			:=	$(BASICS_DIR)basics.o
-FT_PRINTF		:=	$(PRINTF_DIR)ft_printf.o
-FT_DPRINTF		:=	$(DPRINTF_DIR)ft_dprintf.o
-GET_NEXT_LINE	:=	$(GNL_DIR)get_next_line.o
-VECTOR			:=	$(VECTOR_DIR)vector.o
-EXTRA			:=	$(EXTRA_DIR)extra.o
+GNL_OBJS = $(patsubst %.c,$(OBJ_DIR)/get_next_line/%.o, \
+		   get_next_line.c get_next_line_utils.c)
 
-OBJECTS			:=	$(BASICS) \
-					$(FT_PRINTF) \
-					$(FT_DPRINTF) \
-					$(GET_NEXT_LINE) \
-					$(VECTOR) \
-					$(EXTRA)
+VECTOR_OBJS = $(patsubst %.c,$(OBJ_DIR)/vector/%.o, \
+			  vector_addback.c vector_at.c vector_clear.c vector_new.c)
 
-DEPS			:=	$(patsubst %.o, %.d, $(OBJECTS))
+FT_DPRINTF_OBJS = $(patsubst %.c,$(OBJ_DIR)/ft_dprintf/%.o, \
+				  dprintf_ascii.c dprintf_atoi32.c dprintf_atoi64.c dprintf_buffer.c \
+				  dprintf.c dprintf_specifier.c dprintf_utils.c)
 
-NAME			:=	libft.a
+EXTRA_OBJS = $(patsubst %.c,$(OBJ_DIR)/extra/%.o, \
+			 ft_realloc.c)
 
-.PHONY: all
+OBJS = $(BASICS_OBJS) $(FT_PRINTF_OBJS) $(GNL_OBJS) $(VECTOR_OBJS) $(FT_DPRINTF_OBJS) $(EXTRA_OBJS)
+
+DEPS = $(patsubst %.o,%.d,$(OBJS))
+
+NAME = libft.a
+
+.PHONY: all clean fclean re
+
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
-	ar -rc $@ $(OBJECTS)
+-include $(DEPS)
 
-$(BASICS)::
-	$(MAKE) -sC $(BASICS_DIR)
+.SILENT: $(NAME)
+$(NAME): $(OBJS)
+	ar -rc $@ $(OBJS)
+	$(ECHO) "\e[33mLibft:  Done!\e[0m"
 
-$(FT_PRINTF)::
-	$(MAKE) -sC $(PRINTF_DIR)
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<
+	@$(ECHO) "\e[2m$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<\e[0m"
 
-$(FT_DPRINTF)::
-	$(MAKE) -sC $(DPRINTF_DIR)
-
-$(GET_NEXT_LINE)::
-	$(MAKE) -sC $(GNL_DIR)
-
-$(VECTOR)::
-	$(MAKE) -sC $(VECTOR_DIR)
-
-$(EXTRA)::
-	$(MAKE) -sC $(EXTRA_DIR)
-
-$(OBJECT_DIR):
-	mkdir $@
-
-.PHONY: clean
+.SILENT: clean
 clean:
-	$(MAKE) -C $(BASICS_DIR) clean
-	$(MAKE) -C $(PRINTF_DIR) clean
-	$(MAKE) -C $(DPRINTF_DIR) clean
-	$(MAKE) -C $(GNL_DIR) clean
-	$(MAKE) -C $(VECTOR_DIR) clean
-	$(MAKE) -C $(EXTRA_DIR) clean
-	@rm -rf $(OBJECT_DIR)
-
-.PHONY: fclean
-fclean:	clean
-	$(MAKE) -C $(BASICS_DIR) fclean
-	$(MAKE) -C $(PRINTF_DIR) fclean
-	$(MAKE) -C $(DPRINTF_DIR) fclean
-	$(MAKE) -C $(GNL_DIR) fclean
-	$(MAKE) -C $(VECTOR_DIR) fclean
-	$(MAKE) -C $(EXTRA_DIR) fclean
-ifneq ("$(wildcard $(NAME))", "")
-	rm $(NAME)
+ifneq ("$(wildcard $(OBJ_DIR))", "")
+	rm -rf $(OBJ_DIR)
+	echo "Libft:  Object file directory removed"
 endif
 
-.PHONY: re
+.SILENT: fclean
+fclean: clean
+ifneq ("$(wildcard $(NAME))", "")
+	rm -f $(NAME)
+	echo "Libft:  $(NAME) removed"
+endif
+
 re:	fclean
 	$(MAKE) all
