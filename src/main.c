@@ -6,13 +6,13 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/19 19:27:26 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:49:05 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#define TOKENS 1
-#if TOKENS
+#define DEBUG 0
+#if DEBUG
 static char	*token_type_str(int type)
 {
 	if (type == TOKEN_WORD)
@@ -74,7 +74,7 @@ int	main(int argc, const char **argv, char *const *penv)
 		env.last_return_value = pipex((t_command *)cmds.first, &env);
 		llst_clear(&cmds, (void *)&command_free);
 		llst_clear(&args, &token_delete);
-		if (env.last_return_value == I_AM_CHILD)
+		if (env.am_i_a_child == I_AM_CHILD)
 		{
 			llst_clear(&env.vars, &env_var_delete);
 			exit(-1);
@@ -95,9 +95,11 @@ static t_token	*tokenize(char *line)
 		return (NULL);
 	token_lst = lexer_on_cuts(cuts);
 	ft_free_parray(cuts);
+#if DEBUG
 	for (t_token *token = token_lst; token; token = token->next)
-		printf("%s\t\t`%s'\n", token_type_str(token->type), token->str ? token->str : "");
+		printf("%s `%s'\n", token_type_str(token->type), token->str ? token->str : "");
 	printf("\n");
+#endif
 	return (token_lst);
 }
 
@@ -109,6 +111,7 @@ static t_command	*get_command(t_token *token_lst, t_env *env)
 		return (ft_dprintf(2, "Invalid command\n"), NULL);
 	cmd = command_creator(token_lst, env);
 	if (cmd)
+#if DEBUG
 	{
 		for (int i = 0; i < cmd->argc; i++)
 		{
@@ -116,6 +119,9 @@ static t_command	*get_command(t_token *token_lst, t_env *env)
 			printf("%c", i + 1 < cmd->argc ? ' ' : '\n');
 		}
 	}
+#else
+		;
+#endif
 	else
 		ft_dprintf(2, "Failed to create command\n");
 	return (cmd);

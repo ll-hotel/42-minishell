@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/19 19:24:07 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:48:49 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ struct	s_env
 {
 	t_llst_head	vars;
 	int			last_return_value;
+	int			am_i_a_child;
 };
 
 int			env_init(t_env *env, char *const *penv);

@@ -6,25 +6,16 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:33:54 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/02/23 03:43:31 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:20:35 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-static unsigned long long	_strlen(const char *s)
-{
-	unsigned long long	l;
+#include "basics.h"
 
-	l = 0;
-	while (s[l])
-		l++;
-	return (l);
-}
-
-unsigned long long	ft_strlcat(char *dst, const char *src, \
-		unsigned long long size)
+unsigned long	ft_strlcat(char *dst, const char *src, unsigned long size)
 {
-	const unsigned long long	len_dst = _strlen(dst);
-	const unsigned long long	len_src = _strlen(src);
+	const unsigned long long	len_dst = ft_strlen(dst);
+	const unsigned long long	len_src = ft_strlen(src);
 	unsigned long long			l;
 	unsigned long long			i;
 

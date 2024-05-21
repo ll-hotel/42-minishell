@@ -6,14 +6,13 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:43:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/18 16:31:16 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:43:31 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-static int	path_len(char *const path);
-static char	*create_executable(char *path, char *call);
+static char	*create_executable(char *dir, char *program);
 static char	*slash_or_empty_path(t_command *cmd);
 
 int	pipex_find_command(t_command *cmd, char **path)
@@ -32,10 +31,13 @@ int	pipex_find_command(t_command *cmd, char **path)
 	{
 		cmd->executable = create_executable(path[i], cmd->argv[0]);
 		if (access(cmd->executable, X_OK) == 0)
+		{
+			printf("Command found: %s\n", cmd->executable);
 			return (RET_NICE);
+		}
 		cmd->executable = ft_free(cmd->executable);
 	}
-	ft_dprintf(2, "pipex: %s: command not found\n", cmd->argv[0]);
+	ft_dprintf(2, "minishell: %s: command not found\n", cmd->argv[0]);
 	return (RET_ERROR);
 }
 
@@ -43,7 +45,7 @@ static char	*slash_or_empty_path(t_command *cmd)
 {
 	if (!cmd->argv[0][0])
 	{
-		ft_dprintf(2, "pipex: : command not found\n");
+		ft_dprintf(2, "minishell: : command not found\n");
 		return (NULL);
 	}
 	if (access(cmd->argv[0], X_OK) == 0)
@@ -52,31 +54,22 @@ static char	*slash_or_empty_path(t_command *cmd)
 	return (NULL);
 }
 
-static char	*create_executable(char *path, char *call)
+static char	*create_executable(char *dir, char *program)
 {
-	const long	pathlen = path_len(path);
-	const long	calllen = ft_strlen(call);
-	const int	slashed = path[pathlen - 1] == '/';
+	const long	dir_len = ft_strlen(dir);
+	const long	program_len = ft_strlen(program);
+	const int	slashed = dir[dir_len - 1] == '/';
 	char		*executable;
 
-	executable = ft_calloc(calllen + pathlen + !slashed + 1, \
+	//printf("\tdir_len %li, program_len %li, slashed %d\n", dir_len, program_len, slashed);
+	executable = ft_calloc(program_len + dir_len + !slashed + 1, \
 			sizeof(*executable));
 	if (executable)
 	{
-		ft_strlcpy(executable, path, pathlen);
+		ft_strlcpy(executable, dir, dir_len + 1);
 		if (!slashed)
-			executable[pathlen] = '/';
-		ft_strlcpy(executable, call, calllen);
+			executable[dir_len] = '/';
+		ft_strlcpy(executable + dir_len + !slashed, program, program_len + 1);
 	}
 	return (executable);
-}
-
-static int	path_len(char *const path)
-{
-	int	i;
-
-	i = 0;
-	while (path[i] && path[i] != ':')
-		i += 1;
-	return (i);
 }

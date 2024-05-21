@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:39:40 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/18 17:02:20 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:07:36 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,9 @@ char	**pipex_get_path(t_env *env)
 	tmp = 0;
 	while (++i < path_len)
 	{
-		paths[i] = path + tmp;
+		paths[i] = path;
 		tmp = next_subpath(path);
 		((char *)path)[tmp] = 0;
-		tmp = next_subpath(path + tmp + 1);
 		path += tmp + 1;
 	}
 	return (paths);

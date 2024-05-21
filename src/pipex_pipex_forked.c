@@ -6,42 +6,46 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 22:25:16 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/19 19:23:52 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/21 13:48:58 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#define REDIRECT 0
 
 void	file_delete(t_file *file);
+#if REDIRECT
 static int	open_redirects(t_command *cmd);
 static int	re_open(t_file *file, int *last_in, int *last_out);
+#endif
 
 int	pipex_forked(t_command *cmd, t_env *env)
 {
-	env->last_return_value = I_AM_CHILD;
+	env->am_i_a_child = I_AM_CHILD;
+#if REDIRECT
 	if (open_redirects(cmd) == RET_ERROR)
 		return (RET_ERROR);
+#endif
 	cmd->penv = env_to_array(env);
-	printf("CHILD  -  penv: %p\n", cmd->penv);
 	cmd->path = pipex_get_path(env);
-	printf("CHILD  -  path: %p\n", cmd->path);
 	if (pipex_find_command(cmd, cmd->path) == RET_ERROR)
 		return (RET_ERROR);
-	if (cmd->fd_in >= 0)
+	if (cmd->fd_in > 0)
 	{
 		if (dup2(cmd->fd_in, 0))
-			return (perror("dup2"), RET_ERROR);
+			return (perror("minishell: fd_in dup2"), RET_ERROR);
 		close(cmd->fd_in);
 	}
-	if (cmd->fd_out >= 0)
+	if (cmd->fd_out > 1)
 	{
 		if (dup2(cmd->fd_out, 1))
-			return (perror("dup2"), RET_ERROR);
+			return (perror("minishell: fd_out dup2"), RET_ERROR);
 		close(cmd->fd_out);
 	}
 	return (execve(cmd->executable, cmd->argv, cmd->penv));
 }
 
+#if REDIRECT
 static int	open_redirects(t_command *cmd)
 {
 	t_llst_head	*files;
@@ -89,6 +93,7 @@ static int	re_open(t_file *file, int *last_in, int *last_out)
 	}
 	return (1);
 }
+#endif
 
 void	file_delete(t_file *file)
 {
