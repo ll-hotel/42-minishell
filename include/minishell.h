@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:40:08 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/25 04:22:43 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ char		*display_prompt(void);
 void		*ft_free(void *p);
 int			ft_close(int fd);
 void		ft_free_parray(void *array);
+void		closer(t_command *cmd);
 
 /*	----	Builtins	----	*/
 
@@ -151,5 +152,10 @@ int			msh_exec_one(t_command *cmd, t_env *env);
 int			msh_exec_open_redirections(t_command *cmd);
 char		**msh_exec_get_path(t_env *env);
 int			msh_exec_find_command(t_command *cmd, char **path);
+
+/*	----	Signal	----	*/
+
+void	signal_gestionnary(void);
+
 
 #endif
