@@ -6,18 +6,17 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 18:53:57 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/26 04:06:54 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char	*create_arg(t_command *cmd, t_token *token, t_env *env, int *pnext);
-static char	*arg_env_var(char *token_str, t_env *env);
+static t_command	*create_command(t_token *token);
+static char	*create_arg(t_command *cmd, t_token *token, int *pnext);
 static char	*arg_redirect(t_llst_head *redirects, t_token *token);
-static t_command	*create_command(t_token *token, t_env *env);
 
-t_command	*command_creator(t_llst_head *tokenlst_head, t_env *env)
+t_command	*command_creator(t_llst_head *tokenlst_head)
 {
 	t_llst_head	cmdlst_head;
 	void		*cmd;
@@ -27,7 +26,7 @@ t_command	*command_creator(t_llst_head *tokenlst_head, t_env *env)
 	token = (t_token *)tokenlst_head->first;
 	while (token)
 	{
-		cmd = create_command(token, env);
+		cmd = create_command(token);
 		if (!cmd)
 		{
 			llst_clear(&cmdlst_head, &command_free);
@@ -42,7 +41,7 @@ t_command	*command_creator(t_llst_head *tokenlst_head, t_env *env)
 	return ((t_command *)cmdlst_head.first);
 }
 
-static t_command	*create_command(t_token *token, t_env *env)
+static t_command	*create_command(t_token *token)
 {
 	t_command	*cmd;
 	t_vec		argv;
@@ -55,7 +54,7 @@ static t_command	*create_command(t_token *token, t_env *env)
 	vec_new(&argv, sizeof(arg));
 	while (token && token->type != TOKEN_PIPE)
 	{
-		arg = create_arg(cmd, token, env, &to_next);
+		arg = create_arg(cmd, token, &to_next);
 		token = (t_token *)llst_at((t_llst_head *)token, to_next - 1);
 		if ((!arg && !to_next) || \
 				(arg != (char *)1 && !vec_addback(&argv, arg)))
@@ -70,35 +69,19 @@ static t_command	*create_command(t_token *token, t_env *env)
 	return (cmd);
 }
 
-static char	*create_arg(t_command *cmd, t_token *token, t_env *env, int *pnext)
+static char	*create_arg(t_command *cmd, t_token *token, int *pnext)
 {
 	char	*arg;
 
 	arg = NULL;
 	*pnext = 1;
-	if (token->type == TOKEN_WORD || token->type == TOKEN_SIMPLE_QUOTE)
+	if (token->type == TOKEN_WORD)
 		arg = ft_strdup(token->str);
-	else if (token->type == TOKEN_ENV_VAR)
-		arg = arg_env_var(token->str, env);
 	else if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT)
 		arg = arg_redirect(&cmd->redirections, token);
 	if (!arg)
 		*pnext = 0;
 	return (arg);
-}
-
-static char	*arg_env_var(char *token_str, t_env *env)
-{
-	t_env_var	*evar;
-
-	if (!token_str[0])
-		return (ft_strdup("$"));
-	if (!ft_strncmp(token_str, "?", 2))
-		return (ft_itoa(env->last_exit_status));
-	evar = env_var_get(env, token_str);
-	if (evar)
-		return (ft_strdup(evar->value));
-	return ((char *)1);
 }
 
 static char	*arg_redirect(t_llst_head *redirects, t_token *token)
