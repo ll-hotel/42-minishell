@@ -6,15 +6,16 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 01:46:14 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/27 19:26:12 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:45:36 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static int	msh_parser_expand(t_token *head, t_env *env);
+static int	msh_parser_dquote(t_token *head, t_env *env);
 static int	msh_parser_evar_split(t_token *head);
-static void	msh_parser_remove_spaces(t_token *head);
+static int	msh_parser_remove_spaces(t_token *head);
 
 int	msh_parser(t_llst_head *token_lst, t_env *env)
 {
@@ -22,7 +23,8 @@ int	msh_parser(t_llst_head *token_lst, t_env *env)
 		return (0);
 	if (!msh_parser_evar_split((t_token *)token_lst))
 		return (0);
-	msh_parser_remove_spaces((t_token *)token_lst);
+	if (!msh_parser_remove_spaces((t_token *)token_lst))
+		return (0);
 	return (1);
 }
 
@@ -36,7 +38,10 @@ static int	msh_parser_expand(t_token *head, t_env *env)
 				return (0);
 		}
 		if (head->next->type == TOKEN_DQUOTE)
-			return (0);
+		{
+			if (!msh_parser_dquote(head, env))
+				return (0);
+		}
 		head = head->next;
 	}
 	return (1);
@@ -91,16 +96,57 @@ static int	msh_parser_evar_split(t_token *head)
 	return (1);
 }
 
-static void	msh_parser_remove_spaces(t_token *head)
+static int	msh_parser_dquote(t_token *head, t_env *env)
 {
-	t_token	*tmp_head;
+	t_token	*subtoken;
+	char	*joined;
 
-	tmp_head = head;
-	while (tmp_head->next)
+	subtoken = (t_token *)head->next->inner_tokens.first;
+	if (!subtoken)
+		return (0);
+	while (subtoken->next)
 	{
-		if (tmp_head->next->type == TOKEN_SPACE)
-			llst_delone((t_llst_head *)tmp_head, token_free);
-		else
-			tmp_head = tmp_head->next;
+		if (subtoken->next->type == TOKEN_ENV_VAR && \
+				!env_var_expand((t_llst_head *)subtoken, env))
+			return (0);
+		joined = ft_strjoin(subtoken->str, subtoken->next->str);
+		subtoken->str = ft_free(subtoken->str);
+		if (!joined)
+			return (0);
+		subtoken->str = joined;
+		llst_delone((t_llst_head *)subtoken, token_free);
 	}
+	joined = subtoken->str;
+	subtoken->str = NULL;
+	token_free(subtoken);
+	head->next->str = joined;
+	head->next->type = TOKEN_WORD;
+	return (1);
+}
+
+static int	msh_parser_remove_spaces(t_token *head)
+{
+	char	*joined;
+
+	while (head->next)
+	{
+		if (head->next->type == TOKEN_SPACE)
+			llst_delone((t_llst_head *)head, token_free);
+		else if (head->next->type == TOKEN_WORD)
+		{
+			while (head->next->next && head->next->next->type == TOKEN_WORD)
+			{
+				joined = ft_strjoin(head->next->str, head->next->next->str);
+				if (!joined)
+					return (0);
+				free(head->next->str);
+				head->next->str = joined;
+				llst_delone((t_llst_head *)head->next, token_free);
+			}
+			head = head->next;
+		}
+		else
+			head = head->next;
+	}
+	return (1);
 }

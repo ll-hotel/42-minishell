@@ -73,7 +73,7 @@ struct	s_token
 	union
 	{
 		char		*str;
-		t_llst_head	inner_lst;
+		t_llst_head	inner_tokens;
 	};
 	int		type;
 };

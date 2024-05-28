@@ -19,7 +19,7 @@ void	token_free(void *token)
 	if (!tok)
 		return ;
 	if (tok->type == TOKEN_DQUOTE)
-		llst_clear(&tok->inner_lst, token_free);
+		llst_clear(&tok->inner_tokens, token_free);
 	else
 		tok->str = ft_free(tok->str);
 	free(token);
