@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/26 05:35:51 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:50:56 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ struct	s_minishell
 	t_env		env;
 	t_llst_head	args;
 	t_llst_head	cmds;
+	t_vec		children;
 };
 
 struct	s_env_var
@@ -155,9 +156,14 @@ void		msh_exit(t_msh *msh, int status);
 
 int			msh_exec(t_msh *msh, t_command *cmd);
 int			msh_exec_pipeline(t_msh *msh, t_command *cmd);
-int			msh_exec_one(t_command *cmd, t_env *env);
+int			msh_exec_one(t_msh *msh, t_command *cmd);
 int			msh_exec_open_redirections(t_command *cmd);
 char		**msh_exec_get_path(t_env *env);
 int			msh_exec_find_command(t_command *cmd, char **path);
+
+int			exec_dup2(t_command *cmd);
+int			exec_wait_for_children(t_msh *msh);
+void		exec_kill_children(t_msh *msh);
+void		exec_perror_exit(t_msh *msh, int status);
 
 #endif

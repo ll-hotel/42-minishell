@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:10:45 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/22 20:20:21 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:52:46 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	chooser(t_command *cmd, t_msh *msh)
 		return (-1);
 	if (!msh)
 		return (is_not_builtin(cmd->argv[0]));
+	if (exec_dup2(cmd) != 0)
+		return (EXIT_FAILURE);
 	if (!ft_strncmp(cmd->argv[0], "echo", 5))
 		return (msh_echo(cmd));
 	else if (!ft_strncmp(cmd->argv[0], "cd", 3))

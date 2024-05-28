@@ -33,7 +33,7 @@ GNL_OBJS = $(patsubst %.c,$(OBJ_DIR)/get_next_line/%.o, \
 		   get_next_line.c get_next_line_utils.c)
 
 VECTOR_OBJS = $(patsubst %.c,$(OBJ_DIR)/vector/%.o, \
-			  vector_addback.c vector_at.c vector_clear.c vector_new.c)
+			  vector_addback.c vector_at.c vector_clear.c vector_new.c vector_del_at.c)
 
 FT_DPRINTF_OBJS = $(patsubst %.c,$(OBJ_DIR)/ft_dprintf/%.o, \
 				  dprintf_ascii.c dprintf_atoi32.c dprintf_atoi64.c dprintf_buffer.c \
