@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 02:53:57 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/25 18:41:49 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/28 07:48:50 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,23 @@ void	reception(int sig, siginfo_t *info, void *content)
 	(void) info;
 	(void) content;
 	if (sig == SIGINT)
-		return ;
+	{
+		write(1, "\n", 1);
+		rl_replace_line("", 1);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 	else if (sig == SIGQUIT)
-		return ;
-
+	{
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
 
 void	signal_gestionnary(void)
 {
 	struct sigaction	s_sigaction;
 
-	ft_printf("PID : %d\n", getpid());
 	bzero(&s_sigaction, sizeof(struct sigaction));
 	sigemptyset(&s_sigaction.sa_mask);
 	s_sigaction.sa_sigaction = reception;

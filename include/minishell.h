@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/25 04:22:43 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/28 07:22:34 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <string.h>
 # include <unistd.h>
 # include <wait.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # define EXIT_OUT_OF_MEMORY 12
 # define EXIT_BROKEN_PIPE 32
 # define EXIT_CMD_NOT_FOUND 127
@@ -132,6 +134,7 @@ void		*ft_free(void *p);
 int			ft_close(int fd);
 void		ft_free_parray(void *array);
 void		closer(t_command *cmd);
+char		*pwd_prompt();
 
 /*	----	Builtins	----	*/
 

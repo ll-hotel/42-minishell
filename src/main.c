@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:41:18 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/27 22:14:29 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,27 @@ static t_token		*tokenize(char *line);
 static t_command	*get_command(t_llst_head *tokenlst_head, t_msh *msh);
 
 static void	msh_on_line(t_msh *msh, char *line);
+void	signal_gestionnary(void);
 
-int	main(int argc, const char **argv, char *const *envp)
+int	main(int argc, char **argv, char *const *envp)
 {
 	t_msh	msh;
 	char	*line;
 
 	(void)argv;
+	signal_gestionnary();
 	if (argc != 1)
 		return (1);
 	ft_bzero(&msh, sizeof(msh));
 	if (!env_init(&msh.env, envp))
 		return (1);
-	welcome_test_subject();
-	line = display_prompt();
-	while (line)
+	//welcome_test_subject();
+	while (1)
 	{
-		msh_on_line(&msh, line);
 		line = display_prompt();
+		if (!line)
+			break ;
+		msh_on_line(&msh, line);
 	}
 	msh_exit(&msh, 0);
 }

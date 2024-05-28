@@ -53,6 +53,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				msh_export.c \
 				msh_pwd.c \
 				msh_unset.c \
+				signal_gestionnary.c \
 				syntax_checker.c \
 				token.c \
 				welcome.c \

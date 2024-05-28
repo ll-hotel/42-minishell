@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/22 20:09:34 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/28 01:36:18 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,11 @@ int	msh_cd(t_command *cmd, t_env *env)
 	char		*new_path;
 	t_env_var	*home;
 
+	if (cmd->argc > 2)
+	{
+		perror("too many arguments");
+		return (1);
+	}
 	if (cmd->argc == 1)
 	{
 		home = env_var_get(env, "HOME");
@@ -27,7 +32,7 @@ int	msh_cd(t_command *cmd, t_env *env)
 	new_path = cmd->argv[1];
 	if (chdir(new_path) == -1)
 	{
-		perror("minishell");
+		perror(strerror(errno));
 		return (1);
 	}
 	return (0);
