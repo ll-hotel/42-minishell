@@ -6,16 +6,13 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:41:18 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:50:19 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//static const char	*token_type_str(int type);
-static t_token		*tokenize(char *line);
-static t_command	*get_command(t_llst_head *tokenlst_head, t_msh *msh);
-
+static t_command	*get_command(t_llst_head *tokenlst_head);
 static void	msh_on_line(t_msh *msh, char *line);
 
 int	main(int argc, const char **argv, char *const *envp)
@@ -41,84 +38,53 @@ int	main(int argc, const char **argv, char *const *envp)
 
 static void	msh_on_line(t_msh *msh, char *line)
 {
-	msh->args.first = (t_llst *)tokenize(line);
-	msh->cmds.first = (t_llst *)get_command(&msh->args, msh);
+	if (!line)
+		return ;
+	msh->args.first = (t_llst *)lexer_line(line);
+#ifdef DEBUG
+	printf("------------ Lexer did the following:\n");
+	for (t_token *tok = (void *)msh->args.first; tok != NULL; tok = tok->next)
+	{
+		printf("%d   %p -> ", tok->type, tok->str);
+		if (tok->type == TOKEN_DQUOTE)
+		{
+			printf("{\n");
+			for (t_token *subtok = (t_token *)tok->inner_tokens.first; subtok != NULL; subtok=subtok->next)
+				printf("    %d   `%s'\n", subtok->type, subtok->str);
+			printf("}\n");
+		}
+		else
+			printf("`%s'\n", tok->str);
+	}
+#endif
+	if (!msh_parser(&msh->args, &msh->env))
+	{
+		ft_dprintf(2, "minishell: parser failed\n");
+		return ;
+	}
+#ifdef DEBUG
+	printf("------------ Parser did the following:\n");
+	for (t_token *tok = (void *)msh->args.first; tok != NULL; tok = tok->next)
+	{
+		printf("%d   %p -> ", tok->type, tok->str);
+		printf("`%s'\n", tok->str);
+	}
+#endif
+	msh->cmds.first = (t_llst *)get_command(&msh->args);
 	llst_clear(&msh->args, &token_free);
 	if (msh->cmds.first)
 		msh->env.last_exit_status = msh_exec(msh, (t_command *)msh->cmds.first);
 	llst_clear(&msh->cmds, &command_free);
 }
 
-/*
-   t_token	*token;
-   for (token = first_arg; token; token = token->next)
-   {
-   printf("%s", token_type_str(token->type));
-   if (token->str)
-   printf(" `%s'", token->str);
-   printf("\n");
-   }
-   */
-static t_token	*tokenize(char *line)
-{
-	t_token	*first_arg;
-
-	first_arg = lexer_line(line);
-	return (first_arg);
-}
-
-/*
-   int	i;
-   if (cmd)
-	   for (i = 0; i < cmd->argc; i++)
-		   printf("`%s' ", cmd->argv[i]);
-   printf("\n");
-   */
-static t_command	*get_command(t_llst_head *tokenlst_head, t_msh *msh)
+static t_command	*get_command(t_llst_head *tokenlst_head)
 {
 	t_command	*cmd;
 
 	if (!syntax_checker((t_token *)tokenlst_head->first))
-		return (NULL);
-	cmd = command_creator(tokenlst_head, &msh->env);
-#if 0
-   int	i;
-   for (t_command *_cmd = cmd; _cmd; _cmd = _cmd->next) {
-	   for (i = 0; i < _cmd->argc; i++)
-		   printf("`%s' ", _cmd->argv[i]);
-	   printf("%s", _cmd->next ? "| " : "");
-   }
-   printf("\n");
-#endif
+		return (printf("Euh nop\n"),NULL);
+	cmd = command_creator(tokenlst_head);
 	if (!cmd)
 		ft_dprintf(2, "minishell: failed to create command\n");
 	return (cmd);
 }
-
-/*
- * TOKEN_WORD,
- * TOKEN_SIMPLE_QUOTE,
- * TOKEN_DOUBLE_QUOTE,
- * TOKEN_ENV_VAR,
- * TOKEN_REDIR_IN,
- * TOKEN_REDIR_OUT,
- * TOKEN_PIPE
- */
-/*
-static const char	*token_type_str(int type)
-{
-	const char	*description[] = {
-		"word",
-		"  \' ",
-		"  \" ",
-		"  $ ",
-		"  < ",
-		"  > ",
-		"  | "
-	};
-
-	if (type <= TOKEN_PIPE)
-		return (description[type]);
-	return (" ???");
-}
-*/

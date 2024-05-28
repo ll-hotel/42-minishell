@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:40:08 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/26 05:35:51 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ enum	e_token_type
 {
 	TOKEN_WORD,
 	TOKEN_SIMPLE_QUOTE,
-	TOKEN_DOUBLE_QUOTE,
+	TOKEN_DQUOTE,
 	TOKEN_ENV_VAR,
 	TOKEN_REDIR_IN,
 	TOKEN_REDIR_OUT,
-	TOKEN_PIPE
+	TOKEN_PIPE,
+	TOKEN_SPACE,
 };
 
 /*	----	STRUCT		----	*/
@@ -69,7 +70,11 @@ struct	s_env_var
 struct	s_token
 {
 	t_token	*next;
-	char	*str;
+	union
+	{
+		char		*str;
+		t_llst_head	inner_tokens;
+	};
 	int		type;
 };
 
@@ -91,13 +96,14 @@ struct	s_command
 int			env_init(t_env *env, char *const *envp);
 t_env_var	*env_var_get(t_env *env, char *name);
 char		**env_to_array(t_env *env);
+int			env_var_expand(t_llst_head *env_var, t_env *env);
 t_env_var	*env_var_new(char *p);
 void		env_var_free(void *var);
 void		free_env(t_env *env);
 
 /*	----	TOKEN	----	*/
 
-t_token		*token_new(char *str, int type);
+t_token		*token_new(void *str, int type);
 void		token_free(void *token);
 
 /*	----	LEXER	----	*/
@@ -106,22 +112,23 @@ t_token		*lexer_line(char *line);
 t_token		*lexer_word(char *line, int *p_i);
 t_token		*lexer_dollar(char *line, int *p_i);
 t_token		*lexer_simple_quote(char *line, int *p_i);
-t_token		*lexer_redirection(char *line, int *p_i);
+t_token		*lexer_dquote(char *line, int *p_i);
+t_token		*lexer_redir(char *line, int *p_i);
 //t_token		*lexer_double_quote(char *line, int *p_i);
 int			is_operator(int c);
 
 /*	----	PARSER	----	*/
 
-void		*parser(t_llst_head *tokens_head, t_env *env);
-char		*parser_assemble(t_token *token);
+int			msh_parser(t_llst_head *token_lst, t_env *env);
 
 /*	----	SYNTAX_CHECKER	----	*/
 
 int			syntax_checker(t_token *token);
+void		msh_syntax_err(char c);
 
 /*	----	COMMAND		----	*/
 
-t_command	*command_creator(t_llst_head *tokenlst_head, t_env *env);
+t_command	*command_creator(t_llst_head *tokenlst_head);
 void		command_free(void *command);
 
 /*	----	UTILS	----	*/
@@ -131,6 +138,7 @@ char		*display_prompt(void);
 void		*ft_free(void *p);
 int			ft_close(int fd);
 void		ft_free_parray(void *array);
+void		ft_free_array(void *array);
 
 /*	----	Builtins	----	*/
 

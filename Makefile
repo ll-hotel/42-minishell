@@ -26,11 +26,16 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				display_prompt.c \
 				env.c \
 				env_var.c \
+				env_var_expand.c \
 				ft_close.c \
 				ft_free.c \
 				ft_free_parray.c \
 				lexer_line.c \
 				lexer_utils.c \
+				lexer_word.c \
+				lexer_dollar.c \
+				lexer_dquote.c \
+				lexer_redir.c \
 				llst_addback.c \
 				llst_addfront.c \
 				llst_at.c \
@@ -51,7 +56,9 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				msh_exec_pipeline.c \
 				msh_exit.c \
 				msh_export.c \
+				msh_parser.c \
 				msh_pwd.c \
+				msh_syntax_err.c \
 				msh_unset.c \
 				syntax_checker.c \
 				token.c \
@@ -66,7 +73,7 @@ BLUE="\033[0;34m"
 END_COLOUR="\033[0m"
 
 define percent
-	@$(ECHO) -n $(GREEN)"[$$(echo "scale=2; $$(find $(OBJECT_DIR) -maxdepth 1 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(END_COLOUR)
+	@$(ECHO) -n $(GREEN)"[$$(echo "scale=2; $$(find $(OBJECT_DIR) -maxdepth 3 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(END_COLOUR)
 endef
 
 define prompt
@@ -105,14 +112,14 @@ $(OBJECT_DIR)%.o:	$(SOURCE_DIR)%.c | $(OBJECT_DIR)
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean
 ifneq ("$(wildcard $(OBJECT_DIR))", "")
-	$(ECHO) rm -rf $(OBJECT_DIR)
+	rm -rf $(OBJECT_DIR)
 endif
 
 .PHONY: fclean
 fclean:	clean
 	$(MAKE) -C $(LIBFT_DIR) fclean
 ifneq ("$(wildcard $(NAME))", "")
-	$(ECHO) rm -f $(NAME)
+	rm -f $(NAME)
 endif
 
 .PHONY: re

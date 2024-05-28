@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 23:04:25 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/23 14:19:35 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/28 15:42:17 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,19 @@ t_token	*lexer_line(char *line)
 			i += 1;
 		if (!line[i])
 			continue ;
-		token = lexer_token(line + i, &new_i);
+		if (token_lst.first && ft_isblank(line[i - 1]) && \
+				((t_token *)llst_get_last(&token_lst))->type != TOKEN_SPACE)
+			token = token_new(NULL, TOKEN_SPACE);
+		else
+			token = lexer_token(line + i, &new_i);
 		if (!token)
 		{
 			llst_clear(&token_lst, &token_free);
 			return (NULL);
 		}
 		llst_addback(&token_lst, (t_llst *)token);
-		i += new_i;
+		if (token->type != TOKEN_SPACE)
+			i += new_i;
 	}
 	return ((t_token *)token_lst.first);
 }
@@ -52,18 +57,20 @@ static t_token	*lexer_token(char *line, int *new_i)
 	token = NULL;
 	word_len = 0;
 	if (c == '\'')
-		token = lexer_simple_quote(line + 1, &word_len);
+		token = lexer_word(line, &word_len);
 	else if (c == '$')
-		token = lexer_dollar(line + 1, &word_len);
+		token = lexer_dollar(line, &word_len);
 	else if (c == '<' || c == '>')
-		token = lexer_redirection(line, &word_len);
+		token = lexer_redir(line, &word_len);
 	else if (c == '|')
 	{
 		word_len = 1;
 		token = token_new(NULL, TOKEN_PIPE);
 	}
+	else if (c == '\"')
+		token = lexer_dquote(line, &word_len);
 	else
 		token = lexer_word(line, &word_len);
-	*new_i = word_len + (c == '\'' || c == '\"');
+	*new_i = word_len;
 	return (token);
 }
