@@ -6,22 +6,17 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 10:05:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/28 07:52:13 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/29 03:56:21 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	msh_pwd(t_command *cmd)
+int	msh_pwd(void)
 {
 	char	*buff;
 	size_t	size;
 
-	if (cmd->argc > 1)
-	{
-		write(2, "pwd : too many arguments\n", 25);
-		return (1);
-	}
 	size = 128;
 	buff = ft_calloc(size, sizeof(char));
 	if (!buff)

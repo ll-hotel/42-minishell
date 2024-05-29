@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 02:04:11 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/29 03:57:18 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,13 +143,13 @@ int			ft_close(int fd);
 void		ft_free_parray(void *array);
 void		ft_free_array(void *array);
 void		closer(t_command *cmd);
-char		*pwd_prompt();
+char		*pwd_prompt(void);
 
 /*	----	Builtins	----	*/
 
 int			chooser(t_command *cmd, t_msh *msh);
 int			msh_echo(t_command *cmd);
-int			msh_pwd(t_command *cmd);
+int			msh_pwd();
 int			msh_cd(t_command *cmd, t_env *env);
 int			msh_env(t_command *cmd, t_env *env);
 int			msh_export(t_command *cmd, t_env *env);

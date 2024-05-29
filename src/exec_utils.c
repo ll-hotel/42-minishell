@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:48:01 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/28 20:05:18 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/29 02:29:23 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	exec_dup2(t_command *cmd)
 {
-	ft_dprintf(2, "[%d] %s: < %d    > %d\n", getpid(), cmd->argv[0], cmd->fd_in, cmd->fd_out);
+	// ft_dprintf(2, "[%d] %s: < %d    > %d\n", getpid(), cmd->argv[0], cmd->fd_in, cmd->fd_out);
 	if (cmd->fd_in > 0)
 	{
 		if (dup2(cmd->fd_in, 0) == -1)

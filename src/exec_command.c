@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_exec_command.c                                 :+:      :+:    :+:   */
+/*   exec_command.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:43:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/23 13:03:54 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/29 02:42:46 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	msh_exec_find_command(t_command *cmd, char **path)
 	if (!path || ft_strchr(cmd->argv[0], '/'))
 	{
 		cmd->executable = slash_or_empty_path(cmd);
-		return (cmd->executable == NULL);
+		return (!cmd->executable * errno);
 	}
 	if (cmd->argv[0][0])
 	{
