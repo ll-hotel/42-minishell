@@ -65,7 +65,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				utils/ft_close.c \
 				utils/ft_free.c \
 				utils/ft_free_parray.c \
-				utils/welcome.c				 \
+				utils/welcome.c \
 				)
 DEPS		=	$(OBJECTS:.o=.d)
 
@@ -104,10 +104,20 @@ $(NAME)	: 	$(LIBFT) $(OBJECTS)
 $(LIBFT)::
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(OBJECT_DIR)%.o:	$(SOURCE_DIR)%.c
+$(OBJECT_DIR)%.o:	$(SOURCE_DIR)%.c | $(OBJECT_DIR)
 	@$(call percent)
-	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<
+
+$(OBJECT_DIR):
+	mkdir -p $@builtins/
+	mkdir -p $@core/
+	mkdir -p $@exec/
+	mkdir -p $@llst/
+	mkdir -p $@parsing/
+	mkdir -p $@utils/	
+
+$(OBJECT_DIR)*/:
+	@echo "OUIII" $@
 
 .PHONY: clean
 clean:
