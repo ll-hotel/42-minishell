@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 03:38:29 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/29 05:51:26 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <sys/stat.h>
 # include <unistd.h>
 # include <wait.h>
 # include <readline/readline.h>
@@ -143,9 +144,9 @@ int			msh_echo(t_command *cmd);
 int			msh_pwd(t_command *cmd);
 int			msh_cd(t_command *cmd, t_msh *env);
 int			msh_env(t_command *cmd, t_msh *env);
+void		msh_exit(t_msh *msh, int status);
 int			msh_export(t_command *cmd, t_msh *env);
 int			msh_unset(t_command *cmd, t_msh *env);
-void		msh_exit(t_msh *msh, int status);
 
 /*	----	Exec	----	*/
 
@@ -162,7 +163,7 @@ void		exec_perror_exit(t_msh *msh, int status);
 
 /*	----	Status	----	*/
 
-void		msh_status_set(uint8_t value);
+uint8_t		msh_status_set(uint8_t value);
 uint8_t		msh_status_get(void);
 
 /*	----	Signal	----	*/
