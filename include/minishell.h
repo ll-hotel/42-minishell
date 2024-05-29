@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 03:57:18 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/29 06:30:35 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ char		*pwd_prompt(void);
 
 int			chooser(t_command *cmd, t_msh *msh);
 int			msh_echo(t_command *cmd);
-int			msh_pwd();
+int			msh_pwd(void);
 int			msh_cd(t_command *cmd, t_env *env);
 int			msh_env(t_command *cmd, t_env *env);
 int			msh_export(t_command *cmd, t_env *env);
