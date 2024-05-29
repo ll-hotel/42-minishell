@@ -32,7 +32,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				core/main.c \
 				core/msh_status.c \
 				core/signal_gestionnary.c \
-				exec/exec_command.c \
+				exec/exec_find_command.c \
 				exec/exec_one.c \
 				exec/exec_open_redirections.c \
 				exec/exec_path.c \
