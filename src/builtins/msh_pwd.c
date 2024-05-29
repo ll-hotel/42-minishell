@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_exit.c                                         :+:      :+:    :+:   */
+/*   msh_pwd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 18:30:43 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 03:06:28 by lrichaud         ###   ########lyon.fr   */
+/*   Created: 2024/05/02 10:05:58 by lrichaud          #+#    #+#             */
+/*   Updated: 2024/05/29 06:40:55 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	msh_exit(t_msh *msh, int status)
+int	msh_pwd(void)
 {
-	llst_clear(&msh->env.vars, &env_var_free);
-	llst_clear(&msh->cmds, &command_free);
-	llst_clear(&msh->args, &token_free);
-	vec_clear(&msh->children, NULL);
-	exit(status);
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (pwd[0] != '\0')
+		printf("%s\n", pwd);
+	free(pwd);
+	return (0);
 }

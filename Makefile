@@ -20,51 +20,52 @@ CFLAGS += $(DEBUG)
 endif
 
 OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
-				chooser.c \
-				command.c \
-				command_creator.c \
-				display_prompt.c \
-				env.c \
-				env_var.c \
-				env_var_expand.c \
-				ft_close.c \
-				ft_free.c \
-				ft_free_parray.c \
-				lexer_line.c \
-				lexer_utils.c \
-				lexer_word.c \
-				lexer_dollar.c \
-				lexer_dquote.c \
-				lexer_redir.c \
-				llst_addback.c \
-				llst_addfront.c \
-				llst_at.c \
-				llst_clear.c \
-				llst_delone.c \
-				llst_get_last.c \
-				llst_len.c \
-				llst_next.c \
-				main.c \
-				msh_cd.c \
-				msh_echo.c \
-				msh_env.c \
-				msh_exec.c \
-				exec_command.c \
-				exec_one.c \
-				exec_open_redirections.c \
-				exec_path.c \
-				exec_pipeline.c \
-				exec_utils.c \
-				msh_exit.c \
-				msh_export.c \
-				msh_parser.c \
-				msh_pwd.c \
-				msh_syntax_err.c \
-				msh_unset.c \
-				signal_gestionnary.c \
-				syntax_checker.c \
-				token.c \
-				welcome.c \
+				builtins/chooser.c \
+				builtins/msh_cd.c \
+				builtins/msh_echo.c \
+				builtins/msh_env.c \
+				builtins/msh_exit.c \
+				builtins/msh_export.c \
+				builtins/msh_pwd.c \
+				builtins/msh_unset.c \
+				core/env.c \
+				core/main.c \
+				core/msh_status.c \
+				core/signal_gestionnary.c \
+				exec/exec_find_command.c \
+				exec/exec_one.c \
+				exec/exec_open_redirections.c \
+				exec/exec_path.c \
+				exec/exec_pipeline.c \
+				exec/exec_utils.c \
+				exec/msh_exec.c \
+				llst/command.c \
+				llst/env_var.c \
+				llst/llst_addback.c \
+				llst/llst_addfront.c \
+				llst/llst_at.c \
+				llst/llst_clear.c \
+				llst/llst_delone.c \
+				llst/llst_get_last.c \
+				llst/llst_len.c \
+				llst/llst_next.c \
+				llst/token.c \
+				parsing/command_creator.c \
+				parsing/env_var_expand.c \
+				parsing/lexer_dollar.c \
+				parsing/lexer_dquote.c \
+				parsing/lexer_line.c \
+				parsing/lexer_redir.c \
+				parsing/lexer_utils.c \
+				parsing/lexer_word.c \
+				parsing/msh_parser.c \
+				parsing/msh_syntax_err.c \
+				parsing/syntax_checker.c \
+				utils/display_prompt.c \
+				utils/ft_close.c \
+				utils/ft_free.c \
+				utils/ft_free_parray.c \
+				utils/welcome.c \
 				)
 DEPS		=	$(OBJECTS:.o=.d)
 
@@ -103,12 +104,20 @@ $(NAME)	: 	$(LIBFT) $(OBJECTS)
 $(LIBFT)::
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(OBJECT_DIR):
-	mkdir -p $@
-
 $(OBJECT_DIR)%.o:	$(SOURCE_DIR)%.c | $(OBJECT_DIR)
 	@$(call percent)
 	$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<
+
+$(OBJECT_DIR):
+	mkdir -p $@builtins/
+	mkdir -p $@core/
+	mkdir -p $@exec/
+	mkdir -p $@llst/
+	mkdir -p $@parsing/
+	mkdir -p $@utils/	
+
+$(OBJECT_DIR)*/:
+	@echo "OUIII" $@
 
 .PHONY: clean
 clean:

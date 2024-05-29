@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_command.c                                     :+:      :+:    :+:   */
+/*   exec_find_command.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:43:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 02:42:46 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/29 06:52:15 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static char	*create_executable(char *dir, char *program);
 static char	*slash_or_empty_path(t_command *cmd);
 
-int	msh_exec_find_command(t_command *cmd, char **path)
+int	exec_find_command(t_command *cmd, char **path)
 {
 	int	i;
 
@@ -24,7 +24,7 @@ int	msh_exec_find_command(t_command *cmd, char **path)
 	if (!path || ft_strchr(cmd->argv[0], '/'))
 	{
 		cmd->executable = slash_or_empty_path(cmd);
-		return (!cmd->executable * errno);
+		return (!cmd->executable * msh_status_get());
 	}
 	if (cmd->argv[0][0])
 	{
@@ -38,21 +38,35 @@ int	msh_exec_find_command(t_command *cmd, char **path)
 		}
 	}
 	ft_dprintf(2, "minishell: %s: command not found\n", cmd->argv[0]);
-	return (1);
+	return (127);
 }
 
 static char	*slash_or_empty_path(t_command *cmd)
 {
-	char	*msg;
+	struct stat	buf;
 
-	if (access(cmd->argv[0], X_OK) == 0)
-		return (ft_strdup(cmd->argv[0]));
-	msg = ft_strjoin("minishell:", cmd->argv[0]);
-	if (msg)
-		perror(msg);
+	if (access(cmd->argv[0], F_OK) == 0)
+	{
+		if (stat(cmd->argv[0], &buf) != 0)
+			return (perror("minishell"), msh_status_set(errno), NULL);
+		if (S_ISDIR(buf.st_mode))
+		{
+			ft_dprintf(2, "minishell: %s: Is a directory\n", cmd->argv[0]);
+			msh_status_set(126);
+			return (NULL);
+		}
+		if (access(cmd->argv[0], X_OK) == 0)
+			return (ft_strdup(cmd->argv[0]));
+		ft_dprintf(2, "minishell: %s: Permission denied\n", cmd->argv[0]);
+		msh_status_set(126);
+	}
 	else
-		perror("minishell:");
-	return (ft_free(msg));
+	{
+		ft_dprintf(2, "minishell: %s: "\
+				"No such file or directory\n", cmd->argv[0]);
+		msh_status_set(127);
+	}
+	return (NULL);
 }
 
 static char	*create_executable(char *dir, char *program)

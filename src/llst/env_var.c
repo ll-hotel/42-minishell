@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 05:32:24 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/29 06:44:53 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 static char	*env_var_join(t_env_var *var);
 
-char	**env_to_array(t_env *env)
+char	**env_to_array(t_env_var *evar_head)
 {
-	const long	env_var_nb = llst_len(&env->vars);
-	t_llst_head	var_lst;
+	const long	env_var_nb = llst_len((t_llst_head *)evar_head);
 	char		**envp;
 	long		i;
 
@@ -25,11 +24,10 @@ char	**env_to_array(t_env *env)
 	if (!envp)
 		return (NULL);
 	i = 0;
-	var_lst = env->vars;
 	while (i < env_var_nb)
 	{
-		envp[i++] = env_var_join((t_env_var *)var_lst.first);
-		var_lst.first = var_lst.first->next;
+		envp[i++] = env_var_join(evar_head->next);
+		evar_head = evar_head->next;
 	}
 	return (envp);
 }
@@ -57,12 +55,12 @@ t_env_var	*env_var_new(char *envp_var)
 	return (var);
 }
 
-t_env_var	*env_var_get(t_env *env, char *name)
+t_env_var	*env_var_get(t_msh *msh, char *name)
 {
 	int const	name_len = ft_strlen(name);
 	t_env_var	*var;
 
-	var = (t_env_var *)env->vars.first;
+	var = (t_env_var *)msh->env_vars.first;
 	while (var && ft_strncmp(var->name, name, name_len + 1))
 		var = var->next;
 	return (var);

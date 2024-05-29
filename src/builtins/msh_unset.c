@@ -1,42 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   display_prompt.c                                   :+:      :+:    :+:   */
+/*   msh_unset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 19:17:03 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/28 07:45:19 by lrichaud         ###   ########lyon.fr   */
+/*   Created: 2024/05/06 06:53:03 by lrichaud          #+#    #+#             */
+/*   Updated: 2024/05/29 03:17:15 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-static int	is_only_space(char *str)
+int	msh_unset(t_command *cmd, t_msh *msh)
 {
-	size_t	i;
+	t_env_var	*vars;
+	t_env_var	*previous_vars;
 
-	i = 0;
-	while (str[i] && ft_isblank(str[i]))
-		i++;
-	if (!str[i])
-		return (1);
-	return (0);
-}
-
-char	*display_prompt(void)
-{
-	char	*input;
-	char	*prompt;
-
-	prompt = pwd_prompt();
-	input = readline(prompt);
-	free(prompt);
-	if (input && !is_only_space(input))
+	previous_vars = NULL;
+	if (cmd->argc < 2)
+		return (0);
+	vars = (t_env_var *)msh->env_vars.first;
+	while (vars && ft_strncmp(vars->name, cmd->argv[1], \
+		ft_strlen(cmd->argv[1])))
 	{
-		add_history(input);
-		return (input);
+		previous_vars = vars;
+		vars = vars->next;
 	}
-	return (input);
+	if (vars)
+		llst_delone((void *) previous_vars, env_var_free);
+	return (0);
 }

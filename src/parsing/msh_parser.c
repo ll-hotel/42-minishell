@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-static int	msh_parser_expand(t_token *head, t_env *env);
-static int	msh_parser_dquote(t_token *head, t_env *env);
+static int	msh_parser_expand(t_token *head, t_msh *env);
+static int	msh_parser_dquote(t_token *head, t_msh *env);
 static int	msh_parser_evar_split(t_token *head);
 static int	msh_parser_remove_spaces(t_token *head);
 
-int	msh_parser(t_llst_head *token_lst, t_env *env)
+int	msh_parser(t_llst_head *token_lst, t_msh *env)
 {
 	if (!msh_parser_expand((t_token *)token_lst, env))
 		return (0);
@@ -28,7 +28,7 @@ int	msh_parser(t_llst_head *token_lst, t_env *env)
 	return (1);
 }
 
-static int	msh_parser_expand(t_token *head, t_env *env)
+static int	msh_parser_expand(t_token *head, t_msh *env)
 {
 	while (head->next)
 	{
@@ -96,7 +96,7 @@ static int	msh_parser_evar_split(t_token *head)
 	return (1);
 }
 
-static int	msh_parser_dquote(t_token *head, t_env *env)
+static int	msh_parser_dquote(t_token *head, t_msh *env)
 {
 	t_token	*subtoken;
 	char	*joined;

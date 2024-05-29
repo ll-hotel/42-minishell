@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_exec_open_redirections.c                       :+:      :+:    :+:   */
+/*   exec_open_redirections.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,7 +16,7 @@ static int	open_redirection_in(char *filename, int last_fd);
 static int	open_redirection_out(char *filename, int last_fd);
 static int	open_perror(char *filename);
 
-int	msh_exec_open_redirections(t_command *cmd)
+int	exec_open_redirections(t_command *cmd)
 {
 	t_token	*redirection;
 	int		last_in;
