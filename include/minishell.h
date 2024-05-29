@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/26 05:35:51 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/29 02:04:11 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <string.h>
 # include <unistd.h>
 # include <wait.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # define EXIT_OUT_OF_MEMORY 12
 # define EXIT_BROKEN_PIPE 32
 # define EXIT_CMD_NOT_FOUND 127
@@ -139,6 +141,8 @@ void		*ft_free(void *p);
 int			ft_close(int fd);
 void		ft_free_parray(void *array);
 void		ft_free_array(void *array);
+void		closer(t_command *cmd);
+char		*pwd_prompt();
 
 /*	----	Builtins	----	*/
 
@@ -159,5 +163,10 @@ int			msh_exec_one(t_command *cmd, t_env *env);
 int			msh_exec_open_redirections(t_command *cmd);
 char		**msh_exec_get_path(t_env *env);
 int			msh_exec_find_command(t_command *cmd, char **path);
+
+/*	----	Signal	----	*/
+
+void	signal_gestionnary(void);
+
 
 #endif

@@ -60,6 +60,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				msh_pwd.c \
 				msh_syntax_err.c \
 				msh_unset.c \
+				signal_gestionnary.c \
 				syntax_checker.c \
 				token.c \
 				welcome.c \
