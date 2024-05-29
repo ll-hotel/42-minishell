@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	msh_cd(t_command *cmd, t_env *env)
+int	msh_cd(t_command *cmd, t_msh *env)
 {
 	char		*new_path;
 	t_env_var	*home;

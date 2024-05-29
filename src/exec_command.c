@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_exec_command.c                                 :+:      :+:    :+:   */
+/*   exec_command.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -15,7 +15,7 @@
 static char	*create_executable(char *dir, char *program);
 static char	*slash_or_empty_path(t_command *cmd);
 
-int	msh_exec_find_command(t_command *cmd, char **path)
+int	exec_find_command(t_command *cmd, char **path)
 {
 	int	i;
 

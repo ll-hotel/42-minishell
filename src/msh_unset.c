@@ -6,13 +6,13 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:53:03 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/27 22:34:01 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/29 03:17:15 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	msh_unset(t_command *cmd, t_env *env)
+int	msh_unset(t_command *cmd, t_msh *msh)
 {
 	t_env_var	*vars;
 	t_env_var	*previous_vars;
@@ -20,7 +20,7 @@ int	msh_unset(t_command *cmd, t_env *env)
 	previous_vars = NULL;
 	if (cmd->argc < 2)
 		return (0);
-	vars = (t_env_var *) env->vars.first;
+	vars = (t_env_var *)msh->env_vars.first;
 	while (vars && ft_strncmp(vars->name, cmd->argv[1], \
 		ft_strlen(cmd->argv[1])))
 	{

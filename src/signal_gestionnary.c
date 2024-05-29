@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signalgestionnary.c                                :+:      :+:    :+:   */
+/*   signal_gestionnary.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 02:53:57 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/28 07:48:50 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/29 03:36:11 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	reception(int sig, siginfo_t *info, void *content)
 		rl_replace_line("", 1);
 		rl_on_new_line();
 		rl_redisplay();
+		msh_status_set(130);
 	}
 	else if (sig == SIGQUIT)
 	{
