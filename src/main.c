@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 02:04:22 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/29 03:21:33 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,9 @@ int	main(int argc, char **argv, char *const *envp)
 	if (argc != 1)
 		return (1);
 	ft_bzero(&msh, sizeof(msh));
-	if (!env_init(&msh.env, envp))
+	if (!env_init(&msh, envp))
 		return (1);
 	vec_new(&msh.children, sizeof(pid_t));
-	//welcome_test_subject();
 	while (1)
 	{
 		line = display_prompt();
@@ -45,39 +44,15 @@ static void	msh_on_line(t_msh *msh, char *line)
 	if (!line)
 		return ;
 	msh->args.first = (t_llst *)lexer_line(line);
-#ifdef DEBUG
-	printf("------------ Lexer did the following:\n");
-	for (t_token *tok = (void *)msh->args.first; tok != NULL; tok = tok->next)
-	{
-		printf("%d   %p -> ", tok->type, tok->str);
-		if (tok->type == TOKEN_DQUOTE)
-		{
-			printf("{\n");
-			for (t_token *subtok = (t_token *)tok->inner_tokens.first; subtok != NULL; subtok=subtok->next)
-				printf("    %d   `%s'\n", subtok->type, subtok->str);
-			printf("}\n");
-		}
-		else
-			printf("`%s'\n", tok->str);
-	}
-#endif
-	if (!msh_parser(&msh->args, &msh->env))
+	if (!msh_parser(&msh->args, msh))
 	{
 		ft_dprintf(2, "minishell: parser failed\n");
 		return ;
 	}
-#ifdef DEBUG
-	printf("------------ Parser did the following:\n");
-	for (t_token *tok = (void *)msh->args.first; tok != NULL; tok = tok->next)
-	{
-		printf("%d   %p -> ", tok->type, tok->str);
-		printf("`%s'\n", tok->str);
-	}
-#endif
 	msh->cmds.first = (t_llst *)get_command(&msh->args);
 	llst_clear(&msh->args, &token_free);
 	if (msh->cmds.first)
-		msh->env.last_exit_status = msh_exec(msh, (t_command *)msh->cmds.first);
+		msh_exec(msh, (t_command *)msh->cmds.first);
 	llst_clear(&msh->cmds, &command_free);
 }
 
@@ -86,9 +61,12 @@ static t_command	*get_command(t_llst_head *tokenlst_head)
 	t_command	*cmd;
 
 	if (!syntax_checker((t_token *)tokenlst_head->first))
-		return (printf("Euh nop\n"),NULL);
+		return (NULL);
 	cmd = command_creator(tokenlst_head);
 	if (!cmd)
+	{
 		ft_dprintf(2, "minishell: failed to create command\n");
+		msh_status_set(errno);
+	}
 	return (cmd);
 }

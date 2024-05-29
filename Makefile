@@ -55,6 +55,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				exec_path.c \
 				exec_pipeline.c \
 				exec_utils.c \
+				msh_status.c \
 				msh_exit.c \
 				msh_export.c \
 				msh_parser.c \

@@ -19,7 +19,7 @@ static int	open_redirects(t_command *cmd);
 static int	re_open(t_file *file, int *last_in, int *last_out);
 #endif
 
-int	pipex_forked(t_command *cmd, t_env *env)
+int	pipex_forked(t_command *cmd, t_msh *env)
 {
 	env->am_i_a_child = I_AM_CHILD;
 #if REDIRECT

@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:10:45 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/27 22:28:32 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/29 03:10:57 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,17 +24,17 @@ int	chooser(t_command *cmd, t_msh *msh)
 		return (EXIT_FAILURE);
 	if (!ft_strncmp(cmd->argv[0], "echo", 5))
 		return (msh_echo(cmd));
-	else if (!ft_strncmp(cmd->argv[0], "cd", 3))
-		return (msh_cd(cmd, &msh->env));
-	else if (!ft_strncmp(cmd->argv[0], "pwd", 4))
+	if (!ft_strncmp(cmd->argv[0], "cd", 3))
+		return (msh_cd(cmd, msh));
+	if (!ft_strncmp(cmd->argv[0], "pwd", 4))
 		return (msh_pwd(cmd));
-	else if (!ft_strncmp(cmd->argv[0], "env", 4))
-		return (msh_env(cmd, &msh->env));
-	else if (!ft_strncmp(cmd->argv[0], "export", 7))
-		return (msh_export(cmd, &msh->env));
-	else if (!ft_strncmp(cmd->argv[0], "unset", 6))
-		return (msh_unset(cmd, &msh->env));
-	else if (!ft_strncmp(cmd->argv[0], "exit", 5))
+	if (!ft_strncmp(cmd->argv[0], "env", 4))
+		return (msh_env(cmd, msh));
+	if (!ft_strncmp(cmd->argv[0], "export", 7))
+		return (msh_export(cmd, msh));
+	if (!ft_strncmp(cmd->argv[0], "unset", 6))
+		return (msh_unset(cmd, msh));
+	if (!ft_strncmp(cmd->argv[0], "exit", 5))
 		msh_exit(msh, ft_atoi(cmd->argv[1]));
 	return (-1);
 }

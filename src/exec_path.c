@@ -16,7 +16,7 @@ static int	count_path_nb(char *path);
 static int	next_subpath(char *path);
 static void	fill_paths(char **paths, char *path, int path_nb);
 
-char	**msh_exec_get_path(t_env *env)
+char	**exec_get_path(t_msh *env)
 {
 	void	*path;
 	char	**paths;

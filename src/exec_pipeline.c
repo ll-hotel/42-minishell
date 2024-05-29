@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 13:28:45 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/28 20:08:09 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/29 03:11:54 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	mini_pipe(t_msh *msh, t_command *cmd, int fd_pipe[2]);
 static void	mini_chooser(t_msh *msh, t_command *cmd);
 
-int	msh_exec_pipeline(t_msh *msh, t_command *cmd)
+int	exec_pipeline(t_msh *msh, t_command *cmd)
 {
 	int	pid;
 	int	fd_pipe[2];
@@ -26,7 +26,7 @@ int	msh_exec_pipeline(t_msh *msh, t_command *cmd)
 			mini_pipe(msh, cmd, fd_pipe);
 		pid = fork();
 		if (pid == -1)
-			exec_perror_exit(msh, EXIT_OUT_OF_MEMORY);
+			exec_perror_exit(msh, errno);
 		else if (pid == 0)
 			mini_chooser(msh, cmd);
 		cmd->fd_in = ft_close(cmd->fd_in);
@@ -40,7 +40,7 @@ int	msh_exec_pipeline(t_msh *msh, t_command *cmd)
 static void	mini_pipe(t_msh *msh, t_command *cmd, int fd_pipe[2])
 {
 	if (pipe(fd_pipe) == -1)
-		exec_perror_exit(msh, EXIT_BROKEN_PIPE);
+		exec_perror_exit(msh, errno);
 	cmd->fd_out = fd_pipe[1];
 	cmd->next->fd_in = fd_pipe[0];
 }
@@ -53,6 +53,6 @@ static void	mini_chooser(t_msh *msh, t_command *cmd)
 	if (chooser(cmd, NULL) == 0)
 		status = chooser(cmd, msh);
 	else
-		msh_exec_one(msh, cmd);
+		exec_one(msh, cmd);
 	msh_exit(msh, status);
 }
