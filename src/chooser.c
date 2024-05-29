@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:10:45 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/28 19:52:46 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/27 22:28:32 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	chooser(t_command *cmd, t_msh *msh)
 	else if (!ft_strncmp(cmd->argv[0], "unset", 6))
 		return (msh_unset(cmd, &msh->env));
 	else if (!ft_strncmp(cmd->argv[0], "exit", 5))
-		msh_exit(msh, 0);
+		msh_exit(msh, ft_atoi(cmd->argv[1]));
 	return (-1);
 }
 

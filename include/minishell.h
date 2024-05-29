@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/28 19:50:56 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/29 02:04:11 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <string.h>
 # include <unistd.h>
 # include <wait.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # define EXIT_OUT_OF_MEMORY 12
 # define EXIT_BROKEN_PIPE 32
 # define EXIT_CMD_NOT_FOUND 127
@@ -140,6 +142,8 @@ void		*ft_free(void *p);
 int			ft_close(int fd);
 void		ft_free_parray(void *array);
 void		ft_free_array(void *array);
+void		closer(t_command *cmd);
+char		*pwd_prompt();
 
 /*	----	Builtins	----	*/
 
@@ -165,5 +169,8 @@ int			exec_dup2(t_command *cmd);
 int			exec_wait_for_children(t_msh *msh);
 void		exec_kill_children(t_msh *msh);
 void		exec_perror_exit(t_msh *msh, int status);
+/*	----	Signal	----	*/
+
+void	signal_gestionnary(void);
 
 #endif
