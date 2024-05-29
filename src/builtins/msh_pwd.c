@@ -6,21 +6,16 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 10:05:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/29 03:37:56 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/29 06:40:55 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	msh_pwd(t_command *cmd)
+int	msh_pwd(void)
 {
 	char	*pwd;
 
-	if (cmd->argc > 1)
-	{
-		write(2, "pwd: too many arguments\n", 25);
-		return (1);
-	}
 	pwd = getcwd(NULL, 0);
 	if (pwd[0] != '\0')
 		printf("%s\n", pwd);

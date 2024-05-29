@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_dollar.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 05:09:41 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/28 15:22:38 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/29 06:18:30 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,16 @@ t_token	*lexer_dollar(char *line, int *p_i)
 	int		word_len;
 
 	word_len = 1;
-	while (line[word_len] \
+	if (line[1] == '?')
+		word = ft_substr(line, 1, word_len++);
+	else
+	{
+		while (line[word_len] \
 			&& !ft_isblank(line[word_len]) \
 			&& !is_operator(line[word_len]))
-		word_len += 1;
-	word = ft_substr(line, 1, word_len - 1);
+			word_len += 1;
+		word = ft_substr(line, 1, word_len - 1);
+	}
 	*p_i = word_len;
 	if (word)
 		return (token_new(word, TOKEN_ENV_VAR));

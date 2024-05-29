@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/28 01:36:18 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/29 03:52:43 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	msh_cd(t_command *cmd, t_msh *env)
 
 	if (cmd->argc > 2)
 	{
-		perror("too many arguments");
+		write(2, " too many arguments\n", 20);
 		return (1);
 	}
 	if (cmd->argc == 1)
