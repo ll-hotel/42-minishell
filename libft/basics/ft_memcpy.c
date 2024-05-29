@@ -6,11 +6,11 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:39:57 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/04/01 14:28:19 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:54:53 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdint.h>
+#include "basics.h"
 
 void	*ft_memcpy(void *dest, const void *src, uint64_t n)
 {

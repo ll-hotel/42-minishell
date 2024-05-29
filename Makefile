@@ -49,11 +49,12 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				msh_echo.c \
 				msh_env.c \
 				msh_exec.c \
-				msh_exec_command.c \
-				msh_exec_one.c \
-				msh_exec_open_redirections.c \
-				msh_exec_path.c \
-				msh_exec_pipeline.c \
+				exec_command.c \
+				exec_one.c \
+				exec_open_redirections.c \
+				exec_path.c \
+				exec_pipeline.c \
+				exec_utils.c \
 				msh_exit.c \
 				msh_export.c \
 				msh_parser.c \

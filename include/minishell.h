@@ -60,6 +60,7 @@ struct	s_minishell
 	t_env		env;
 	t_llst_head	args;
 	t_llst_head	cmds;
+	t_vec		children;
 };
 
 struct	s_env_var
@@ -159,14 +160,17 @@ void		msh_exit(t_msh *msh, int status);
 
 int			msh_exec(t_msh *msh, t_command *cmd);
 int			msh_exec_pipeline(t_msh *msh, t_command *cmd);
-int			msh_exec_one(t_command *cmd, t_env *env);
+int			msh_exec_one(t_msh *msh, t_command *cmd);
 int			msh_exec_open_redirections(t_command *cmd);
 char		**msh_exec_get_path(t_env *env);
 int			msh_exec_find_command(t_command *cmd, char **path);
 
+int			exec_dup2(t_command *cmd);
+int			exec_wait_for_children(t_msh *msh);
+void		exec_kill_children(t_msh *msh);
+void		exec_perror_exit(t_msh *msh, int status);
 /*	----	Signal	----	*/
 
 void	signal_gestionnary(void);
-
 
 #endif

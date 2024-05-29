@@ -28,6 +28,7 @@ int	main(int argc, char **argv, char *const *envp)
 	ft_bzero(&msh, sizeof(msh));
 	if (!env_init(&msh.env, envp))
 		return (1);
+	vec_new(&msh.children, sizeof(pid_t));
 	//welcome_test_subject();
 	while (1)
 	{

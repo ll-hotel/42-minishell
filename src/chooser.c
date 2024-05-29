@@ -20,6 +20,8 @@ int	chooser(t_command *cmd, t_msh *msh)
 		return (-1);
 	if (!msh)
 		return (is_not_builtin(cmd->argv[0]));
+	if (exec_dup2(cmd) != 0)
+		return (EXIT_FAILURE);
 	if (!ft_strncmp(cmd->argv[0], "echo", 5))
 		return (msh_echo(cmd));
 	else if (!ft_strncmp(cmd->argv[0], "cd", 3))

@@ -6,13 +6,11 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:45:16 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/24 20:40:46 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/28 19:37:43 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	msh_exec_pipeline(t_msh *msh, t_command *cmd);
 
 int	msh_exec(t_msh *msh, t_command *cmd)
 {
@@ -30,7 +28,7 @@ int	msh_exec(t_msh *msh, t_command *cmd)
 	if (pid == 0)
 	{
 		if (!cmd->next)
-			exit_status = msh_exec_one(cmd, &msh->env);
+			exit_status = msh_exec_one(msh, cmd);
 		else
 			exit_status = msh_exec_pipeline(msh, cmd);
 		msh_exit(msh, exit_status);

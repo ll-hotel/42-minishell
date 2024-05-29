@@ -6,12 +6,13 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:34 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/21 13:22:10 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/28 18:52:25 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BASICS_H
 # define BASICS_H
+# include <stdint.h>
 
 int				ft_atoi(const char *nptr);
 long			ft_atol(const char *nptr);
