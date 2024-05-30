@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 23:04:25 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/28 15:42:17 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/30 03:06:16 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static t_token	*lexer_token(char *line, int *new_i)
 		token = lexer_word(line, &word_len);
 	else if (c == '$')
 		token = lexer_dollar(line, &word_len);
-	else if (c == '<' || c == '>')
+	else if ((c == '<' && line[1] != '<') || c == '>')
 		token = lexer_redir(line, &word_len);
 	else if (c == '|')
 	{

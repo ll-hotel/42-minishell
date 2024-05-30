@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 06:47:34 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/30 03:53:33 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,11 @@ int			is_operator(int c);
 /*	----	PARSER	----	*/
 
 int			msh_parser(t_llst_head *token_lst, t_msh *env);
+int			expand_env_vars(t_token *head, t_msh *env);
+int			split_env_vars(t_token *head);
+int			parse_dquote(t_token *head, t_msh *env);
+void		parse_redir(t_token *head);
+int			check_redir_validity(t_token *head);
 
 /*	----	SYNTAX_CHECKER	----	*/
 
