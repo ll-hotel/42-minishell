@@ -78,7 +78,7 @@ struct	s_token
 struct	s_command
 {
 	t_command	*next;
-	t_llst_head	redirections;
+	t_llst_head	redirects;
 	int			fd_in;
 	int			fd_out;
 	char		**path;
@@ -158,7 +158,7 @@ int			msh_unset(t_command *cmd, t_msh *env);
 void		msh_exec(t_msh *msh, t_command *cmd);
 int			exec_pipeline(t_msh *msh, t_command *cmd);
 int			exec_one(t_msh *msh, t_command *cmd);
-int			exec_open_redirections(t_command *cmd);
+int			exec_open_redirects(t_command *cmd);
 char		**exec_get_path(t_msh *env);
 int			exec_find_command(t_command *cmd, char **path);
 int			exec_dup2(t_command *cmd);
