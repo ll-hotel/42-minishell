@@ -59,6 +59,10 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				parsing/lexer_utils.c \
 				parsing/lexer_word.c \
 				parsing/msh_parser.c \
+				parsing/parse_dquote.c \
+				parsing/parse_redir.c \
+				parsing/split_env_vars.c \
+				parsing/expand_env_vars.c \
 				parsing/msh_syntax_err.c \
 				parsing/syntax_checker.c \
 				utils/display_prompt.c \
@@ -115,9 +119,6 @@ $(OBJECT_DIR):
 	mkdir -p $@llst/
 	mkdir -p $@parsing/
 	mkdir -p $@utils/	
-
-$(OBJECT_DIR)*/:
-	@echo "OUIII" $@
 
 .PHONY: clean
 clean:

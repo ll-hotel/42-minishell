@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 06:47:34 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/30 03:53:33 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ struct	s_token
 struct	s_command
 {
 	t_command	*next;
-	t_llst_head	redirections;
+	t_llst_head	redirects;
 	int			fd_in;
 	int			fd_out;
 	char		**path;
@@ -116,6 +116,11 @@ int			is_operator(int c);
 /*	----	PARSER	----	*/
 
 int			msh_parser(t_llst_head *token_lst, t_msh *env);
+int			expand_env_vars(t_token *head, t_msh *env);
+int			split_env_vars(t_token *head);
+int			parse_dquote(t_token *head, t_msh *env);
+void		parse_redir(t_token *head);
+int			check_redir_validity(t_token *head);
 
 /*	----	SYNTAX_CHECKER	----	*/
 
@@ -153,7 +158,7 @@ int			msh_unset(t_command *cmd, t_msh *env);
 void		msh_exec(t_msh *msh, t_command *cmd);
 int			exec_pipeline(t_msh *msh, t_command *cmd);
 int			exec_one(t_msh *msh, t_command *cmd);
-int			exec_open_redirections(t_command *cmd);
+int			exec_open_redirects(t_command *cmd);
 char		**exec_get_path(t_msh *env);
 int			exec_find_command(t_command *cmd, char **path);
 int			exec_dup2(t_command *cmd);

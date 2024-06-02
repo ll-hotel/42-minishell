@@ -21,7 +21,7 @@ void	command_free(void *command)
 		ft_close(cmd->fd_in);
 		ft_close(cmd->fd_out);
 		ft_free(cmd->executable);
-		llst_clear(&cmd->redirections, free);
+		llst_clear(&cmd->redirects, free);
 		ft_free_parray(cmd->argv);
 		ft_free_parray(cmd->envp);
 		if (cmd->path)

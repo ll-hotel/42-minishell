@@ -6,15 +6,15 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/26 04:06:54 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:26:55 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static t_command	*create_command(t_token *token);
-static char	*create_arg(t_command *cmd, t_token *token, int *pnext);
-static char	*arg_redirect(t_llst_head *redirects, t_token *token);
+static char			*create_arg(t_command *cmd, t_token *token, int *pnext);
+static char			*arg_redirect(t_llst_head *redirects, t_token *token);
 
 t_command	*command_creator(t_llst_head *tokenlst_head)
 {
@@ -50,7 +50,7 @@ static t_command	*create_command(t_token *token)
 
 	cmd = ft_calloc(1, sizeof(*cmd));
 	if (!cmd)
-		return (NULL);
+		return (perror("minishell"), NULL);
 	vec_new(&argv, sizeof(arg));
 	while (token && token->type != TOKEN_PIPE)
 	{
@@ -61,7 +61,7 @@ static t_command	*create_command(t_token *token)
 			return (command_free(cmd), NULL);
 	}
 	if (!vec_addback(&argv, NULL))
-		return (command_free(cmd), NULL);
+		return (perror("minishell"), command_free(cmd), NULL);
 	cmd->fd_in = -1;
 	cmd->fd_out = -1;
 	cmd->argv = argv.array;
@@ -78,7 +78,7 @@ static char	*create_arg(t_command *cmd, t_token *token, int *pnext)
 	if (token->type == TOKEN_WORD)
 		arg = ft_strdup(token->str);
 	else if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT)
-		arg = arg_redirect(&cmd->redirections, token);
+		arg = arg_redirect(&cmd->redirects, token);
 	if (!arg)
 		*pnext = 0;
 	return (arg);
@@ -94,8 +94,13 @@ static char	*arg_redirect(t_llst_head *redirects, t_token *token)
 		token_dup->next = NULL;
 		token_dup->str = ft_strdup(token->str);
 		if (!token_dup->str)
+		{
+			perror("minishell");
 			return (ft_free(token_dup));
+		}
 		llst_addback(redirects, (t_llst *)token_dup);
 	}
+	else
+		perror("minishell");
 	return ((char *)(long)(token_dup != NULL));
 }
