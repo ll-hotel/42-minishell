@@ -6,15 +6,15 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/31 17:34:22 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:26:55 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static t_command	*create_command(t_token *token);
-static char	*create_arg(t_command *cmd, t_token *token, int *pnext);
-static char	*arg_redirect(t_llst_head *redirects, t_token *token);
+static char			*create_arg(t_command *cmd, t_token *token, int *pnext);
+static char			*arg_redirect(t_llst_head *redirects, t_token *token);
 
 t_command	*command_creator(t_llst_head *tokenlst_head)
 {
@@ -88,9 +88,10 @@ static char	*arg_redirect(t_llst_head *redirects, t_token *token)
 {
 	t_token	*token_dup;
 
-	token_dup = ft_calloc(1, sizeof(*token));
+	token_dup = ft_memdup(token, sizeof(*token));
 	if (token_dup)
 	{
+		token_dup->next = NULL;
 		token_dup->str = ft_strdup(token->str);
 		if (!token_dup->str)
 		{

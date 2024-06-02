@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 02:55:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/30 02:55:53 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:26:43 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,16 @@ int	split_env_vars(t_token *head)
 				llst_delone((t_llst_head *)head, token_free);
 				continue ;
 			}
-			// This is now a word
 			head->next->type = TOKEN_WORD;
 			free(head->next->str);
 			head->next->str = *(p_word++);
-			// Start of split arguments
 			while (*p_word)
 			{
-				// Spacing
 				head = head->next;
 				tmp = token_new(NULL, TOKEN_SPACE);
 				if (!tmp)
 					return (ft_free_array(p_word), free(words), 0);
 				llst_addfront((t_llst_head *)head, (t_llst *)tmp);
-				// New word/arg
 				head = head->next;
 				tmp = token_new(*p_word, TOKEN_WORD);
 				if (!tmp)
@@ -60,4 +56,3 @@ int	split_env_vars(t_token *head)
 	}
 	return (1);
 }
-

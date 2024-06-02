@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 05:09:01 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/28 15:22:03 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:26:06 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_token	*lexer_dquote(char *line, int *p_i)
 	int			i;
 
 	if (!ft_strchr(line + 1, '\"'))
-		return (msh_syntax_err(-'\"'), NULL);
+		return (msh_syntax_err(- '\"'), NULL);
 	dq_token = token_new(NULL, TOKEN_DQUOTE);
 	if (!dq_token)
 		return (NULL);

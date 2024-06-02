@@ -120,9 +120,6 @@ $(OBJECT_DIR):
 	mkdir -p $@parsing/
 	mkdir -p $@utils/	
 
-$(OBJECT_DIR)*/:
-	@echo "OUIII" $@
-
 .PHONY: clean
 clean:
 	$(MAKE) -C $(LIBFT_DIR) clean

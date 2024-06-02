@@ -6,15 +6,15 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/31 17:24:17 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:25:28 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static t_command	*get_command(t_llst_head *tokenlst_head);
-static void	msh_on_line(t_msh *msh, char *line);
-void	signal_gestionnary(void);
+static void			msh_on_line(t_msh *msh, char *line);
+void				signal_gestionnary(void);
 
 int	main(int argc, char **argv, char *const *envp)
 {

@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 03:52:53 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/31 16:31:46 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:27:52 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,10 @@ int	check_redir_validity(t_token *head)
 				tok = tok->next;
 			if (tok && tok->next && tok->next->type == TOKEN_ENV_VAR && \
 					(ft_strchr(tok->next->str, ' ') || \
-					 ft_strchr(tok->next->str, '\t')))
+					ft_strchr(tok->next->str, '\t')))
 			{
-				ft_dprintf(2, "minishell: ambiguous redirect\n");
+				ft_dprintf(2, "minishell: %s: ambiguous redirect\n", \
+						tok->next->str);
 				return (0);
 			}
 		}

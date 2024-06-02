@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/31 17:29:46 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:28:10 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,8 @@ static int	check_for_one_command(t_token *token)
 				next_command_offset += 1;
 				token = token->next;
 			}
-			if (token && token->type != TOKEN_PIPE && token->type != TOKEN_REDIR_IN && \
+			if (token && token->type != TOKEN_PIPE && \
+					token->type != TOKEN_REDIR_IN && \
 					token->type != TOKEN_REDIR_OUT)
 				return (-1);
 			while (token && (token->type == TOKEN_REDIR_IN \

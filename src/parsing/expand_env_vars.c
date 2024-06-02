@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 02:52:10 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/30 02:52:52 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:29:35 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	expand_env_vars(t_token *head, t_msh *env)
 	{
 		if (head->next->type == TOKEN_ENV_VAR)
 		{
-			if (!env_var_expand((t_llst_head*)head, env))
+			if (!env_var_expand((t_llst_head *)head, env))
 				return (0);
 		}
 		if (head->next->type == TOKEN_DQUOTE)
@@ -30,4 +30,3 @@ int	expand_env_vars(t_token *head, t_msh *env)
 	}
 	return (1);
 }
-
