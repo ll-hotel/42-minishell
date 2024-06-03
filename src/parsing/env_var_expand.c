@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 02:27:49 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 03:03:56 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/03 07:03:24 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static void	expand_empty(char **p_str)
 
 static void	expand_status(char **p_str)
 {
+	free(*p_str);
 	*p_str = ft_itoa(msh_status_get());
 }
 

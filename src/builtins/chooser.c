@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:10:45 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/29 06:58:06 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/03 06:51:36 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,14 +77,16 @@ static int	ft_is_number(char *str)
 
 static void	exit_error_checker(t_msh *msh, t_command *cmd)
 {
+	if (cmd->argc == 1)
+		msh_exit(msh, msh_status_get_error());
 	if (cmd->argc > 2)
 	{
-		write(2, " too many arguments\n", 20);
+		ft_dprintf(2, "exit: too many arguments\n");
 		msh_exit(msh, 1);
 	}
 	if (!ft_is_number(cmd->argv[1]))
 	{
-		write(2, " numeric argument required\n", 27);
+		ft_dprintf(2, "exit: numeric argument required\n");
 		msh_exit(msh, 2);
 		return ;
 	}
