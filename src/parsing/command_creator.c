@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_creator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/26 04:06:54 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/31 15:56:51 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static char	*create_arg(t_command *cmd, t_token *token, int *pnext)
 	*pnext = 1;
 	if (token->type == TOKEN_WORD)
 		arg = ft_strdup(token->str);
-	else if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT)
+	else if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT || token->type == TOKEN_HEREDOC)
 		arg = arg_redirect(&cmd->redirections, token);
 	if (!arg)
 		*pnext = 0;

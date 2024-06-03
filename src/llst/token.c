@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:17:10 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/26 05:06:56 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/31 16:01:13 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ void	token_free(void *token)
 		return ;
 	if (tok->type == TOKEN_DQUOTE)
 		llst_clear(&tok->inner_tokens, token_free);
+	else if (tok->type == TOKEN_HEREDOC)
+		tok->fd = ft_close(tok->fd);
 	else
 		tok->str = ft_free(tok->str);
 	free(token);

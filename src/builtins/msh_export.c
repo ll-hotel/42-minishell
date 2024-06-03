@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/29 06:42:01 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/05/31 17:21:02 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,29 +29,18 @@ int	msh_export(t_command *cmd, t_msh *msh)
 			ft_strlen(new_env_var->name)))
 			vars = vars->next;
 		if (!env_var_is_valid(new_env_var->name))
-		{
-			write(2, " not a valid identifier\n", 24);
 			return (1);
-		}
 		if (!vars)
 			llst_addback(&msh->env_vars, (t_llst *)new_env_var);
-		else
+		else if (new_env_var->value)
 		{
-			if (new_env_var->value)
-			{
-				ft_free(vars->value);
-				vars->value = ft_strdup(new_env_var->value);
-				if (!vars->value)
-					return (perror("minishell"), 1);
-			}
+			ft_free(vars->value);
+			vars->value = ft_strdup(new_env_var->value);
+			if (!vars->value)
+				return (perror("minishell"), 1);
 		}
 	}
-	else if (!env_var_is_valid(cmd->argv[1]))
-	{
-		write(2, " not a valid identifier\n", 24);
-		return (1);
-	}
-	return (0);
+	return (!env_var_is_valid(cmd->argv[1]));
 }
 
 static int	env_var_is_valid(char *arg)
@@ -65,5 +54,6 @@ static int	env_var_is_valid(char *arg)
 		i++;
 	if (arg[i])
 		return (0);
+	write(2, "export : not a valid identifier\n", 24);
 	return (1);
 }

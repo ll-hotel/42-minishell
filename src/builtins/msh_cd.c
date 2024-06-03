@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/29 03:52:43 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/05/31 17:29:21 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,38 @@ int	msh_cd(t_command *cmd, t_msh *env)
 {
 	char		*new_path;
 	t_env_var	*home;
+	int	test;
 
 	if (cmd->argc > 2)
 	{
-		write(2, " too many arguments\n", 20);
+		write(2, "miniChell: too many arguments\n", 30);
 		return (1);
 	}
 	if (cmd->argc == 1)
 	{
 		home = env_var_get(env, "HOME");
 		if (!home || chdir(home->value) == -1)
+		{
 			write(2, "miniChell: cd: HOME not set\n", 28);
+			return (1);
+		}
 		return (0);
 	}
 	new_path = cmd->argv[1];
-	if (chdir(new_path) == -1)
+	test = chdir(new_path);
+	if (test == -1)
 	{
-		perror(strerror(errno));
+		perror("cd");
 		return (1);
 	}
 	return (0);
+}
+
+void	refresh_pwd()
+{
+	t_command	truc;
+
+	truc.argv = ft_calloc(3, sizeof(char *));
+	truc.argv[1] = ft_strjoin("OLDPWD=", getcwd(NULL, 0));
+	truc.argv[2] = NULL;
 }

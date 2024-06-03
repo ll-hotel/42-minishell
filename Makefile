@@ -10,7 +10,7 @@ OBJECT_DIR	=	.obj/
 LIBFT_DIR	=	libft/
 LIBFT		=	$(LIBFT_DIR)libft.a
 
-CFLAGS		=	-Wall -Wextra -Werror
+CFLAGS		=	-Wall -Wextra -Werror -g3
 IFLAGS		=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)
 DFLAGS		=	-MMD -MP
 LFLAGS		=	-L$(LIBFT_DIR) -lft -lreadline
@@ -54,6 +54,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				parsing/env_var_expand.c \
 				parsing/lexer_dollar.c \
 				parsing/lexer_dquote.c \
+				parsing/lexer_heredoc.c \
 				parsing/lexer_line.c \
 				parsing/lexer_redir.c \
 				parsing/lexer_utils.c \
@@ -114,7 +115,7 @@ $(OBJECT_DIR):
 	mkdir -p $@exec/
 	mkdir -p $@llst/
 	mkdir -p $@parsing/
-	mkdir -p $@utils/	
+	mkdir -p $@utils/
 
 $(OBJECT_DIR)*/:
 	@echo "OUIII" $@
