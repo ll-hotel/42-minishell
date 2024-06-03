@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:48:01 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 06:52:28 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/03 00:00:07 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,45 +29,26 @@ int	exec_dup2(t_command *cmd)
 	return (0);
 }
 
-int	exec_wait_for_children(t_msh *msh)
-{
-	uint64_t	i;
-	int			status;
-	pid_t		may_pid;
-	pid_t		*p_child;
-
-	i = 0;
-	while (i < msh->children.size)
-	{
-		p_child = vec_at(&msh->children, i++);
-		may_pid = waitpid(*p_child, &status, WNOHANG);
-		while (may_pid == 0)
-			may_pid = waitpid(*p_child, &status, WNOHANG);
-	}
-	vec_clear(&msh->children, NULL);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (status);
-}
-
-void	exec_kill_children(t_msh *msh)
-{
-	uint64_t	i;
-	pid_t		child;
-
-	i = 0;
-	while (i < msh->children.size)
-	{
-		child = *(pid_t *)vec_at(&msh->children, i);
-		if (kill(child, SIGQUIT) == -1)
-			kill(child, SIGKILL);
-		i += 1;
-	}
-	vec_clear(&msh->children, NULL);
-}
-
 void	exec_perror_exit(t_msh *msh, int exit_status)
 {
 	perror("minishell");
 	msh_exit(msh, exit_status);
+}
+
+int	exec_wait_children(void)
+{
+	pid_t	pid;
+	int		old_status;
+	int		status;
+
+	pid = waitpid(-1, &status, 0);
+	old_status = status;
+	while (pid > 0)
+	{
+		pid = waitpid(-1, &status, 0);
+		old_status = status;
+	}
+	if (WIFEXITED(old_status))
+		return (WEXITSTATUS(old_status));
+	return (1);
 }

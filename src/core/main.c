@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/02 23:25:28 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/03 03:29:14 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	main(int argc, char **argv, char *const *envp)
 	ft_bzero(&msh, sizeof(msh));
 	if (!env_init(&msh, envp))
 		return (1);
-	vec_new(&msh.children, sizeof(pid_t));
 	while (1)
 	{
 		line = display_prompt();
@@ -61,7 +60,7 @@ static t_command	*get_command(t_llst_head *tokenlst_head)
 	t_command	*cmd;
 
 	if (!syntax_checker((t_token *)tokenlst_head->first))
-		return (printf("err\n"), NULL);
+		return (NULL);
 	cmd = command_creator(tokenlst_head);
 	if (!cmd)
 	{
