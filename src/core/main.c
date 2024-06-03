@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/02 23:25:28 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/02 23:56:04 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	main(int argc, char **argv, char *const *envp)
 	ft_bzero(&msh, sizeof(msh));
 	if (!env_init(&msh, envp))
 		return (1);
-	vec_new(&msh.children, sizeof(pid_t));
 	while (1)
 	{
 		line = display_prompt();
