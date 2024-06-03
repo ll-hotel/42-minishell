@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 05:09:41 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 03:40:00 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/03 04:52:38 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,8 @@ t_token	*lexer_dollar(char *line, int *p_i)
 			word = ft_substr(line, 1, word_len++);
 		else
 		{
-			while (line[word_len] \
-					&& !ft_isblank(line[word_len]) \
-					&& !is_operator(line[word_len]))
+			word_len += (line[word_len] != 0);
+			while (line[word_len] && ft_isalpha(line[word_len]))
 				word_len += 1;
 			word = ft_substr(line, 1, word_len - 1);
 		}
