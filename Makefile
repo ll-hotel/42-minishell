@@ -52,6 +52,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				llst/token.c \
 				parsing/command_creator.c \
 				parsing/env_var_expand.c \
+				parsing/lexer_append.c \
 				parsing/lexer_dollar.c \
 				parsing/lexer_dquote.c \
 				parsing/lexer_line.c \

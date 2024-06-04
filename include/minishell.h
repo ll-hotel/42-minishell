@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 06:51:13 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/04 17:54:13 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ enum	e_token_type
 	TOKEN_REDIR_OUT,
 	TOKEN_PIPE,
 	TOKEN_SPACE,
+	TOKEN_APPEND,
 };
 
 /*	----	STRUCT		----	*/
@@ -110,6 +111,7 @@ t_token		*lexer_dollar(char *line, int *p_i);
 t_token		*lexer_simple_quote(char *line, int *p_i);
 t_token		*lexer_dquote(char *line, int *p_i);
 t_token		*lexer_redir(char *line, int *p_i);
+t_token		*lexer_append(char *line, int *p_i);
 int			is_operator(int c);
 
 /*	----	PARSER	----	*/
