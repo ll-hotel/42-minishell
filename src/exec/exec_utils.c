@@ -6,11 +6,12 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:48:01 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 00:00:07 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/03 06:35:03 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 
 int	exec_dup2(t_command *cmd)
 {
@@ -41,12 +42,12 @@ int	exec_wait_children(void)
 	int		old_status;
 	int		status;
 
+	old_status = 0x0100;
 	pid = waitpid(-1, &status, 0);
-	old_status = status;
 	while (pid > 0)
 	{
-		pid = waitpid(-1, &status, 0);
 		old_status = status;
+		pid = waitpid(-1, &status, 0);
 	}
 	if (WIFEXITED(old_status))
 		return (WEXITSTATUS(old_status));

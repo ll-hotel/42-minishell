@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 03:29:14 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/03 07:04:21 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int argc, char **argv, char *const *envp)
 			break ;
 		msh_on_line(&msh, line);
 	}
-	msh_exit(&msh, 0);
+	msh_exit(&msh, msh_status_get_error());
 }
 
 static void	msh_on_line(t_msh *msh, char *line)

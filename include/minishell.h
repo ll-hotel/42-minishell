@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 00:00:26 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/03 06:51:13 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,7 @@ int			exec_wait_children(void);
 
 uint8_t		msh_status_set(uint8_t value);
 uint8_t		msh_status_get(void);
+uint8_t		msh_status_get_error(void);
 
 /*	----	Signal	----	*/
 
