@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 23:04:25 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/30 03:48:28 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/04 13:53:08 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static t_token	*lexer_token(char *line, int *new_i)
 	word_len = 0;
 	if (c == '\'')
 		token = lexer_word(line, &word_len);
-	else if (c == '$')
+	else if (c == '~' || (c == '$' && line[1] != '\'' && line[1] != '\"'))
 		token = lexer_dollar(line, &word_len);
 	else if (ft_strncmp(line, "<<", 2) == 0)
 		token = lexer_heredoc(line, &word_len);
@@ -69,10 +69,11 @@ static t_token	*lexer_token(char *line, int *new_i)
 		word_len = 1;
 		token = token_new(NULL, TOKEN_PIPE);
 	}
-	else if (c == '\"')
-		token = lexer_dquote(line, &word_len);
+	else if (c == '\"' || (c == '$' && line[1] == '\"'))
+		token = lexer_dquote(line + (c == '$'), &word_len);
 	else
-		token = lexer_word(line, &word_len);
+		token = lexer_word(line + (c == '$'), &word_len);
+	word_len += (c == '$') && (line[1] == '\'' || line[1] == '\"');
 	*new_i = word_len;
 	return (token);
 }

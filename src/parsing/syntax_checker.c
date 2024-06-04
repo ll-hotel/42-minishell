@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 12:57:12 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/04 13:52:16 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@ int	syntax_checker(t_token *token)
 		}
 		if (!token)
 			continue ;
-		if (token->type == TOKEN_PIPE && \
-				token->next && token->next->type == TOKEN_PIPE)
-			return (msh_syntax_err('|'), 0);
 		token = token->next;
 		next_command_offset = check_for_one_command(token);
 	}

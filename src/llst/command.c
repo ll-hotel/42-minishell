@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 14:59:00 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/23 15:35:29 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/03 06:44:04 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	command_free(void *command)
 
 	if (cmd)
 	{
-		ft_close(cmd->fd_in);
-		ft_close(cmd->fd_out);
+		cmd->fd_in = ft_close(cmd->fd_in);
+		cmd->fd_out = ft_close(cmd->fd_out);
 		ft_free(cmd->executable);
-		llst_clear(&cmd->redirections, free);
+		llst_clear(&cmd->redirects, token_free);
 		ft_free_parray(cmd->argv);
 		ft_free_parray(cmd->envp);
 		if (cmd->path)

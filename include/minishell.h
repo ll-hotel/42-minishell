@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/30 03:50:56 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/04 13:50:14 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_command	t_command;
 enum	e_token_type
 {
 	TOKEN_WORD,
-	TOKEN_SIMPLE_QUOTE,
+	TOKEN_SQUOTE,
 	TOKEN_DQUOTE,
 	TOKEN_ENV_VAR,
 	TOKEN_REDIR_IN,
@@ -55,7 +55,6 @@ struct	s_minishell
 	t_llst_head	env_vars;
 	t_llst_head	args;
 	t_llst_head	cmds;
-	t_vec		children;
 };
 
 struct	s_env_var
@@ -80,7 +79,7 @@ struct	s_token
 struct	s_command
 {
 	t_command	*next;
-	t_llst_head	redirections;
+	t_llst_head	redirects;
 	int			fd_in;
 	int			fd_out;
 	char		**path;
@@ -119,6 +118,11 @@ t_token		*lexer_heredoc(char *line, int *p_i);
 /*	----	PARSER	----	*/
 
 int			msh_parser(t_llst_head *token_lst, t_msh *env);
+int			expand_env_vars(t_token *head, t_msh *env);
+int			split_env_vars(t_token *head);
+int			parse_dquote(t_token *head, t_msh *env);
+void		parse_redir(t_token *head);
+int			check_redir_validity(t_token *head);
 
 /*	----	SYNTAX_CHECKER	----	*/
 
@@ -156,18 +160,18 @@ int			msh_unset(t_command *cmd, t_msh *env);
 void		msh_exec(t_msh *msh, t_command *cmd);
 int			exec_pipeline(t_msh *msh, t_command *cmd);
 int			exec_one(t_msh *msh, t_command *cmd);
-int			exec_open_redirections(t_command *cmd);
+int			exec_open_redirects(t_command *cmd);
 char		**exec_get_path(t_msh *env);
 int			exec_find_command(t_command *cmd, char **path);
 int			exec_dup2(t_command *cmd);
-int			exec_wait_for_children(t_msh *msh);
-void		exec_kill_children(t_msh *msh);
 void		exec_perror_exit(t_msh *msh, int status);
+int			exec_wait_children(void);
 
 /*	----	Status	----	*/
 
 uint8_t		msh_status_set(uint8_t value);
 uint8_t		msh_status_get(void);
+uint8_t		msh_status_get_error(void);
 
 /*	----	Signal	----	*/
 

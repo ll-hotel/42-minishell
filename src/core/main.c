@@ -6,15 +6,15 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 12:58:03 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/04 13:52:40 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static t_command	*get_command(t_llst_head *tokenlst_head);
-static void	msh_on_line(t_msh *msh, char *line);
-void	signal_gestionnary(void);
+static void			msh_on_line(t_msh *msh, char *line);
+void				signal_gestionnary(void);
 
 int	main(int argc, char **argv, char *const *envp)
 {
@@ -28,7 +28,6 @@ int	main(int argc, char **argv, char *const *envp)
 	ft_bzero(&msh, sizeof(msh));
 	if (!env_init(&msh, envp))
 		return (1);
-	vec_new(&msh.children, sizeof(pid_t));
 	while (1)
 	{
 		line = display_prompt();
@@ -36,7 +35,7 @@ int	main(int argc, char **argv, char *const *envp)
 			break ;
 		msh_on_line(&msh, line);
 	}
-	msh_exit(&msh, 0);
+	msh_exit(&msh, msh_status_get_error());
 }
 
 static void	msh_on_line(t_msh *msh, char *line)
@@ -44,16 +43,16 @@ static void	msh_on_line(t_msh *msh, char *line)
 	if (!line)
 		return ;
 	msh->args.first = (t_llst *)lexer_line(line);
-	if (!msh_parser(&msh->args, msh))
+	if (msh_parser(&msh->args, msh))
 	{
-		ft_dprintf(2, "minishell: parser failed\n");
-		return ;
+		msh->cmds.first = (t_llst *)get_command(&msh->args);
+		llst_clear(&msh->args, &token_free);
+		if (msh->cmds.first)
+			msh_exec(msh, (t_command *)msh->cmds.first);
+		llst_clear(&msh->cmds, &command_free);
 	}
-	msh->cmds.first = (t_llst *)get_command(&msh->args);
-	llst_clear(&msh->args, &token_free);
-	if (msh->cmds.first)
-		msh_exec(msh, (t_command *)msh->cmds.first);
-	llst_clear(&msh->cmds, &command_free);
+	else
+		llst_clear(&msh->args, &token_free);
 }
 
 static t_command	*get_command(t_llst_head *tokenlst_head)

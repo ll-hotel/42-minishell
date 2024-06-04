@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_redir.c                                      :+:      :+:    :+:   */
+/*   expand_env_vars.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 05:09:21 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/30 03:45:27 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/30 02:52:10 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/06/02 23:29:35 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*lexer_redir(char *line, int *p_i)
+int	expand_env_vars(t_token *head, t_msh *env)
 {
-	const int	type = *line;
-	int			i;
-
-	i = 1;
-	while (ft_isblank(line[i]))
-		i += 1;
-	if (!line[i] || line[i] == '|' || line[i] == '<' || line[i] == '>')
+	while (head->next)
 	{
-		msh_syntax_err(line[i]);
-		return (NULL);
+		if (head->next->type == TOKEN_ENV_VAR)
+		{
+			if (!env_var_expand((t_llst_head *)head, env))
+				return (0);
+		}
+		if (head->next->type == TOKEN_DQUOTE)
+		{
+			if (!parse_dquote(head, env))
+				return (0);
+		}
+		head = head->next;
 	}
-	*p_i = i;
-	if (type == '<')
-		return (token_new(NULL, TOKEN_REDIR_IN));
-	return (token_new(NULL, TOKEN_REDIR_OUT));
+	return (1);
 }

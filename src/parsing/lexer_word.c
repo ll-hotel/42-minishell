@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 05:09:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/26 05:47:13 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/03 05:43:37 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_token	*lexer_word(char *line, int *p_i)
 				&& !is_operator(line[word_len]))
 			word_len += 1;
 	if (squoted && !line[word_len + 1])
-		return (msh_syntax_err(-'\''), NULL);
+		return (msh_syntax_err(- '\''), NULL);
 	word = ft_substr(line, squoted, word_len);
 	*p_i = word_len + squoted * 2;
 	if (word)
