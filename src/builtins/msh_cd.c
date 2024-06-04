@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/31 17:29:21 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/03 20:09:27 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	msh_cd(t_command *cmd, t_msh *env)
 {
 	char		*new_path;
 	t_env_var	*home;
-	int	test;
+	int			test;
 
 	if (cmd->argc > 2)
 	{

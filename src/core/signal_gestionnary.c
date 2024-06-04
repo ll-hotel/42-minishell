@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 02:53:57 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/29 03:36:11 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/03 19:14:39 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	reception(int sig, siginfo_t *info, void *content)
 	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);
-		rl_replace_line("", 1);
+		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 		msh_status_set(130);

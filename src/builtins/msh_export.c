@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/31 17:21:02 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/03 11:32:53 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ static int	env_var_is_valid(char *arg)
 	while (ft_isalnum(arg[i]))
 		i++;
 	if (arg[i])
+	{
+		write(2, "export : not a valid identifier\n", 32);
 		return (0);
-	write(2, "export : not a valid identifier\n", 24);
+	}
 	return (1);
 }

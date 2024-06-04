@@ -31,8 +31,13 @@ int	exec_open_redirections(t_command *cmd)
 	{
 		if (redirection->type == TOKEN_REDIR_IN)
 			last_in = open_redirection_in(redirection->str, last_in);
-		else
+		else if (redirection->type == TOKEN_REDIR_OUT)
 			last_out = open_redirection_out(redirection->str, last_out);
+		else
+		{
+			ft_close(last_in);
+			last_in = redirection->fd;
+		}
 		if (last_in == -1 && last_out == -1)
 			error = 1;
 		redirection = redirection->next;

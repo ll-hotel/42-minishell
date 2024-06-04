@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/31 15:55:31 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/04 12:58:03 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static t_command	*get_command(t_llst_head *tokenlst_head)
 	t_command	*cmd;
 
 	if (!syntax_checker((t_token *)tokenlst_head->first))
-		return (NULL);
+		return (ft_dprintf(2, "Syntax error\n"), NULL);
 	cmd = command_creator(tokenlst_head);
 	if (!cmd)
 	{

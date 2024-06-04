@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/26 04:51:29 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/04 12:57:12 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static int	check_for_one_command(t_token *token)
 		while (token && token->type != TOKEN_PIPE)
 		{
 			while (token && (token->type == TOKEN_REDIR_IN \
-						|| token->type == TOKEN_REDIR_OUT))
+						|| token->type == TOKEN_REDIR_OUT \
+						|| token->type == TOKEN_HEREDOC))
 			{
 				next_command_offset += 1;
 				token = token->next;
