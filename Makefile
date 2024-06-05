@@ -34,7 +34,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				core/signal_gestionnary.c \
 				exec/exec_find_command.c \
 				exec/exec_one.c \
-				exec/exec_open_redirections.c \
+				exec/exec_open_redirects.c \
 				exec/exec_path.c \
 				exec/exec_pipeline.c \
 				exec/exec_utils.c \
@@ -52,6 +52,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				llst/token.c \
 				parsing/command_creator.c \
 				parsing/env_var_expand.c \
+				parsing/lexer_append.c \
 				parsing/lexer_dollar.c \
 				parsing/lexer_dquote.c \
 				parsing/lexer_line.c \

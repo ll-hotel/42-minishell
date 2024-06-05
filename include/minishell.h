@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 06:51:13 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/04 21:30:14 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ enum	e_token_type
 	TOKEN_REDIR_OUT,
 	TOKEN_PIPE,
 	TOKEN_SPACE,
+	TOKEN_APPEND,
 };
 
 /*	----	STRUCT		----	*/
@@ -110,6 +111,7 @@ t_token		*lexer_dollar(char *line, int *p_i);
 t_token		*lexer_simple_quote(char *line, int *p_i);
 t_token		*lexer_dquote(char *line, int *p_i);
 t_token		*lexer_redir(char *line, int *p_i);
+t_token		*lexer_append(char *line, int *p_i);
 int			is_operator(int c);
 
 /*	----	PARSER	----	*/
@@ -151,6 +153,7 @@ int			msh_env(t_command *cmd, t_msh *env);
 void		msh_exit(t_msh *msh, int status);
 int			msh_export(t_command *cmd, t_msh *env);
 int			msh_unset(t_command *cmd, t_msh *env);
+void		exit_error_checker(t_msh *msh, t_command *cmd);
 
 /*	----	Exec	----	*/
 
@@ -162,7 +165,7 @@ char		**exec_get_path(t_msh *env);
 int			exec_find_command(t_command *cmd, char **path);
 int			exec_dup2(t_command *cmd);
 void		exec_perror_exit(t_msh *msh, int status);
-int			exec_wait_children(void);
+int			exec_wait_children(int last_pid);
 
 /*	----	Status	----	*/
 

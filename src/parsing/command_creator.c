@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/02 23:26:55 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/04 17:55:33 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ static char	*create_arg(t_command *cmd, t_token *token, int *pnext)
 	*pnext = 1;
 	if (token->type == TOKEN_WORD)
 		arg = ft_strdup(token->str);
-	else if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT)
+	else if (token->type == TOKEN_REDIR_IN || \
+			token->type == TOKEN_REDIR_OUT || \
+			token->type == TOKEN_APPEND)
 		arg = arg_redirect(&cmd->redirects, token);
 	if (!arg)
 		*pnext = 0;
