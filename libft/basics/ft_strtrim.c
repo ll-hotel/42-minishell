@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 11:22:21 by ll-hotel          #+#    #+#             */
-/*   Updated: 2023/11/09 13:12:51 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/04 22:20:46 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ char	*ft_strtrim(const char *str, const char *set)
 	char	*end;
 	_Bool	end_in_set;
 
+	if (!str)
+		return (NULL);
 	start = (char *)str;
 	while (*start && _is_in_set(*start, set))
 		start++;

@@ -6,13 +6,15 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 23:04:25 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 17:54:58 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/05 17:08:31 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 static t_token	*lexer_token(char *line, int *new_i);
+static t_token	*create_new_token(\
+		t_llst_head *token_lst, char *line, int i, int *new_i);
 
 t_token	*lexer_line(char *line)
 {
@@ -31,21 +33,30 @@ t_token	*lexer_line(char *line)
 			i += 1;
 		if (!line[i])
 			continue ;
-		if (token_lst.first && ft_isblank(line[i - 1]) && \
-				((t_token *)llst_get_last(&token_lst))->type != TOKEN_SPACE)
-			token = token_new(NULL, TOKEN_SPACE);
-		else
-			token = lexer_token(line + i, &new_i);
+		token = create_new_token(&token_lst, line, i, &new_i);
 		if (!token)
-		{
-			llst_clear(&token_lst, &token_free);
 			return (NULL);
-		}
 		llst_addback(&token_lst, (t_llst *)token);
 		if (token->type != TOKEN_SPACE)
 			i += new_i;
 	}
 	return ((t_token *)token_lst.first);
+}
+
+static t_token	*create_new_token(\
+		t_llst_head *token_lst, char *line, int i, int *new_i)
+{
+	t_token	*token;
+
+	token = NULL;
+	if (token_lst->first && ft_isblank(line[i - 1]) && \
+			((t_token *)llst_get_last(token_lst))->type != TOKEN_SPACE)
+		token = token_new(NULL, TOKEN_SPACE);
+	else
+		token = lexer_token(line + i, new_i);
+	if (!token)
+		llst_clear(token_lst, token_free);
+	return (token);
 }
 
 static t_token	*lexer_token(char *line, int *new_i)
@@ -55,7 +66,7 @@ static t_token	*lexer_token(char *line, int *new_i)
 	t_token		*token;
 
 	token = NULL;
-	word_len = 0;
+	word_len = 1;
 	if (c == '\'')
 		token = lexer_word(line, &word_len);
 	else if (c == '~' || (c == '$' && line[1] != '\'' && line[1] != '\"'))
@@ -65,10 +76,7 @@ static t_token	*lexer_token(char *line, int *new_i)
 	else if (c == '<' || c == '>')
 		token = lexer_redir(line, &word_len);
 	else if (c == '|')
-	{
-		word_len = 1;
 		token = token_new(NULL, TOKEN_PIPE);
-	}
 	else if (c == '\"' || (c == '$' && line[1] == '\"'))
 		token = lexer_dquote(line + (c == '$'), &word_len);
 	else

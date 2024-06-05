@@ -6,12 +6,13 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 05:09:01 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/02 23:26:06 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/05 17:12:10 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void		*init(t_token **dq_token, char *line);
 static t_token	*sub_word(char *line, int *p_i);
 
 t_token	*lexer_dquote(char *line, int *p_i)
@@ -20,16 +21,8 @@ t_token	*lexer_dquote(char *line, int *p_i)
 	t_token		*w;
 	int			i;
 
-	if (!ft_strchr(line + 1, '\"'))
-		return (msh_syntax_err(- '\"'), NULL);
-	dq_token = token_new(NULL, TOKEN_DQUOTE);
-	if (!dq_token)
+	if (!init(&dq_token, line))
 		return (NULL);
-	dq_token->inner_tokens.first = \
-			(t_llst *)token_new(ft_calloc(1, 1), TOKEN_WORD);
-	if (!dq_token->inner_tokens.first || \
-			!((t_token *)dq_token->inner_tokens.first)->str)
-		return (ft_free(dq_token));
 	i = 1;
 	while (line[i] && line[i] != '\"')
 	{
@@ -44,6 +37,21 @@ t_token	*lexer_dquote(char *line, int *p_i)
 	}
 	*p_i = i + 1;
 	return (dq_token);
+}
+
+static void	*init(t_token **dq_token, char *line)
+{
+	if (!ft_strchr(line + 1, '\"'))
+		return (msh_syntax_err(- '\"'), NULL);
+	dq_token[0] = token_new(NULL, TOKEN_DQUOTE);
+	if (!dq_token[0])
+		return (NULL);
+	dq_token[0]->inner_tokens.first = \
+			(t_llst *)token_new(ft_calloc(1, 1), TOKEN_WORD);
+	if (!dq_token[0]->inner_tokens.first || \
+			!((t_token *)dq_token[0]->inner_tokens.first)->str)
+		return (ft_free(dq_token[0]));
+	return (*dq_token);
 }
 
 static t_token	*sub_word(char *line, int *p_i)
