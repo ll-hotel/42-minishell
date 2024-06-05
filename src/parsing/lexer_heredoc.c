@@ -30,6 +30,11 @@ t_token	*lexer_heredoc(char *line, int *p_i)
 			return (NULL);
 		i++;
 	}
+	if (!line[i])
+	{
+		msh_syntax_err(0);
+		return (NULL);
+	}
 	limiter = ft_substr(line, *p_i, i - *p_i);
 	*p_i = i;
 	return (token_new(limiter, TOKEN_HEREDOC));

@@ -16,7 +16,6 @@
 int	parser_heredoc(t_token *head, t_msh *msh)
 {
 	(void) msh;
-	//char	*bagarre;
 	char	*str;
 	int		fd_pipe[2];
 
@@ -32,18 +31,11 @@ int	parser_heredoc(t_token *head, t_msh *msh)
 	str = readline("");
 	while (!ft_strnstr(str, head->next->str, ft_strlen(str)))
 	{
-		// bagarre = ft_strchr(str, '$');
-		// while (bagarre)
-		// {
-		// 	str = heredoc_expand(msh, str, bagarre);
-		// 	bagarre = ft_strchr(str, '$');
-		// }
-
 		write(fd_pipe[1], str, ft_strlen(str));
 		free(str);
 		str = readline("");
 	}
-	free(head->next->str);
+	head->next->str = ft_free(head->next->str);
 	free(str);
 	head->next->fd = fd_pipe[0];
 	close(fd_pipe[1]);
