@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:17:03 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 03:38:20 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/04 22:21:41 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,20 @@ char	*display_prompt(void)
 	char	*prompt;
 
 	prompt = pwd_prompt();
+#if 0
 	input = readline(prompt);
+#else
+	if (isatty(fileno(stdin)))
+		input = readline(prompt);
+	else
+	{
+		char *line;
+		line = get_next_line(fileno(stdin));
+		input = ft_strtrim(line, "\n");
+		if (line)
+			free(line);
+	}
+#endif
 	free(prompt);
 	if (input && !is_only_space(input))
 	{

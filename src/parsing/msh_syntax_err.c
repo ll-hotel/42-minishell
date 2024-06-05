@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 04:38:12 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 03:29:36 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/04 21:45:55 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,5 @@ void	msh_syntax_err(char c)
 	}
 	if (!c || c == - '\'' || c == - '\"')
 		ft_dprintf(2, "minishell: syntax error: unexpected end of file\n");
+	msh_status_set(2);
 }

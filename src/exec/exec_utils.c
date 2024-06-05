@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:48:01 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 06:35:03 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/04 21:29:55 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	exec_perror_exit(t_msh *msh, int exit_status)
 	msh_exit(msh, exit_status);
 }
 
-int	exec_wait_children(void)
+int	exec_wait_children(int last_pid)
 {
 	pid_t	pid;
 	int		old_status;
@@ -46,7 +46,8 @@ int	exec_wait_children(void)
 	pid = waitpid(-1, &status, 0);
 	while (pid > 0)
 	{
-		old_status = status;
+		if (pid == last_pid)
+			old_status = status;
 		pid = waitpid(-1, &status, 0);
 	}
 	if (WIFEXITED(old_status))

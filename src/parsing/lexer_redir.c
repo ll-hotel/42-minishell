@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/26 05:09:21 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/30 03:45:27 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/04 21:59:00 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_token	*lexer_redir(char *line, int *p_i)
 	int			i;
 
 	i = 1;
+	if (type == '>' && line[i] == '|')
+		i += 1;
 	while (ft_isblank(line[i]))
 		i += 1;
 	if (!line[i] || line[i] == '|' || line[i] == '<' || line[i] == '>')
