@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 13:50:14 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/04 16:12:25 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ int			split_env_vars(t_token *head);
 int			parse_dquote(t_token *head, t_msh *env);
 void		parse_redir(t_token *head);
 int			check_redir_validity(t_token *head);
+t_token		*parser_heredoc(t_msh *msh, char *line, int *p_i);
 
 /*	----	SYNTAX_CHECKER	----	*/
 
@@ -143,6 +144,7 @@ int			ft_close(int fd);
 void		ft_free_parray(void *array);
 void		ft_free_array(void *array);
 void		closer(t_command *cmd);
+char		*heredoc_expand(t_msh *msh, char *line, char *name);
 
 /*	----	Builtins	----	*/
 

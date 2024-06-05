@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 23:04:25 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 13:53:08 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/04 18:32:17 by lrichaud         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,3 +77,4 @@ static t_token	*lexer_token(char *line, int *new_i)
 	*new_i = word_len;
 	return (token);
 }
+

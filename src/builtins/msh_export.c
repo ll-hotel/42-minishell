@@ -40,7 +40,7 @@ int	msh_export(t_command *cmd, t_msh *msh)
 				return (perror("minishell"), 1);
 		}
 	}
-	return (!env_var_is_valid(cmd->argv[1]));
+	return (0);
 }
 
 static int	env_var_is_valid(char *arg)
