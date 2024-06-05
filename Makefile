@@ -62,6 +62,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				parsing/msh_parser.c \
 				parsing/parse_dquote.c \
 				parsing/parse_redir.c \
+				parsing/parser_heredoc.c \
 				parsing/split_env_vars.c \
 				parsing/expand_env_vars.c \
 				parsing/msh_syntax_err.c \
@@ -71,6 +72,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				utils/ft_free.c \
 				utils/ft_free_parray.c \
 				utils/welcome.c \
+				utils/heredoc_expand.c \
 				)
 DEPS		=	$(OBJECTS:.o=.d)
 

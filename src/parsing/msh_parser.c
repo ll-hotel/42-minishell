@@ -14,9 +14,9 @@
 
 static int	parser_remove_spaces(t_token *head);
 
-int	msh_parser(t_llst_head *token_lst, t_msh *env)
+int	msh_parser(t_llst_head *token_lst, t_msh *msh)
 {
-	if (!expand_env_vars((t_token *)token_lst, env))
+	if (!expand_env_vars((t_token *)token_lst, msh))
 		return (0);
 	if (!check_redir_validity((t_token *)token_lst))
 		return (0);
@@ -25,6 +25,8 @@ int	msh_parser(t_llst_head *token_lst, t_msh *env)
 	if (!parser_remove_spaces((t_token *)token_lst))
 		return (0);
 	parse_redir((t_token *)token_lst);
+	if (!parser_heredoc((t_token *)token_lst, msh))
+		return (0);
 	return (1);
 }
 

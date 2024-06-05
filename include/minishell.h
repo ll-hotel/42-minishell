@@ -123,7 +123,8 @@ int			split_env_vars(t_token *head);
 int			parse_dquote(t_token *head, t_msh *env);
 void		parse_redir(t_token *head);
 int			check_redir_validity(t_token *head);
-t_token		*parser_heredoc(t_msh *msh, char *line, int *p_i);
+int			parser_heredoc(t_token *head, t_msh *msh);
+char		*heredoc_expand(t_msh *msh, char *line, char *name);
 
 /*	----	SYNTAX_CHECKER	----	*/
 

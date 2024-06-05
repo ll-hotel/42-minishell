@@ -32,7 +32,7 @@ t_token	*lexer_line(char *line)
 		if (!line[i])
 			continue ;
 		if (token_lst.first && ft_isblank(line[i - 1]) && \
-				((t_token *)llst_get_last(&token_lst))->type != TOKEN_SPACE)
+			((t_token *)llst_get_last(&token_lst))->type != TOKEN_SPACE)
 			token = token_new(NULL, TOKEN_SPACE);
 		else
 			token = lexer_token(line + i, &new_i);
@@ -77,4 +77,3 @@ static t_token	*lexer_token(char *line, int *new_i)
 	*new_i = word_len;
 	return (token);
 }
-

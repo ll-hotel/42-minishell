@@ -53,7 +53,7 @@ static int	check_for_one_command(t_token *token)
 				token = token->next;
 			}
 			if (!token)
-				return (-1);
+				return (next_command_offset);
 			while (token && token->type == TOKEN_WORD)
 			{
 				next_command_offset += 1;

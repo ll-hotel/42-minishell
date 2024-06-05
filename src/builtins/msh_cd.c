@@ -28,7 +28,7 @@ int	msh_cd(t_command *cmd, t_msh *env)
 		home = env_var_get(env, "HOME");
 		if (!home || chdir(home->value) == -1)
 		{
-			write(2, "miniChell: cd: HOME not set\n", 28);
+			write(2, "cd: HOME not set\n", 18);
 			return (1);
 		}
 		return (0);
