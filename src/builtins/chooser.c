@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:10:45 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/04 21:11:10 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:26:54 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,3 @@ static int	is_not_builtin(char *command)
 			ft_strncmp(command, "unset", 6) && \
 			ft_strncmp(command, "exit", 5));
 }
-

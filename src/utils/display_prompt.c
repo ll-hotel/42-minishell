@@ -6,40 +6,48 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:17:03 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 22:21:41 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/05 17:22:12 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static char	*get_input(void);
 static char	*pwd_prompt(void);
 static int	is_only_space(char *str);
 
 char	*display_prompt(void)
 {
 	char	*input;
-	char	*prompt;
 
-	prompt = pwd_prompt();
-#if 0
-	input = readline(prompt);
-#else
-	if (isatty(fileno(stdin)))
-		input = readline(prompt);
-	else
-	{
-		char *line;
-		line = get_next_line(fileno(stdin));
-		input = ft_strtrim(line, "\n");
-		if (line)
-			free(line);
-	}
-#endif
-	free(prompt);
+	input = get_input();
 	if (input && !is_only_space(input))
 	{
 		add_history(input);
 		return (input);
+	}
+	return (input);
+}
+
+static char	*get_input(void)
+{
+	char	*line;
+	char	*input;
+	char	*prompt;
+
+	if (isatty(0))
+	{
+		prompt = pwd_prompt();
+		input = readline(prompt);
+		if (prompt)
+			free(prompt);
+	}
+	else
+	{
+		line = get_next_line(0);
+		input = ft_strtrim(line, "\n");
+		if (line)
+			free(line);
 	}
 	return (input);
 }

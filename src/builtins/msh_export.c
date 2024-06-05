@@ -6,52 +6,71 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/05/29 06:42:01 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/05 16:50:50 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static int	check_arg_validity(char *arg, t_env_var **evar);
+static int	insert_evar(t_env_var *evar_head, t_env_var *evar);
 static int	env_var_is_valid(char *arg);
 
 int	msh_export(t_command *cmd, t_msh *msh)
 {
-	t_env_var	*new_env_var;
-	t_env_var	*vars;
+	t_env_var	*evar;
 
+	evar = NULL;
 	if (ft_strchr(cmd->argv[1], '='))
 	{
-		new_env_var = env_var_new(cmd->argv[1]);
-		if (!new_env_var)
+		if (!check_arg_validity(cmd->argv[1], &evar))
 			return (1);
-		vars = (t_env_var *)msh->env_vars.first;
-		while (vars && ft_strncmp(vars->name, new_env_var->name, \
-			ft_strlen(new_env_var->name)))
-			vars = vars->next;
-		if (!env_var_is_valid(new_env_var->name))
-		{
-			write(2, " not a valid identifier\n", 24);
+		if (!insert_evar((t_env_var *)&msh->env_vars, evar))
 			return (1);
-		}
-		if (!vars)
-			llst_addback(&msh->env_vars, (t_llst *)new_env_var);
-		else
-		{
-			if (new_env_var->value)
-			{
-				ft_free(vars->value);
-				vars->value = ft_strdup(new_env_var->value);
-				if (!vars->value)
-					return (perror("minishell"), 1);
-			}
-		}
 	}
 	else if (!env_var_is_valid(cmd->argv[1]))
 	{
-		write(2, " not a valid identifier\n", 24);
+		ft_dprintf(2, "export: %s: not a valid identifier\n", evar->name);
 		return (1);
 	}
 	return (0);
+}
+
+static int	check_arg_validity(char *arg, t_env_var **evar)
+{
+	evar[0] = env_var_new(arg);
+	if (!evar[0])
+		return (1);
+	if (!env_var_is_valid(evar[0]->name))
+	{
+		ft_dprintf(2, "export: %s: not a valid identifier\n", evar[0]->name);
+		env_var_free(evar[0]);
+		return (0);
+	}
+	return (1);
+}
+
+static int	insert_evar(t_env_var *evar_head, t_env_var *evar)
+{
+	const int	length = ft_strlen(evar->name);
+
+	while (evar_head->next && \
+			ft_strncmp(evar_head->next->name, evar->name, length))
+	{
+		evar_head->next = evar_head->next->next;
+	}
+	if (!evar_head->next)
+		llst_addback((t_llst_head *)evar_head, (t_llst *)evar);
+	else if (evar->value)
+	{
+		ft_free(evar_head->next->value);
+		evar_head->next->value = ft_strdup(evar->value);
+		if (!evar_head->next->value)
+			return (perror("minishell"), 0);
+	}
+	else
+		return (0);
+	return (1);
 }
 
 static int	env_var_is_valid(char *arg)
