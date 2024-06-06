@@ -6,15 +6,27 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 02:53:57 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/03 19:14:39 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/06 15:05:05 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-// #include <string.h>
-#include <signal.h>
 
-void	reception(int sig, siginfo_t *info, void *content)
+static void	reception(int sig, siginfo_t *info, void *content);
+
+void	signal_gestionnary(void)
+{
+	struct sigaction	s_sigaction;
+
+	bzero(&s_sigaction, sizeof(struct sigaction));
+	sigemptyset(&s_sigaction.sa_mask);
+	s_sigaction.sa_sigaction = reception;
+	s_sigaction.sa_flags = SA_SIGINFO;
+	sigaction(SIGINT, &s_sigaction, NULL);
+	sigaction(SIGQUIT, &s_sigaction, NULL);
+}
+
+static void	reception(int sig, siginfo_t *info, void *content)
 {
 	(void) info;
 	(void) content;
@@ -31,16 +43,4 @@ void	reception(int sig, siginfo_t *info, void *content)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-}
-
-void	signal_gestionnary(void)
-{
-	struct sigaction	s_sigaction;
-
-	bzero(&s_sigaction, sizeof(struct sigaction));
-	sigemptyset(&s_sigaction.sa_mask);
-	s_sigaction.sa_sigaction = reception;
-	s_sigaction.sa_flags = SA_SIGINFO;
-	sigaction(SIGINT, &s_sigaction, NULL);
-	sigaction(SIGQUIT, &s_sigaction, NULL);
 }

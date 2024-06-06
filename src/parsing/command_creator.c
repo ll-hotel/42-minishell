@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/06 13:26:36 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 15:46:24 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,9 @@ static char	*create_arg(t_command *cmd, t_token *token, int *pnext)
 	*pnext = 1;
 	if (token->type == TOKEN_WORD)
 		arg = ft_strdup(token->str);
-	else if (token->type == TOKEN_REDIR_IN || token->type == TOKEN_REDIR_OUT || token->type == TOKEN_HEREDOC)
+	else if (token->type == TOKEN_REDIR_IN || \
+			token->type == TOKEN_REDIR_OUT || \
+			token->type == TOKEN_HEREDOC)
 		arg = arg_redirect(&cmd->redirects, token);
 	if (!arg)
 		*pnext = 0;
@@ -86,24 +88,21 @@ static char	*create_arg(t_command *cmd, t_token *token, int *pnext)
 
 static char	*arg_redirect(t_llst_head *redirects, t_token *token)
 {
-	t_token	*token_dup;
+	t_token	*dup;
 
-	token_dup = ft_memdup(token, sizeof(*token));
-	if (token_dup)
+	dup = token_new(NULL, token->type);
+	if (!dup)
 	{
-		token_dup->next = NULL;
-		if (token->type == TOKEN_HEREDOC)
-			token->fd = -1;
-		else
-			token_dup->str = ft_strdup(token->str);
-		if (!token_dup->str)
-		{
-			perror("minishell");
-			return (ft_free(token_dup));
-		}
-		llst_addback(redirects, (t_llst *)token_dup);
-	}
-	else
 		perror("minishell");
-	return ((char *)(long)(token_dup != NULL));
+		msh_status_set(1);
+		return (NULL);
+	}
+	if (dup->type == TOKEN_REDIR_IN || dup->type == TOKEN_REDIR_OUT)
+		dup->str = token->str;
+	else if (dup->type == TOKEN_HEREDOC)
+		dup->fd = token->fd;
+	token->str = NULL;
+	token->fd = -1;
+	llst_addback(redirects, (t_llst *)dup);
+	return ((char *)1);
 }

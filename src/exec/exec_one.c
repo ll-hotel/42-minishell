@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/12 22:25:16 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 06:44:37 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 15:09:14 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ int	exec_one(t_msh *msh, t_command *cmd)
 {
 	int	status;
 
+	if (exec_open_redirects(cmd) != 0)
+		msh_exit(msh, errno);
+	if (!cmd->argv || !cmd->argv[0])
+		msh_exit(msh, 0);
 	cmd->envp = env_to_array((t_env_var *)msh->env_vars.first);
 	cmd->path = exec_get_path(msh);
-	if (exec_open_redirects(cmd) != 0)
-		return (errno);
 	status = exec_find_command(cmd, cmd->path);
 	if (status != 0)
 	{

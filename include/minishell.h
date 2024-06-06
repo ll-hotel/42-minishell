@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/06 13:37:10 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 15:33:08 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,14 +66,11 @@ struct	s_env_var
 
 struct	s_token
 {
-	t_token	*next;
-	union
-	{
-		int			fd;
-		char		*str;
-		t_llst_head	inner_tokens;
-	};
-	int		type;
+	t_token		*next;
+	char		*str;
+	t_llst_head	inner_tokens;
+	int			fd;
+	int			type;
 };
 
 struct	s_command

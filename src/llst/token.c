@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 20:17:10 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 13:52:49 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/06 15:32:22 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,9 @@ void	token_free(void *token)
 
 	if (!tok)
 		return ;
-	if (tok->type == TOKEN_DQUOTE)
-		llst_clear(&tok->inner_tokens, token_free);
-	else if (tok->type == TOKEN_HEREDOC)
-		tok->fd = ft_close(tok->fd);
-	else
-		tok->str = ft_free(tok->str);
+	llst_clear(&tok->inner_tokens, token_free);
+	tok->fd = ft_close(tok->fd);
+	tok->str = ft_free(tok->str);
 	free(token);
 }
 
@@ -36,5 +33,6 @@ t_token	*token_new(void *str, int type)
 		return (NULL);
 	token->str = str;
 	token->type = type;
+	token->fd = -1;
 	return (token);
 }

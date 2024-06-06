@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 13:28:45 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/06 13:40:01 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 15:35:18 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	exec_pipeline(t_msh *msh)
 static void	mini_pipe(t_msh *msh, t_command *cmd, int fd_pipe[2])
 {
 	if (pipe(fd_pipe) == -1)
-		exec_perror_exit(msh, errno);
+		exec_perror_exit(msh, 1);
 	cmd->fd_out = fd_pipe[1];
 	cmd->next->fd_in = fd_pipe[0];
 }

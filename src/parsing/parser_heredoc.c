@@ -6,34 +6,64 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 18:19:56 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/06 14:09:31 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 15:34:00 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//static int	here_fork(t_msh *msh, int fd_pipe[2], char *delimiter);
 static void	heredocking(int fd, char *delimiter);
 static void	update_str(char *delimiter, char **str, int *len, int *delfound);
 
 int	parser_heredoc(t_token *head, t_msh *msh)
 {
 	(void) msh;
-	int		fd_pipe[2];
+	int	fd_pipe[2];
 
-	while (head->next && head->next->type != TOKEN_HEREDOC)
-		head = head->next;
-	if (!head->next)
-		return (1);
-	if (pipe(fd_pipe) == -1)
+	while (head && head->next)
 	{
-		perror("heredoc");
-		return (0);
+		while (head->next && head->next->type != TOKEN_HEREDOC)
+			head = head->next;
+		if (!head->next)
+			continue ;
+		if (pipe(fd_pipe) == -1)
+		{
+			perror("here-document");
+			return (0);
+		}
+		heredocking(fd_pipe[1], head->next->str);
+		head->next->str = ft_free(head->next->str);
+		head->next->fd = fd_pipe[0];
+		head = head->next;
 	}
-	heredocking(fd_pipe[1], head->next->str);
-	head->next->str = ft_free(head->next->str);
-	head->next->fd = fd_pipe[0];
 	return (1);
 }
+
+/*
+static int	here_fork(t_msh *msh, int fd_pipe[2], char *delimiter)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("here-document");
+		return (0);
+	}
+	else if (pid == 0)
+	{
+		close(fd_pipe[0]);
+		heredocking(fd_pipe[1], delimiter);
+		msh_exit(msh, 0);
+	}
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
+		msh_status_set(WEXITSTATUS(status));
+	return (0);
+}
+*/
 
 static void	heredocking(int fd, char *delimiter)
 {
