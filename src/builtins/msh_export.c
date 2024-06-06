@@ -6,13 +6,12 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/06 16:32:03 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:47:45 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	check_arg_validity(char *arg, t_env_var **evar);
 static int	insert_evar(t_env_var *evar_head, t_env_var *evar);
 static int	env_var_is_valid(char *arg);
 
@@ -20,34 +19,21 @@ int	msh_export(t_command *cmd, t_msh *msh)
 {
 	t_env_var	*evar;
 
-	evar = NULL;
+	evar = env_var_new(cmd->argv[1]);
+	if (!evar)
+		return (1);
+	if (!env_var_is_valid(evar->name))
+	{
+		ft_dprintf(2, "export: %s: not a valid identifier\n", evar->name);
+		env_var_free(evar);
+		return (1);
+	}
 	if (ft_strchr(cmd->argv[1], '='))
 	{
-		if (!check_arg_validity(cmd->argv[1], &evar))
-			return (1);
 		if (!insert_evar((t_env_var *)&msh->env_vars, evar))
 			return (1);
 	}
-	else if (!env_var_is_valid(cmd->argv[1]))
-	{
-		ft_dprintf(2, "export: %s: not a valid identifier\n", evar->name);
-		return (1);
-	}
 	return (0);
-}
-
-static int	check_arg_validity(char *arg, t_env_var **evar)
-{
-	evar[0] = env_var_new(arg);
-	if (!evar[0])
-		return (1);
-	if (!env_var_is_valid(evar[0]->name))
-	{
-		ft_dprintf(2, "export: %s: not a valid identifier\n", evar[0]->name);
-		env_var_free(evar[0]);
-		return (0);
-	}
-	return (1);
 }
 
 static int	insert_evar(t_env_var *evar_head, t_env_var *evar)
@@ -79,16 +65,10 @@ static int	env_var_is_valid(char *arg)
 
 	i = 1;
 	if (!ft_isalpha(arg[0]))
-	{
-		ft_dprintf(2, "export: %s: not a valid identifier\n", arg);
 		return (0);
-	}
 	while (ft_isalnum(arg[i]))
 		i++;
 	if (arg[i])
-	{
-		ft_dprintf(2, "export: %s: not a valid identifier\n", arg);
 		return (0);
-	}
 	return (1);
 }
