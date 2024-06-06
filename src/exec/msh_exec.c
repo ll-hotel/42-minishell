@@ -6,28 +6,28 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 18:45:16 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 06:42:40 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 13:31:45 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	need_fork(t_msh *msh, t_command *cmd, pid_t *pid);
+static void	need_fork(t_msh *msh, pid_t *pid);
 
-void	msh_exec(t_msh *msh, t_command *cmd)
+void	msh_exec(t_msh *msh)
 {
 	pid_t	pid;
 	int		exit_status;
 
 	pid = 0;
 	exit_status = 0;
-	if (!cmd->next && chooser(cmd, NULL) == 0)
+	if (!msh->cmds.first->next && chooser((t_command *)msh->cmds.first, NULL) == 0)
 	{
-		msh_status_set(chooser(cmd, msh));
+		msh_status_set(chooser((t_command *)msh->cmds.first, msh));
 		return ;
 	}
 	else
-		need_fork(msh, cmd, &pid);
+		need_fork(msh, &pid);
 	if (pid)
 	{
 		waitpid(pid, &exit_status, 0);
@@ -36,7 +36,7 @@ void	msh_exec(t_msh *msh, t_command *cmd)
 	}
 }
 
-static void	need_fork(t_msh *msh, t_command *cmd, pid_t *pid)
+static void	need_fork(t_msh *msh, pid_t *pid)
 {
 	int		exit_status;
 
@@ -49,10 +49,7 @@ static void	need_fork(t_msh *msh, t_command *cmd, pid_t *pid)
 	}
 	else if (*pid == 0)
 	{
-		if (!cmd->next)
-			exit_status = exec_one(msh, cmd);
-		else
-			exit_status = exec_pipeline(msh, cmd);
+		exit_status = exec_pipeline(msh);
 		msh_exit(msh, exit_status);
 	}
 }

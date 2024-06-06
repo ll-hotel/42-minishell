@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 13:28:45 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 19:41:31 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 13:40:01 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,17 @@
 static void	mini_pipe(t_msh *msh, t_command *cmd, int fd_pipe[2]);
 static void	mini_chooser(t_msh *msh, t_command *cmd);
 
-int	exec_pipeline(t_msh *msh, t_command *cmd)
+int	exec_pipeline(t_msh *msh)
 {
-	int	pid;
-	int	fd_pipe[2];
+	t_command	*cmd;
+	int			pid;
+	int			fd_pipe[2];
 
-	while (cmd)
+	fd_pipe[0] = -1;
+	fd_pipe[1] = -1;
+	while (msh->cmds.first)
 	{
+		cmd = (t_command *)msh->cmds.first;
 		if (cmd->next)
 			mini_pipe(msh, cmd, fd_pipe);
 		pid = fork();
@@ -29,9 +33,8 @@ int	exec_pipeline(t_msh *msh, t_command *cmd)
 			exec_perror_exit(msh, errno);
 		else if (pid == 0)
 			mini_chooser(msh, cmd);
-		close(fd_pipe[1]);
-		ft_close(cmd->fd_in);
-		cmd = cmd->next;
+		ft_close(fd_pipe[1]);
+		llst_delone(&msh->cmds, command_free);
 	}
 	return (exec_wait_children());
 }

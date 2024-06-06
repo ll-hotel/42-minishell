@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 13:52:40 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/06 13:38:45 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	msh_on_line(t_msh *msh, char *line)
 		msh->cmds.first = (t_llst *)get_command(&msh->args);
 		llst_clear(&msh->args, &token_free);
 		if (msh->cmds.first)
-			msh_exec(msh, (t_command *)msh->cmds.first);
+			msh_exec(msh);
 		llst_clear(&msh->cmds, &command_free);
 	}
 	else
@@ -59,13 +59,8 @@ static t_command	*get_command(t_llst_head *tokenlst_head)
 {
 	t_command	*cmd;
 
-	if (!syntax_checker((t_token *)tokenlst_head->first))
-		return (ft_dprintf(2, "Syntax error\n"), NULL);
 	cmd = command_creator(tokenlst_head);
 	if (!cmd)
-	{
-		ft_dprintf(2, "minishell: failed to create command\n");
-		msh_status_set(errno);
-	}
+		msh_status_set(2);
 	return (cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 13:54:31 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/06 13:26:36 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,9 @@ static char	*arg_redirect(t_llst_head *redirects, t_token *token)
 	if (token_dup)
 	{
 		token_dup->next = NULL;
-		if (token->type != TOKEN_HEREDOC)
+		if (token->type == TOKEN_HEREDOC)
+			token->fd = -1;
+		else
 			token_dup->str = ft_strdup(token->str);
 		if (!token_dup->str)
 		{

@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 16:12:25 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/06 13:37:10 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,9 +126,8 @@ int			check_redir_validity(t_token *head);
 int			parser_heredoc(t_token *head, t_msh *msh);
 char		*heredoc_expand(t_msh *msh, char *line, char *name);
 
-/*	----	SYNTAX_CHECKER	----	*/
+/*	----	SYNTAX	----	*/
 
-int			syntax_checker(t_token *token);
 void		msh_syntax_err(char c);
 
 /*	----	COMMAND		----	*/
@@ -160,11 +159,11 @@ int			msh_unset(t_command *cmd, t_msh *env);
 
 /*	----	Exec	----	*/
 
-void		msh_exec(t_msh *msh, t_command *cmd);
-int			exec_pipeline(t_msh *msh, t_command *cmd);
+void		msh_exec(t_msh *msh);
+int			exec_pipeline(t_msh *msh);
 int			exec_one(t_msh *msh, t_command *cmd);
 int			exec_open_redirects(t_command *cmd);
-char		**exec_get_path(t_msh *env);
+char		**exec_get_path(t_msh *msh);
 int			exec_find_command(t_command *cmd, char **path);
 int			exec_dup2(t_command *cmd);
 void		exec_perror_exit(t_msh *msh, int status);

@@ -66,7 +66,6 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				parsing/split_env_vars.c \
 				parsing/expand_env_vars.c \
 				parsing/msh_syntax_err.c \
-				parsing/syntax_checker.c \
 				utils/display_prompt.c \
 				utils/ft_close.c \
 				utils/ft_free.c \

@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 17:49:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 13:46:18 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/06 13:40:34 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	exec_open_redirects(t_command *cmd)
 		{
 			ft_close(cmd->fd_in);
 			cmd->fd_in = redirect->fd;
-			ft_dprintf(2, "fd: %d\n", cmd->fd_in);
 		}
 		if (cmd->fd_in == -1 && cmd->fd_out == -1)
 			error = 1;
