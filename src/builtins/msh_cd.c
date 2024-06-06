@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/03 20:09:27 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/06 16:21:35 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	msh_cd(t_command *cmd, t_msh *env)
 	return (0);
 }
 
-void	refresh_pwd()
+void	refresh_pwd(void)
 {
 	t_command	truc;
 

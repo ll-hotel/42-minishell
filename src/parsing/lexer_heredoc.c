@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 02:32:14 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/06 13:35:04 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:22:48 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_token	*lexer_heredoc(char *line, int *p_i)
 	*p_i = i;
 	while (line[i] && !ft_isblank(line[i]))
 	{
-		if(ft_is_quote(line, &i) == -1)
+		if (ft_is_quote(line, &i) == -1)
 			return (NULL);
 		i++;
 	}
@@ -57,6 +57,3 @@ int	ft_is_quote(char *str, size_t *i)
 	}
 	return (0);
 }
-
-
-
