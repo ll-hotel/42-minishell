@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:43:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/31 18:00:11 by lrichaud         ###   ########lyon.fr   */
+/*   Updated: 2024/06/06 16:32:35 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ int	exec_find_command(t_command *cmd, char **path)
 		cmd->executable = slash_or_empty_path(cmd);
 		return (!cmd->executable * msh_status_get());
 	}
+	if (cmd->argv[0][0] == '.' && \
+			(!cmd->argv[0][1] || (cmd->argv[0][1] == '.' && !cmd->argv[0][2])))
+		return (127);
 	if (cmd->argv[0][0])
 	{
 		i = -1;

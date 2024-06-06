@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_open_redirections.c                           :+:      :+:    :+:   */
+/*   exec_open_redirects.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 17:49:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/06 13:40:34 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:34:39 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	open_redirect_in(char *filename, int last_fd);
-static int	open_redirect_out(char *filename, int last_fd);
+static int	open_in(char *filename, int *p_fd);
+static int	open_out(char *filename, int *p_fd);
+static int	open_append(char *filename, int *p_fd);
 static int	open_perror(char *filename);
 
 int	exec_open_redirects(t_command *cmd)
@@ -25,15 +26,15 @@ int	exec_open_redirects(t_command *cmd)
 	redirect = (t_token *)cmd->redirects.first;
 	while (redirect && !error)
 	{
-		if (redirect->type == TOKEN_REDIR_IN)
-			cmd->fd_in = open_redirect_in(redirect->str, cmd->fd_in);
-		else if (redirect->type == TOKEN_REDIR_OUT)
-			cmd->fd_out = open_redirect_out(redirect->str, cmd->fd_out);
-		else
-		{
-			ft_close(cmd->fd_in);
-			cmd->fd_in = redirect->fd;
-		}
+		if (redirect->type == TOKEN_REDIR_IN && \
+				open_in(redirect->str, &cmd->fd_in) == -1)
+			cmd->fd_out = ft_close(cmd->fd_out);
+		else if (redirect->type == TOKEN_REDIR_OUT && \
+				open_out(redirect->str, &cmd->fd_out) == -1)
+			cmd->fd_in = ft_close(cmd->fd_in);
+		else if (redirect->type == TOKEN_APPEND && \
+				open_append(redirect->str, &cmd->fd_out) == -1)
+			cmd->fd_in = ft_close(cmd->fd_in);
 		if (cmd->fd_in == -1 && cmd->fd_out == -1)
 			error = 1;
 		redirect = redirect->next;
@@ -41,27 +42,33 @@ int	exec_open_redirects(t_command *cmd)
 	return (error);
 }
 
-static int	open_redirect_in(char *filename, int last_fd)
+static int	open_in(char *filename, int *p_fd)
 {
-	int	fd;
-
-	ft_close(last_fd);
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
+	ft_close(*p_fd);
+	*p_fd = open(filename, O_RDONLY);
+	if (*p_fd == -1)
 		return (open_perror(filename));
-	return (fd);
+	return (*p_fd);
 }
 
-static int	open_redirect_out(char *filename, int last_fd)
+static int	open_out(char *filename, int *p_fd)
 {
-	int	fd;
-
-	ft_close(last_fd);
-	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, \
+	ft_close(*p_fd);
+	*p_fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, \
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	if (fd == -1)
+	if (*p_fd == -1)
 		return (open_perror(filename));
-	return (fd);
+	return (*p_fd);
+}
+
+static int	open_append(char *filename, int *p_fd)
+{
+	ft_close(*p_fd);
+	*p_fd = open(filename, O_CREAT | O_WRONLY | O_APPEND, \
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	if (*p_fd == -1)
+		return (open_perror(filename));
+	return (*p_fd);
 }
 
 static int	open_perror(char *filename)

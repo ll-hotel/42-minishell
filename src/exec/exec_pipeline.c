@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 13:28:45 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/06 15:35:18 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:34:55 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	exec_pipeline(t_msh *msh)
 		ft_close(fd_pipe[1]);
 		llst_delone(&msh->cmds, command_free);
 	}
-	return (exec_wait_children());
+	return (exec_wait_children(pid));
 }
 
 static void	mini_pipe(t_msh *msh, t_command *cmd, int fd_pipe[2])

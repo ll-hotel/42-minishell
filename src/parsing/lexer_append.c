@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_redir.c                                      :+:      :+:    :+:   */
+/*   lexer_append.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 05:09:21 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 21:59:00 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/06/04 17:43:27 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/06/04 21:57:32 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*lexer_redir(char *line, int *p_i)
+t_token	*lexer_append(char *line, int *p_i)
 {
-	const int	type = *line;
-	int			i;
+	int	i;
 
-	i = 1;
-	if (type == '>' && line[i] == '|')
-		i += 1;
+	i = 2;
 	while (ft_isblank(line[i]))
 		i += 1;
 	if (!line[i] || line[i] == '|' || line[i] == '<' || line[i] == '>')
-	{
-		msh_syntax_err(line[i]);
-		return (NULL);
-	}
+		return (msh_syntax_err(line[i]), NULL);
 	*p_i = i;
-	if (type == '<')
-		return (token_new(NULL, TOKEN_REDIR_IN));
-	return (token_new(NULL, TOKEN_REDIR_OUT));
+	return (token_new(NULL, TOKEN_APPEND));
 }

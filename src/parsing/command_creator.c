@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/06 15:46:24 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:35:57 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ static char	*create_arg(t_command *cmd, t_token *token, int *pnext)
 		arg = ft_strdup(token->str);
 	else if (token->type == TOKEN_REDIR_IN || \
 			token->type == TOKEN_REDIR_OUT || \
-			token->type == TOKEN_HEREDOC)
+			token->type == TOKEN_HEREDOC || \
+			token->type == TOKEN_APPEND)
 		arg = arg_redirect(&cmd->redirects, token);
 	if (!arg)
 		*pnext = 0;
@@ -97,7 +98,8 @@ static char	*arg_redirect(t_llst_head *redirects, t_token *token)
 		msh_status_set(1);
 		return (NULL);
 	}
-	if (dup->type == TOKEN_REDIR_IN || dup->type == TOKEN_REDIR_OUT)
+	if (dup->type == TOKEN_REDIR_IN || dup->type == TOKEN_REDIR_OUT ||\
+			dup->type == TOKEN_APPEND)
 		dup->str = token->str;
 	else if (dup->type == TOKEN_HEREDOC)
 		dup->fd = token->fd;
