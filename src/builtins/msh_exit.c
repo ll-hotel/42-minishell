@@ -6,13 +6,11 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 18:30:43 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 21:12:04 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:31:24 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	ft_is_number(char *str);
 
 void	msh_exit(t_msh *msh, int status)
 {
@@ -39,7 +37,7 @@ void	exit_error_checker(t_msh *msh, t_command *cmd)
 	msh_exit(msh, ft_atoi(cmd->argv[1]));
 }
 
-static int	ft_is_number(char *str)
+int	ft_is_number(char *str)
 {
 	size_t	i;
 

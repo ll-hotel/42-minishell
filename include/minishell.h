@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 21:30:14 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:37:53 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@
 # include <wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# define EXIT_OUT_OF_MEMORY 12
-# define EXIT_BROKEN_PIPE 32
-# define EXIT_CMD_NOT_FOUND 127
 
 /*	----	TYPEDEFS	----	*/
 
@@ -45,6 +42,7 @@ enum	e_token_type
 	TOKEN_REDIR_OUT,
 	TOKEN_PIPE,
 	TOKEN_SPACE,
+	TOKEN_HEREDOC,
 	TOKEN_APPEND,
 };
 
@@ -66,13 +64,11 @@ struct	s_env_var
 
 struct	s_token
 {
-	t_token	*next;
-	union
-	{
-		char		*str;
-		t_llst_head	inner_tokens;
-	};
-	int		type;
+	t_token		*next;
+	char		*str;
+	t_llst_head	inner_tokens;
+	int			fd;
+	int			type;
 };
 
 struct	s_command
@@ -113,6 +109,7 @@ t_token		*lexer_dquote(char *line, int *p_i);
 t_token		*lexer_redir(char *line, int *p_i);
 t_token		*lexer_append(char *line, int *p_i);
 int			is_operator(int c);
+t_token		*lexer_heredoc(char *line, int *p_i);
 
 /*	----	PARSER	----	*/
 
@@ -122,10 +119,11 @@ int			split_env_vars(t_token *head);
 int			parse_dquote(t_token *head, t_msh *env);
 void		parse_redir(t_token *head);
 int			check_redir_validity(t_token *head);
+int			parser_heredoc(t_token *head, t_msh *msh);
+char		*heredoc_expand(t_msh *msh, char *line, char *name);
 
-/*	----	SYNTAX_CHECKER	----	*/
+/*	----	SYNTAX	----	*/
 
-int			syntax_checker(t_token *token);
 void		msh_syntax_err(char c);
 
 /*	----	COMMAND		----	*/
@@ -141,7 +139,9 @@ void		*ft_free(void *p);
 int			ft_close(int fd);
 void		ft_free_parray(void *array);
 void		ft_free_array(void *array);
+int			ft_is_number(char *str);
 void		closer(t_command *cmd);
+char		*heredoc_expand(t_msh *msh, char *line, char *name);
 
 /*	----	Builtins	----	*/
 
@@ -157,11 +157,11 @@ void		exit_error_checker(t_msh *msh, t_command *cmd);
 
 /*	----	Exec	----	*/
 
-void		msh_exec(t_msh *msh, t_command *cmd);
-int			exec_pipeline(t_msh *msh, t_command *cmd);
+void		msh_exec(t_msh *msh);
+int			exec_pipeline(t_msh *msh);
 int			exec_one(t_msh *msh, t_command *cmd);
 int			exec_open_redirects(t_command *cmd);
-char		**exec_get_path(t_msh *env);
+char		**exec_get_path(t_msh *msh);
 int			exec_find_command(t_command *cmd, char **path);
 int			exec_dup2(t_command *cmd);
 void		exec_perror_exit(t_msh *msh, int status);

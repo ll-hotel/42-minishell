@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 23:04:25 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/05 17:08:31 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:37:13 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ static t_token	*lexer_token(char *line, int *new_i)
 		token = lexer_word(line, &word_len);
 	else if (c == '~' || (c == '$' && line[1] != '\'' && line[1] != '\"'))
 		token = lexer_dollar(line, &word_len);
+	else if (c == '<' && line[1] == '<')
+		token = lexer_heredoc(line, &word_len);
 	else if (c == '>' && line[1] == '>')
 		token = lexer_append(line, &word_len);
 	else if (c == '<' || c == '>')

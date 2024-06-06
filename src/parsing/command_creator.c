@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_creator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
+/*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 17:55:33 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:35:57 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ static char	*create_arg(t_command *cmd, t_token *token, int *pnext)
 		arg = ft_strdup(token->str);
 	else if (token->type == TOKEN_REDIR_IN || \
 			token->type == TOKEN_REDIR_OUT || \
+			token->type == TOKEN_HEREDOC || \
 			token->type == TOKEN_APPEND)
 		arg = arg_redirect(&cmd->redirects, token);
 	if (!arg)
@@ -88,21 +89,22 @@ static char	*create_arg(t_command *cmd, t_token *token, int *pnext)
 
 static char	*arg_redirect(t_llst_head *redirects, t_token *token)
 {
-	t_token	*token_dup;
+	t_token	*dup;
 
-	token_dup = ft_memdup(token, sizeof(*token));
-	if (token_dup)
+	dup = token_new(NULL, token->type);
+	if (!dup)
 	{
-		token_dup->next = NULL;
-		token_dup->str = ft_strdup(token->str);
-		if (!token_dup->str)
-		{
-			perror("minishell");
-			return (ft_free(token_dup));
-		}
-		llst_addback(redirects, (t_llst *)token_dup);
-	}
-	else
 		perror("minishell");
-	return ((char *)(long)(token_dup != NULL));
+		msh_status_set(1);
+		return (NULL);
+	}
+	if (dup->type == TOKEN_REDIR_IN || dup->type == TOKEN_REDIR_OUT ||\
+			dup->type == TOKEN_APPEND)
+		dup->str = token->str;
+	else if (dup->type == TOKEN_HEREDOC)
+		dup->fd = token->fd;
+	token->str = NULL;
+	token->fd = -1;
+	llst_addback(redirects, (t_llst *)dup);
+	return ((char *)1);
 }

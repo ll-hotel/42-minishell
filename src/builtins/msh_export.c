@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/05 16:50:50 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:32:03 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,16 @@ static int	env_var_is_valid(char *arg)
 
 	i = 1;
 	if (!ft_isalpha(arg[0]))
+	{
+		ft_dprintf(2, "export: %s: not a valid identifier\n", arg);
 		return (0);
+	}
 	while (ft_isalnum(arg[i]))
 		i++;
 	if (arg[i])
+	{
+		ft_dprintf(2, "export: %s: not a valid identifier\n", arg);
 		return (0);
+	}
 	return (1);
 }

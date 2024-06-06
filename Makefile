@@ -55,6 +55,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				parsing/lexer_append.c \
 				parsing/lexer_dollar.c \
 				parsing/lexer_dquote.c \
+				parsing/lexer_heredoc.c \
 				parsing/lexer_line.c \
 				parsing/lexer_redir.c \
 				parsing/lexer_utils.c \
@@ -62,15 +63,16 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				parsing/msh_parser.c \
 				parsing/parse_dquote.c \
 				parsing/parse_redir.c \
+				parsing/parser_heredoc.c \
 				parsing/split_env_vars.c \
 				parsing/expand_env_vars.c \
 				parsing/msh_syntax_err.c \
-				parsing/syntax_checker.c \
 				utils/display_prompt.c \
 				utils/ft_close.c \
 				utils/ft_free.c \
 				utils/ft_free_parray.c \
 				utils/welcome.c \
+				utils/heredoc_expand.c \
 				)
 DEPS		=	$(OBJECTS:.o=.d)
 
@@ -119,7 +121,7 @@ $(OBJECT_DIR):
 	mkdir -p $@exec/
 	mkdir -p $@llst/
 	mkdir -p $@parsing/
-	mkdir -p $@utils/	
+	mkdir -p $@utils/
 
 .PHONY: clean
 clean:

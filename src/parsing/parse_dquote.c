@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 02:56:14 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/30 02:56:32 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 15:58:46 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	parse_dquote(t_token *head, t_msh *env)
 	}
 	joined = subtoken->str;
 	subtoken->str = NULL;
-	token_free(subtoken);
+	llst_delone((t_llst_head *)&head->next->inner_tokens, token_free);
 	head->next->str = joined;
 	head->next->type = TOKEN_WORD;
 	return (1);

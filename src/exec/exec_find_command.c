@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:43:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 22:04:13 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/06 16:32:35 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	exec_find_command(t_command *cmd, char **path)
 			cmd->executable = ft_free(cmd->executable);
 		}
 	}
-	ft_dprintf(2, "minishell: %s: command not found\n", cmd->argv[0]);
+	ft_dprintf(2, "\001\e[0m\e[91m\002%s: command not found\n", cmd->argv[0]);
 	return (127);
 }
 
@@ -54,7 +54,7 @@ static char	*slash_or_empty_path(t_command *cmd)
 			return (perror("minishell"), msh_status_set(errno), NULL);
 		if (S_ISDIR(buf.st_mode))
 		{
-			ft_dprintf(2, "minishell: %s: Is a directory\n", cmd->argv[0]);
+			ft_dprintf(2, "\001\e[0m\e[91m\002%s: Is a directory\n", cmd->argv[0]);
 			msh_status_set(126);
 			return (NULL);
 		}
