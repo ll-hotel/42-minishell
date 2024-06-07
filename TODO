@@ -1,12 +1,13 @@
 expand in here-document
-export is flushing all environment (should NOT DO THIS)
-if not in filesystem, prompt SIGSEGFAULT
 
-exit is quitting even with wrong arguments
-(obviously WRONG)
+export is flushing all environment (should NOT DO THIS)
+
+DONE // if not in filesystem, prompt SIGSEGFAULT
+
+DONE // exit is quitting even with wrong arguments
 
 Here-document is not working?
 
 Double or trible prompt with C-c
 
-C-\ is random
+DONE // C-\ is random
