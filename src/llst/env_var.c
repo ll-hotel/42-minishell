@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 06:44:53 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/07 22:00:43 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,15 @@ t_env_var	*env_var_new(char *envp_var)
 		i += 1;
 	var->name = ft_substr(envp_var, 0, i);
 	if (!var->name)
-		return (NULL);
+		return (ft_free(var));
 	if (envp_var[i] == '=')
 	{
 		var->value = ft_substr(envp_var, i + 1, ft_strlen(envp_var) - i - 1);
 		if (!var->value)
-			return (env_var_free(var), NULL);
+		{
+			env_var_free(var);
+			return (NULL);
+		}
 	}
 	return (var);
 }

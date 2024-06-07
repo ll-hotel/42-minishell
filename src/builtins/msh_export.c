@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/07 21:45:10 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/07 22:01:17 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,26 @@ static int	env_var_is_valid(char *arg);
 int	msh_export(t_command *cmd, t_msh *msh)
 {
 	t_env_var	*evar;
+	int			i;
 
-	evar = env_var_new(cmd->argv[1]);
-	if (!evar)
-		return (1);
-	if (!env_var_is_valid(evar->name))
+	i = 0;
+	while (++i < cmd->argc)
 	{
-		ft_dprintf(2, "export: %s: not a valid identifier\n", evar->name);
-		env_var_free(evar);
-		return (1);
-	}
-	if (ft_strchr(cmd->argv[1], '='))
-	{
-		if (!insert_evar((t_env_var *)&msh->env_vars, evar))
-			return (1);
+		evar = env_var_new(cmd->argv[i]);
+		if (!evar)
+			perror("export");
+		else if (!env_var_is_valid(evar->name))
+		{
+			ft_dprintf(2, "export: %s: not a valid identifier\n", evar->name);
+			env_var_free(evar);
+		}
+		else if (evar->value)
+		{
+			if (!insert_evar((t_env_var *)&msh->env_vars, evar))
+				perror("export");
+		}
+		else
+			env_var_free(evar);
 	}
 	return (0);
 }
