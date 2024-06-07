@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/07 11:57:01 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/07 12:09:13 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,12 +147,12 @@ char		*heredoc_expand(t_msh *msh, char *line, char *name);
 
 int			chooser(t_command *cmd, t_msh *msh);
 int			msh_echo(t_command *cmd);
-int			msh_pwd(void);
-int			msh_cd(t_command *cmd, t_msh *env);
-int			msh_env(t_command *cmd, t_msh *env);
+int			msh_pwd(t_msh *msh);
+int			msh_cd(t_command *cmd, t_msh *msh);
+int			msh_env(t_command *cmd, t_msh *msh);
 void		msh_exit(t_msh *msh, int status);
-int			msh_export(t_command *cmd, t_msh *env);
-int			msh_unset(t_command *cmd, t_msh *env);
+int			msh_export(t_command *cmd, t_msh *msh);
+int			msh_unset(t_command *cmd, t_msh *msh);
 int			exit_error_checker(t_msh *msh, t_command *cmd);
 
 /*	----	Exec	----	*/

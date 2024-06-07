@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:17:03 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/07 12:04:21 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/07 12:16:19 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,22 +58,24 @@ static char	*get_input(void)
 static char	*pwd_prompt(void)
 {
 	const char	*prefix = "\001\e[96m\e[1m\002📂 ";
-	char	*pwd;
-	char	*temp;
+	const char	*suffix = " ➜ \001\e[0m\e[39m\002";
+	char		*pwd;
+	char		*temp;
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-	{
-		ft_dprintf(2, "Detached from filesystem. You are on your own!\n");
 		temp = ft_strdup(prefix);
-	}
 	else
 	{
-		temp = ft_strjoin(prefix, ft_strrchr(pwd, '/') + \
-				(pwd[1] != 0));
+		temp = ft_strjoin(prefix, ft_strrchr(pwd, '/') + (pwd[1] != 0));
 		free(pwd);
 	}
-	pwd = ft_strjoin(temp, " ➜ \001\e[0m\e[39m\002");
+	if (!temp)
+	{
+		perror("pwd_prompt");
+		return (NULL);
+	}
+	pwd = ft_strjoin(temp, suffix);
 	free(temp);
 	return (pwd);
 }
