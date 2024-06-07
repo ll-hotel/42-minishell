@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/06 16:47:45 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/07 21:45:10 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,15 @@ int	msh_export(t_command *cmd, t_msh *msh)
 
 static int	insert_evar(t_env_var *evar_head, t_env_var *evar)
 {
-	const int	length = ft_strlen(evar->name);
+	const int	length = ft_strlen(evar->name) + 1;
 
 	while (evar_head->next && \
 			ft_strncmp(evar_head->next->name, evar->name, length))
 	{
-		evar_head->next = evar_head->next->next;
+		evar_head = evar_head->next;
 	}
 	if (!evar_head->next)
-		llst_addback((t_llst_head *)evar_head, (t_llst *)evar);
+		evar_head->next = evar;
 	else if (evar->value)
 	{
 		ft_free(evar_head->next->value);
