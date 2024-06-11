@@ -6,41 +6,28 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 02:53:57 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/06 15:05:05 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:04:22 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	reception(int sig, siginfo_t *info, void *content);
+static void	reception(int sig);
 
 void	signal_gestionnary(void)
 {
-	struct sigaction	s_sigaction;
-
-	bzero(&s_sigaction, sizeof(struct sigaction));
-	sigemptyset(&s_sigaction.sa_mask);
-	s_sigaction.sa_sigaction = reception;
-	s_sigaction.sa_flags = SA_SIGINFO;
-	sigaction(SIGINT, &s_sigaction, NULL);
-	sigaction(SIGQUIT, &s_sigaction, NULL);
+	signal(SIGINT, reception);
+	signal(SIGQUIT, SIG_IGN);
 }
 
-static void	reception(int sig, siginfo_t *info, void *content)
+static void	reception(int sig)
 {
-	(void) info;
-	(void) content;
 	if (sig == SIGINT)
 	{
 		write(1, "\n", 1);
-		rl_replace_line("", 0);
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
 		msh_status_set(130);
-	}
-	else if (sig == SIGQUIT)
-	{
-		rl_on_new_line();
-		rl_redisplay();
 	}
 }

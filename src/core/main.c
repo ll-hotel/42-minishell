@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/06 15:11:52 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:04:35 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	main(int argc, char **argv, char *const *envp)
 	char	*line;
 
 	(void)argv;
-	signal_gestionnary();
 	if (argc != 1)
 		return (1);
 	ft_bzero(&msh, sizeof(msh));
@@ -28,6 +27,7 @@ int	main(int argc, char **argv, char *const *envp)
 		return (1);
 	while (1)
 	{
+		signal_gestionnary();
 		line = display_prompt();
 		if (!line)
 			break ;

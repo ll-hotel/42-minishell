@@ -6,12 +6,14 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:48:01 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 21:29:55 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:30:34 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
+
+static int	sig_return_value(int signal);
 
 int	exec_dup2(t_command *cmd)
 {
@@ -50,7 +52,19 @@ int	exec_wait_children(int last_pid)
 			old_status = status;
 		pid = waitpid(-1, &status, 0);
 	}
+	if (WIFSIGNALED(old_status))
+		return (sig_return_value(WTERMSIG(old_status)));
 	if (WIFEXITED(old_status))
 		return (WEXITSTATUS(old_status));
+	return (1);
+}
+
+static int	sig_return_value(int signal)
+{
+	if (signal == SIGQUIT)
+	{
+		ft_putstr_fd("Quit (core dumped)\n", 2);
+		return (131);
+	}
 	return (1);
 }
