@@ -46,7 +46,8 @@ EXTRA_OBJS = $(patsubst %.c,$(OBJ_DIR)/extra/%.o, \
 			 ft_isblank.c \
 			 ft_memdup.c \
 			 ft_min.c \
-			 ft_splat.c)
+			 ft_splat.c \
+			 ft_strcmp.c)
 
 OBJS = $(BASICS_OBJS) $(FT_PRINTF_OBJS) $(GNL_OBJS) $(VECTOR_OBJS) $(FT_DPRINTF_OBJS) $(EXTRA_OBJS)
 
