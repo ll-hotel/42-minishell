@@ -6,11 +6,12 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 18:19:56 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/06 16:15:01 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:20:05 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <stdlib.h>
 
 static void	heredoc_sighandler(int sig);
 static int	here_fork(t_msh *msh, int fd_pipe[2], char *delimiter);
@@ -54,6 +55,7 @@ static int	here_fork(t_msh *msh, int fd_pipe[2], char *delimiter)
 	}
 	else if (pid == 0)
 	{
+		signal(SIGINT, heredoc_sighandler);
 		close(fd_pipe[0]);
 		signal(SIGINT, heredoc_sighandler);
 		heredocking(fd_pipe[1], delimiter);
@@ -82,6 +84,7 @@ static void	heredocking(int fd, char *delimiter)
 		write(fd, str, str_len + 1);
 		free(str);
 		update_str(delimiter, &str, &str_len, &delimiter_found);
+		line_index += 1;
 	}
 	if (!delimiter_found && msh_status_get() != 130)
 		ft_dprintf(2, "minishell: warning: here-document at line %d " \

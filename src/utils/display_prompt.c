@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:17:03 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/06 16:37:33 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/07 12:16:19 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,15 @@ static char	*get_input(void)
 	char	*input;
 	char	*prompt;
 
+	input = NULL;
 	if (isatty(0))
 	{
 		prompt = pwd_prompt();
-		input = readline(prompt);
 		if (prompt)
+		{
+			input = readline(prompt);
 			free(prompt);
+		}
 	}
 	else
 	{
@@ -54,14 +57,25 @@ static char	*get_input(void)
 
 static char	*pwd_prompt(void)
 {
-	char	*pwd;
-	char	*temp;
+	const char	*prefix = "\001\e[96m\e[1m\002📂 ";
+	const char	*suffix = " ➜ \001\e[0m\e[39m\002";
+	char		*pwd;
+	char		*temp;
 
 	pwd = getcwd(NULL, 0);
-	temp = ft_strjoin("\001\e[96m\e[1m\002📂 ", ft_strrchr(pwd, '/') + \
-			(pwd[1] != 0));
-	free(pwd);
-	pwd = ft_strjoin(temp, " ➜ \001\e[0m\e[39m\002");
+	if (!pwd)
+		temp = ft_strdup(prefix);
+	else
+	{
+		temp = ft_strjoin(prefix, ft_strrchr(pwd, '/') + (pwd[1] != 0));
+		free(pwd);
+	}
+	if (!temp)
+	{
+		perror("pwd_prompt");
+		return (NULL);
+	}
+	pwd = ft_strjoin(temp, suffix);
 	free(temp);
 	return (pwd);
 }

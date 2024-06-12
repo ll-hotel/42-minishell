@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:10:45 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/06 16:38:42 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/07 12:10:37 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	chooser(t_command *cmd, t_msh *msh)
 	if (!msh)
 		return (is_not_builtin(cmd->argv[0]));
 	if (!ft_strncmp(cmd->argv[0], "exit", 5))
-		exit_error_checker(msh, cmd);
+		return (exit_error_checker(msh, cmd));
 	dup_fds(&old_in, &old_out, 1);
 	if (exec_open_redirects(cmd))
 	{
@@ -51,7 +51,7 @@ static int	select_builtin(t_msh *msh, t_command *cmd)
 	else if (!ft_strncmp(cmd->argv[0], "cd", 3))
 		status = msh_cd(cmd, msh);
 	else if (!ft_strncmp(cmd->argv[0], "pwd", 4))
-		status = msh_pwd();
+		status = msh_pwd(msh);
 	else if (!ft_strncmp(cmd->argv[0], "env", 4))
 		status = msh_env(cmd, msh);
 	else if (!ft_strncmp(cmd->argv[0], "export", 7))

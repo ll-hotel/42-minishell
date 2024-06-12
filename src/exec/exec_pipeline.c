@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 13:28:45 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/06 16:34:55 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/11 19:31:33 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	mini_pipe(t_msh *msh, t_command *cmd, int fd_pipe[2]);
 static void	mini_chooser(t_msh *msh, t_command *cmd);
+static void	mini_sighandler(int signal);
 
 int	exec_pipeline(t_msh *msh)
 {
@@ -23,6 +24,7 @@ int	exec_pipeline(t_msh *msh)
 
 	fd_pipe[0] = -1;
 	fd_pipe[1] = -1;
+	signal(SIGINT, mini_sighandler);
 	while (msh->cmds.first)
 	{
 		cmd = (t_command *)msh->cmds.first;
@@ -52,6 +54,8 @@ static void	mini_chooser(t_msh *msh, t_command *cmd)
 	int	status;
 
 	status = 1;
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (chooser(cmd, NULL) == 0)
 		status = chooser(cmd, msh);
 	else
@@ -61,4 +65,13 @@ static void	mini_chooser(t_msh *msh, t_command *cmd)
 		exec_one(msh, cmd);
 	}
 	msh_exit(msh, status);
+}
+
+static void	mini_sighandler(int signal)
+{
+	if (signal == SIGINT)
+	{
+		ft_putstr_fd("\n", 1);
+		msh_status_set(130);
+	}
 }
