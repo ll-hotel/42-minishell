@@ -1,5 +1,5 @@
 MAKE		=	make --no-print-directory
-ECHO		=	echo -e
+ECHO		=	echo
 CC			=	cc
 
 NAME		=	minishell
@@ -108,6 +108,7 @@ ${NAME}	: 	${LIBFT} ${OBJECTS}
 	@$(call percent)
 	${CC} ${CFLAGS} ${IFLAGS} ${DFLAGS} -o $@ ${OBJECTS} ${LFLAGS}
 
+.SILENT: ${LIBFT}
 ${LIBFT}::
 	${MAKE} -C ${LIBFT_DIR}
 

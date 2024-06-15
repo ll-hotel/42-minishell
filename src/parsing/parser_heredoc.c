@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 18:19:56 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/15 18:47:48 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/15 19:39:41 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int	parser_heredoc(t_token *head, t_msh *msh)
 	{
 		head = head->next;
 		if (head->type == TOKEN_HEREDOC)
+		{
 			ongoing = here_document(msh, head, 0, fds);
+			head->str = ft_free(head->str);
+		}
 	}
 	if (dup2(std_in, 0) == -1)
 		return (perror("here-document"), 0);
@@ -53,9 +56,11 @@ static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2])
 	{
 		linex += 1;
 		ft_dprintf(fds[1], "%s\n", line);
+		free(line);
 		line = readline("> ");
 		found_delimiter = (line && ft_strcmp(line, heredoc->str) == 0);
 	}
+	line = ft_free(line);
 	if (!found_delimiter)
 		ft_dprintf(2, "minishell: warning: here-document at line %d " \
 			"delimited by end-of-file (wanted `%s')\n", \
