@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/15 18:39:00 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/16 00:54:52 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,13 @@ struct	s_command
 	int			argc;
 	char		**argv;
 	char		**envp;
+};
+
+typedef struct s_fatptr	t_fptr;
+struct s_fatptr
+{
+	char		*p;
+	uint64_t	size;
 };
 
 /*	----	ENVIRONMENT	----	*/
