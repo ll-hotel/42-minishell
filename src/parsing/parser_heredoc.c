@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 18:19:56 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/15 17:40:43 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/15 18:47:48 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ int	parser_heredoc(t_token *head, t_msh *msh)
 	}
 	if (dup2(std_in, 0) == -1)
 		return (perror("here-document"), 0);
+	close(std_in);
 	signal_gestionnary();
 	return (ongoing);
 }
 
 static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2])
 {
-	(void)msh;
 	char	*line;
 	int		found_delimiter;
 
@@ -52,8 +52,7 @@ static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2])
 	while (line && !found_delimiter)
 	{
 		linex += 1;
-		ft_putstr_fd(line, fds[1]);
-		write(fds[1], "\n", 1);
+		ft_dprintf(fds[1], "%s\n", line);
 		line = readline("> ");
 		found_delimiter = (line && ft_strcmp(line, heredoc->str) == 0);
 	}
@@ -63,6 +62,9 @@ static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2])
 			linex, heredoc->str);
 	close(fds[1]);
 	heredoc->fd = fds[0];
+	if (!ft_strchr(heredoc->str, '\'') && !ft_strchr(heredoc->str, '\"') && \
+			heredoc_expand(msh, fds[0], &heredoc->fd) == 0)
+		return (0);
 	return (1);
 }
 

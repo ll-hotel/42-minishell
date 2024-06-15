@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/11 19:04:29 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/15 18:39:00 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int			parse_dquote(t_token *head, t_msh *env);
 void		parse_redir(t_token *head);
 int			check_redir_validity(t_token *head);
 int			parser_heredoc(t_token *head, t_msh *msh);
-char		*heredoc_expand(t_msh *msh, char *line, char *name);
+int			heredoc_expand(t_msh *msh, int hd_input, int *hd_expanded);
 
 /*	----	SYNTAX	----	*/
 
@@ -141,7 +141,6 @@ void		ft_free_parray(void *array);
 void		ft_free_array(void *array);
 int			ft_is_number(char *str);
 void		closer(t_command *cmd);
-char		*heredoc_expand(t_msh *msh, char *line, char *name);
 
 /*	----	Builtins	----	*/
 
