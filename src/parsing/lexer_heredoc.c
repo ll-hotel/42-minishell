@@ -6,13 +6,13 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 02:32:14 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/06 16:22:48 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/15 17:42:22 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_is_quote(char *str, size_t *i);
+static int	ft_is_quote(char *str, size_t *i);
 
 t_token	*lexer_heredoc(char *line, int *p_i)
 {
@@ -23,9 +23,9 @@ t_token	*lexer_heredoc(char *line, int *p_i)
 	i = 2;
 	while (line[i] && ft_isblank(line[i]))
 		i++;
-	if (!line[i])
+	if (!line[i] || line[i] == '|')
 	{
-		msh_syntax_err(0);
+		msh_syntax_err(line[i]);
 		return (NULL);
 	}
 	*p_i = i;
@@ -40,7 +40,7 @@ t_token	*lexer_heredoc(char *line, int *p_i)
 	return (token_new(limiter, TOKEN_HEREDOC));
 }
 
-int	ft_is_quote(char *str, size_t *i)
+static int	ft_is_quote(char *str, size_t *i)
 {
 	char	temp;
 

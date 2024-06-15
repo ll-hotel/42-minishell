@@ -1,5 +1,5 @@
-MAKE		=	@make --no-print-directory
-ECHO		=	echo
+MAKE		=	make --no-print-directory
+ECHO		=	echo -e
 CC			=	cc
 
 NAME		=	minishell
@@ -72,15 +72,14 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				utils/ft_free.c \
 				utils/ft_free_parray.c \
 				utils/welcome.c \
-				utils/heredoc_expand.c \
 				)
 DEPS		=	$(OBJECTS:.o=.d)
 
 NB_FILES = $(words $(OBJECTS))
-GREEN="\033[0;32m"
-RED="\033[0;31m"
-BLUE="\033[0;34m"
-END_COLOUR="\033[0m"
+GREEN='\e[0;32m'
+RED='\e[0;31m'
+BLUE='\e[0;34m'
+END_COLOUR='\e[0m'
 
 define percent
 	@$(ECHO) -n $(GREEN)"[$$(echo "scale=2; $$(find $(OBJECT_DIR) -maxdepth 3 -name '*.o' | wc -l) / $(NB_FILES) * 100" | bc)%]" $(END_COLOUR)
@@ -100,43 +99,39 @@ define normitest
 endef
 
 .PHONY: all
-all	:	$(NAME)
+all	:	${NAME}
 
--include $(DEPS)
+-include ${DEPS}
 
-$(NAME)	: 	$(LIBFT) $(OBJECTS)
+${NAME}	: 	${LIBFT} ${OBJECTS}
 	@$(call percent)
-	$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ $(OBJECTS) $(LFLAGS)
+	${CC} ${CFLAGS} ${IFLAGS} ${DFLAGS} -o $@ ${OBJECTS} ${LFLAGS}
 
-$(LIBFT)::
-	$(MAKE) -C $(LIBFT_DIR)
+${LIBFT}::
+	${MAKE} -C ${LIBFT_DIR}
 
-$(OBJECT_DIR)%.o:	$(SOURCE_DIR)%.c | $(OBJECT_DIR)
+${OBJECT_DIR}%.o:	${SOURCE_DIR}%.c | ${OBJECT_DIR}
 	@$(call percent)
-	$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<
+	${CC} ${CFLAGS} ${IFLAGS} ${DFLAGS} -o $@ -c $<
 
-$(OBJECT_DIR):
-	mkdir -p $@builtins/
-	mkdir -p $@core/
-	mkdir -p $@exec/
-	mkdir -p $@llst/
-	mkdir -p $@parsing/
-	mkdir -p $@utils/
+${OBJECT_DIR}:
+	mkdir -p $(sort $(dir ${OBJECTS}))
 
 .PHONY: clean
 clean:
-	$(MAKE) -C $(LIBFT_DIR) clean
-ifneq ("$(wildcard $(OBJECT_DIR))", "")
-	rm -rf $(OBJECT_DIR)
+	${MAKE} -C ${LIBFT_DIR} clean
+ifneq ("$(wildcard ${OBJECT_DIR})", "")
+	rm -rf ${OBJECT_DIR}
 endif
 
 .PHONY: fclean
 fclean:	clean
-	$(MAKE) -C $(LIBFT_DIR) fclean
-ifneq ("$(wildcard $(NAME))", "")
-	rm -f $(NAME)
+	${MAKE} -C ${LIBFT_DIR} fclean
+ifneq ("$(wildcard ${NAME})", "")
+	rm -f ${NAME}
 endif
 
+.SILENT: re
 .PHONY: re
 re:	fclean
-	$(MAKE) all
+	${MAKE} all

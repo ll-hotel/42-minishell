@@ -6,26 +6,36 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 18:19:56 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/12 23:59:16 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/15 17:40:43 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	heredoc_sighandler(int signal);
 static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2]);
 
 int	parser_heredoc(t_token *head, t_msh *msh)
 {
 	int	fds[2];
+	int	std_in;
+	int	ongoing;
 
-	while (head->next)
+	signal(SIGINT, heredoc_sighandler);
+	std_in = dup(0);
+	if (std_in == -1)
+		return (perror("here-document"), 0);
+	ongoing = 1;
+	while (head->next && ongoing)
 	{
 		head = head->next;
 		if (head->type == TOKEN_HEREDOC)
-			if (!here_document(msh, head, 0, fds))
-				return (0);
+			ongoing = here_document(msh, head, 0, fds);
 	}
-	return (1);
+	if (dup2(std_in, 0) == -1)
+		return (perror("here-document"), 0);
+	signal_gestionnary();
+	return (ongoing);
 }
 
 static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2])
@@ -54,4 +64,14 @@ static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2])
 	close(fds[1]);
 	heredoc->fd = fds[0];
 	return (1);
+}
+
+static void	heredoc_sighandler(int signal)
+{
+	if (signal == SIGINT)
+	{
+		ft_putstr_fd("\n", 1);
+		msh_status_set(130);
+		close(0);
+	}
 }
