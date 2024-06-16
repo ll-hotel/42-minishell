@@ -6,30 +6,26 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 17:49:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/16 01:58:49 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 01:55:16 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	setup(int fds[2], int hd_input, int *hd_expanded, char **line);
-static int	loop(int fd, char *line, char *evar_name, t_fptr *fstr);
-static int	measure_name_len(char *name_start);
+static void	loop(t_msh *msh, char *line, int fd_out);
 
 int	heredoc_expand(t_msh *msh, int hd_input, int *hd_expanded)
 {
-	int			fds[2];
-	char		*line;
-	t_fptr		fstr[1];
+	int		fds[2];
+	char	*line;
 
-	setup(fds, hd_input, hd_expanded, &line);
+	if (pipe(fds) == -1)
+		return (perror("here-document"), 0);
+	*hd_expanded = fds[0];
+	line = get_next_line(hd_input);
 	while (line)
 	{
-		ft_bzero(fstr, sizeof(*fstr));
-		if (!loop(hd_input, line, NULL, fstr))
-		{
-
-		}
+		loop(msh, line, fds[1]);
 		free(line);
 		line = get_next_line(hd_input);
 	}
@@ -38,36 +34,31 @@ int	heredoc_expand(t_msh *msh, int hd_input, int *hd_expanded)
 	return (1);
 }
 
-static int	setup(int fds[2], int hd_input, int *hd_expanded, char **line)
+static void	loop(t_msh *msh, char *line, int fd_out)
 {
-	if (pipe(fds) == -1)
-		return (perror("here-document"), 0);
-	*hd_expanded = fds[0];
-	*line = get_next_line(hd_input);
-	return (1);
-}
+	t_env_var	*evar;
+	char		*evar_name;
+	int			name_len;
+	char		c;
 
-static int	loop(int fd, char *line, char *evar_name, t_fptr *fstr)
-{
-	ft_bzero(fstr, sizeof(*fstr));
 	evar_name = ft_strtok(line, "$");
-	if (evar_name != NULL)
-		;
+	if (evar_name == line)
+		evar_name = ft_strtok(NULL, "$");
 	while (evar_name)
 	{
+		if (line + 1 < evar_name)
+			ft_dprintf(fd_out, "%s", line);
+		name_len = 0;
+		while (ft_isalnum(evar_name[name_len]))
+			name_len += 1;
+		c = evar_name[name_len];
+		evar_name[name_len] = 0;
+		evar = env_var_get(msh, evar_name);
+		evar_name[name_len] = c;
+		if (evar && evar->value)
+			ft_dprintf(fd_out, "%s", evar->value);
+		line = evar_name + name_len;
 		evar_name = ft_strtok(NULL, "$");
 	}
-	free(fstr->p);
-	free(line);
-	return (1);
-}
-
-static int	measure_name_len(char *name_start)
-{
-	int	name_len;
-
-	name_len = 0;
-	while (ft_isalnum(name_start[name_len]))
-		name_len += 1;
-	return (name_len);
+	ft_dprintf(fd_out, "%s", line);
 }

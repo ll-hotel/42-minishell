@@ -1,5 +1,5 @@
 MAKE = @make --no-print-directory
-ECHO = echo -e
+ECHO = echo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 ifneq ("$(DEBUG)", "")
@@ -30,7 +30,8 @@ FT_PRINTF_OBJS = $(patsubst %.c,$(OBJ_DIR)/ft_printf/%.o, \
 				 ft_printf.c ft_printf_handlers.c ft_printf_xtoa.c)				 
 
 GNL_OBJS = $(patsubst %.c,$(OBJ_DIR)/get_next_line/%.o, \
-		   get_next_line.c get_next_line_utils.c)
+		   lrichaud-get_next_line.c)
+		   #get_next_line.c get_next_line_utils.c)
 
 VECTOR_OBJS = $(patsubst %.c,$(OBJ_DIR)/vector/%.o, \
 			  vector_addback.c vector_at.c vector_clear.c vector_new.c vector_del_at.c)
@@ -56,8 +57,7 @@ DEPS = $(patsubst %.o,%.d,${OBJS})
 
 NAME = libft.a
 
-.PHONY: all clean fclean re
-
+.PHONY: all
 all: ${NAME}
 
 -include ${DEPS}

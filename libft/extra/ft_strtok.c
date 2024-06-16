@@ -6,32 +6,24 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/16 01:13:56 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/16 01:46:10 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 00:47:33 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 static int	isdelim(char c, const char *delim);
-static void	null_terminate_tok(char *tok, const char *delim, char **next);
+static void	null_terminate_tok(char **tok, const char *delim, char **next);
 
 char	*ft_strtok(char *str, const char *delim)
 {
 	static char	*next = 0;
 	char		*tok;
 
-	if (!str)
-	{
-		tok = next;
-		null_terminate_tok(tok, delim, &next);
-	}
-	else
-	{
-		if (!*str)
-			return (0);
-		while (*str && isdelim(*str, delim))
-			str += 1;
+	if (str)
 		tok = str;
-		null_terminate_tok(tok, delim, &next);
-	}
+	else
+		tok = next;
+	next = 0;
+	null_terminate_tok(&tok, delim, &next);
 	return (tok);
 }
 
@@ -45,23 +37,26 @@ static int	isdelim(char c, const char *delim)
 	return (delim[i] != 0);
 }
 
-static void	null_terminate_tok(char *tok, const char *delim, char **next)
+static void	null_terminate_tok(char **tok, const char *delim, char **next)
 {
-	if (!tok)
-		return ;
-	while (*tok && !isdelim(*tok, delim))
-		tok += 1;
-	if (!*tok)
-	{
-		*next = 0;
-		return ;
-	}
+	char	*tmp;
+
+	tmp = *tok;
 	*tok = 0;
-	tok += 1;
-	while (*tok && isdelim(*tok, delim))
-		tok += 1;
-	if (!*tok)
-		*next = 0;
-	else
-		*next = tok;
+	if (!tmp || !tmp[0])
+		return ;
+	if (isdelim(tmp[0], delim))
+		*(tmp++) = 0;
+	while (isdelim(tmp[0], delim))
+		tmp += 1;
+	if (!tmp[0])
+		return ;
+	*tok = tmp;
+	while (tmp[0] && !isdelim(tmp[0], delim))
+		tmp += 1;
+	if (tmp[0])
+	{
+		tmp[0] = 0;
+		*next = tmp + 1;
+	}
 }
