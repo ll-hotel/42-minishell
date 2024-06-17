@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 static t_token	*lexer_token(char *line, int *new_i);
 static t_token	*create_new_token(\

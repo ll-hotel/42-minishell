@@ -21,26 +21,26 @@ endif
 
 OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				builtins/chooser.c \
-				builtins/msh_cd.c \
-				builtins/msh_echo.c \
-				builtins/msh_env.c \
-				builtins/msh_exit.c \
-				builtins/msh_export.c \
-				builtins/msh_pwd.c \
-				builtins/msh_unset.c \
+				builtins/mch_cd.c \
+				builtins/mch_echo.c \
+				builtins/mch_env.c \
+				builtins/mch_exit.c \
+				builtins/mch_export.c \
+				builtins/mch_pwd.c \
+				builtins/mch_unset.c \
 				core/env.c \
 				core/main.c \
-				core/msh_status.c \
+				core/mch_status.c \
 				core/signal_gestionnary.c \
-				exec/exec_find_command.c \
+				exec/exec_find_cmd.c \
 				exec/exec_one.c \
 				exec/exec_open_redirects.c \
 				exec/exec_path.c \
 				exec/exec_pipeline.c \
 				exec/exec_utils.c \
-				exec/msh_exec.c \
-				llst/command.c \
-				llst/env_var.c \
+				exec/mch_exec.c \
+				llst/cmd.c \
+				llst/evar.c \
 				llst/llst_addback.c \
 				llst/llst_addfront.c \
 				llst/llst_at.c \
@@ -50,7 +50,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				llst/llst_len.c \
 				llst/llst_next.c \
 				llst/token.c \
-				parsing/command_creator.c \
+				parsing/cmd_creator.c \
 				parsing/env_var_expand.c \
 				parsing/heredoc_expand.c \
 				parsing/lexer_append.c \
@@ -61,13 +61,13 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				parsing/lexer_redir.c \
 				parsing/lexer_utils.c \
 				parsing/lexer_word.c \
-				parsing/msh_parser.c \
+				parsing/mch_parser.c \
 				parsing/parse_dquote.c \
 				parsing/parse_redir.c \
 				parsing/parser_heredoc.c \
 				parsing/split_env_vars.c \
 				parsing/expand_env_vars.c \
-				parsing/msh_syntax_err.c \
+				parsing/mch_syntax_err.c \
 				utils/display_prompt.c \
 				utils/ft_close.c \
 				utils/ft_free.c \

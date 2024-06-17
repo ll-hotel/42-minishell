@@ -6,50 +6,50 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 13:28:45 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/11 19:31:33 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:09:52 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-static void	mini_pipe(t_msh *msh, t_command *cmd, int fd_pipe[2]);
-static void	mini_chooser(t_msh *msh, t_command *cmd);
+static void	mini_pipe(t_ch *ch, t_cmd *cmd, int fd_pipe[2]);
+static void	mini_chooser(t_ch *ch, t_cmd *cmd);
 static void	mini_sighandler(int signal);
 
-int	exec_pipeline(t_msh *msh)
+int	exec_pipeline(t_ch *ch)
 {
-	t_command	*cmd;
-	int			pid;
-	int			fd_pipe[2];
+	t_cmd	*cmd;
+	int		pid;
+	int		fd_pipe[2];
 
 	fd_pipe[0] = -1;
 	fd_pipe[1] = -1;
 	signal(SIGINT, mini_sighandler);
-	while (msh->cmds.first)
+	while (ch->cmds.first)
 	{
-		cmd = (t_command *)msh->cmds.first;
+		cmd = (t_cmd *)ch->cmds.first;
 		if (cmd->next)
-			mini_pipe(msh, cmd, fd_pipe);
+			mini_pipe(ch, cmd, fd_pipe);
 		pid = fork();
 		if (pid == -1)
-			exec_perror_exit(msh, errno);
+			exec_perror_exit(ch, errno);
 		else if (pid == 0)
-			mini_chooser(msh, cmd);
+			mini_chooser(ch, cmd);
 		ft_close(fd_pipe[1]);
-		llst_delone(&msh->cmds, command_free);
+		llst_delone(&ch->cmds, cmd_free);
 	}
 	return (exec_wait_children(pid));
 }
 
-static void	mini_pipe(t_msh *msh, t_command *cmd, int fd_pipe[2])
+static void	mini_pipe(t_ch *ch, t_cmd *cmd, int fd_pipe[2])
 {
 	if (pipe(fd_pipe) == -1)
-		exec_perror_exit(msh, 1);
+		exec_perror_exit(ch, 1);
 	cmd->fd_out = fd_pipe[1];
 	cmd->next->fd_in = fd_pipe[0];
 }
 
-static void	mini_chooser(t_msh *msh, t_command *cmd)
+static void	mini_chooser(t_ch *ch, t_cmd *cmd)
 {
 	int	status;
 
@@ -57,14 +57,14 @@ static void	mini_chooser(t_msh *msh, t_command *cmd)
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 	if (chooser(cmd, NULL) == 0)
-		status = chooser(cmd, msh);
+		status = chooser(cmd, ch);
 	else
 	{
 		if (cmd->next)
 			cmd->next->fd_in = ft_close(cmd->next->fd_in);
-		exec_one(msh, cmd);
+		exec_one(ch, cmd);
 	}
-	msh_exit(msh, status);
+	ch_exit(ch, status);
 }
 
 static void	mini_sighandler(int signal)
@@ -72,6 +72,6 @@ static void	mini_sighandler(int signal)
 	if (signal == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);
-		msh_status_set(130);
+		ch_status_set(130);
 	}
 }

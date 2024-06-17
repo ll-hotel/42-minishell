@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_find_command.c                                :+:      :+:    :+:   */
+/*   exec_find_cmd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:43:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 13:11:33 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:08:39 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 static char	*create_executable(char *dir, char *program);
-static char	*slash_or_empty_path(t_command *cmd);
+static char	*slash_or_empty_path(t_cmd *cmd);
 
-int	exec_find_command(t_command *cmd, char **path)
+int	exec_find_cmd(t_cmd *cmd, char **path)
 {
 	int	i;
 
@@ -24,7 +24,7 @@ int	exec_find_command(t_command *cmd, char **path)
 	if (!path || ft_strchr(cmd->argv[0], '/'))
 	{
 		cmd->executable = slash_or_empty_path(cmd);
-		return (!cmd->executable * msh_status_get());
+		return (!cmd->executable * ch_status_get());
 	}
 	if (cmd->argv[0][0] == '.' && \
 			(!cmd->argv[0][1] || (cmd->argv[0][1] == '.' && !cmd->argv[0][2])))
@@ -40,35 +40,34 @@ int	exec_find_command(t_command *cmd, char **path)
 			cmd->executable = ft_free(cmd->executable);
 		}
 	}
-	ft_dprintf(2, "\001\e[0m\e[91m\002%s: command not found\n", cmd->argv[0]);
+	ft_dprintf(2, "miniChell: %s: cmd not found\n", cmd->argv[0]);
 	return (127);
 }
 
-static char	*slash_or_empty_path(t_command *cmd)
+static char	*slash_or_empty_path(t_cmd *cmd)
 {
 	struct stat	buf;
 
 	if (access(cmd->argv[0], F_OK) == 0)
 	{
 		if (stat(cmd->argv[0], &buf) != 0)
-			return (perror("minishell"), msh_status_set(errno), NULL);
+			return (perror("miniChell"), ch_status_set(1), NULL);
 		if (S_ISDIR(buf.st_mode))
 		{
-			ft_dprintf(2, "\001\e[0m\e[91m\002%s: Is a directory\n", \
-					cmd->argv[0]);
-			msh_status_set(126);
+			ft_dprintf(2, "miniChell: %s: Is a directory\n", cmd->argv[0]);
+			ch_status_set(126);
 			return (NULL);
 		}
 		if (access(cmd->argv[0], X_OK) == 0)
 			return (ft_strdup(cmd->argv[0]));
-		ft_dprintf(2, "minishell: %s: Permission denied\n", cmd->argv[0]);
-		msh_status_set(126);
+		ft_dprintf(2, "miniChell: %s: Permission denied\n", cmd->argv[0]);
+		ch_status_set(126);
 	}
 	else
 	{
-		ft_dprintf(2, "minishell: %s: "\
+		ft_dprintf(2, "miniChell: %s: "\
 				"No such file or directory\n", cmd->argv[0]);
-		msh_status_set(127);
+		ch_status_set(127);
 	}
 	return (NULL);
 }

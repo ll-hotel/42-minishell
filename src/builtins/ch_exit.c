@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_exit.c                                         :+:      :+:    :+:   */
+/*   ch_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,30 +10,30 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-void	msh_exit(t_msh *msh, int status)
+void	ch_exit(t_ch *ch, int status)
 {
-	llst_clear(&msh->env_vars, &env_var_free);
-	llst_clear(&msh->cmds, &command_free);
-	llst_clear(&msh->args, &token_free);
+	llst_clear(&ch->evars, &evar_free);
+	llst_clear(&ch->cmds, &cmd_free);
+	llst_clear(&ch->args, &token_free);
 	rl_clear_history();
 	exit(status & 0xff);
 }
 
-int	exit_error_checker(t_msh *msh, t_command *cmd)
+int	exit_error_checker(t_ch *ch, t_cmd *cmd)
 {
 	ft_putstr_fd("exit\n", 1);
 	if (cmd->argc == 1)
-		msh_exit(msh, msh_status_get());
+		ch_exit(ch, ch_status_get());
 	if (cmd->argc >= 2 && !ft_is_number(cmd->argv[1]))
 	{
-		ft_dprintf(2, "minishell: exit: numeric argument required\n");
-		msh_exit(msh, 2);
+		ft_dprintf(2, "miniChell: exit: numeric argument required\n");
+		ch_exit(ch, 2);
 	}
 	if (cmd->argc == 2)
-		msh_exit(msh, ft_atoi(cmd->argv[1]));
-	ft_dprintf(2, "minishell: exit: too many arguments\n");
+		ch_exit(ch, ft_atoi(cmd->argv[1]));
+	ft_dprintf(2, "miniChell: exit: too many arguments\n");
 	return (1);
 }
 

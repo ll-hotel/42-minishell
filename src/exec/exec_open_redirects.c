@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 static int	open_file(int type, char *filename, int *p_fdin, int *p_fdout);
 static int	open_perror(char *filename);
 
-int	exec_open_redirects(t_command *cmd)
+int	exec_open_redirs(t_cmd *cmd)
 {
 	t_token	*redir;
 	int		error;
 
 	error = 0;
-	redir = (t_token *)cmd->redirects.first;
+	redir = (t_token *)cmd->redirs.first;
 	while (redir && !error)
 	{
 		if (redir->type == TOKEN_HEREDOC)
@@ -68,13 +68,13 @@ static int	open_perror(char *filename)
 {
 	char	*msg;
 
-	msg = ft_strjoin("minishell: ", filename);
+	msg = ft_strjoin("miniChell: ", filename);
 	if (msg)
 	{
 		perror(msg);
 		free(msg);
 	}
 	else
-		perror("minishell");
+		perror("miniChell");
 	return (1);
 }

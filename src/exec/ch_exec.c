@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_env.c                                          :+:      :+:    :+:   */
+/*   ch_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 19:56:14 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/29 03:09:06 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/02/19 18:45:16 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/06/17 22:08:08 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-int	msh_env(t_command *cmd, t_msh *msh)
+void	ch_exec(t_ch *ch)
 {
-	t_env_var	*vars;
+	int	exit_status;
 
-	if (cmd->argc > 1)
-		return (0);
-	vars = (t_env_var *)msh->env_vars.first;
-	while (vars)
-	{
-		printf("%s=", vars->name);
-		if (vars->value)
-			printf("%s", vars->value);
-		printf("\n");
-		vars = vars->next;
-	}
-	return (0);
+	if (!ch->cmds.first->next && chooser((t_cmd *)ch->cmds.first, NULL) == 0)
+		exit_status = chooser((t_cmd *)ch->cmds.first, ch);
+	else
+		exit_status = exec_pipeline(ch);
+	ch_status_set(exit_status);
 }

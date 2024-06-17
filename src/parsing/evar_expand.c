@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_var_expand.c                                   :+:      :+:    :+:   */
+/*   evar_expand.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 static void	expand_empty(char **p_str);
 static void	expand_status(char **p_str);
 static void	expand_pid(char **p_str);
-static void	expand_var(t_msh *msh, char **p_str);
+static void	expand_var(t_ch *ch, char **p_str);
 
-int	env_var_expand(t_llst_head *env_vars, t_msh *msh)
+int	evar_expand(t_llst_head *evars, t_ch *ch)
 {
 	t_token		*token;
 
-	token = (t_token *)env_vars->first;
+	token = (t_token *)evars->first;
 	if (token->str[0] == 0)
 		expand_empty(&token->str);
 	else if (ft_strncmp(token->str, "?", 2) == 0)
@@ -29,7 +29,7 @@ int	env_var_expand(t_llst_head *env_vars, t_msh *msh)
 	else if (ft_strncmp(token->str, "$", 2) == 0)
 		expand_pid(&token->str);
 	else
-		expand_var(msh, &token->str);
+		expand_var(ch, &token->str);
 	return (token->str != NULL);
 }
 
@@ -42,7 +42,7 @@ static void	expand_empty(char **p_str)
 static void	expand_status(char **p_str)
 {
 	free(*p_str);
-	*p_str = ft_itoa(msh_status_get());
+	*p_str = ft_itoa(ch_status_get());
 }
 
 static void	expand_pid(char **p_str)
@@ -51,11 +51,11 @@ static void	expand_pid(char **p_str)
 	*p_str = ft_itoa(getpid());
 }
 
-static void	expand_var(t_msh *msh, char **p_str)
+static void	expand_var(t_ch *ch, char **p_str)
 {
-	t_env_var	*evar;
+	t_evar	*evar;
 
-	evar = env_var_get(msh, *p_str);
+	evar = evar_get(ch, *p_str);
 	free(*p_str);
 	if (!evar)
 		*p_str = ft_calloc(1, 1);

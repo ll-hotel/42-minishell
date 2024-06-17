@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 t_token	*lexer_redir(char *line, int *p_i)
 {
@@ -24,7 +24,7 @@ t_token	*lexer_redir(char *line, int *p_i)
 		i += 1;
 	if (!line[i] || line[i] == '|' || line[i] == '<' || line[i] == '>')
 	{
-		msh_syntax_err(line[i]);
+		ch_syntax_err(line[i]);
 		return (NULL);
 	}
 	*p_i = i;

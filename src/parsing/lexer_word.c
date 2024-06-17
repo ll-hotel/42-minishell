@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 t_token	*lexer_word(char *line, int *p_i)
 {
@@ -27,7 +27,7 @@ t_token	*lexer_word(char *line, int *p_i)
 				&& !is_operator(line[word_len]))
 			word_len += 1;
 	if (squoted && !line[word_len + 1])
-		return (msh_syntax_err(- '\''), NULL);
+		return (ch_syntax_err(- '\''), NULL);
 	word = ft_substr(line, squoted, word_len);
 	*p_i = word_len + squoted * 2;
 	if (word)

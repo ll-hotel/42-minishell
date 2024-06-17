@@ -10,24 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-int	exec_one(t_msh *msh, t_command *cmd)
+int	exec_one(t_ch *ch, t_cmd *cmd)
 {
 	int	status;
 
-	if (exec_open_redirects(cmd) != 0)
-		msh_exit(msh, 1);
+	if (exec_open_redirs(cmd) != 0)
+		ch_exit(ch, 1);
 	if (!cmd->argv || !cmd->argv[0])
-		msh_exit(msh, 0);
-	cmd->envp = env_to_array((t_env_var *)msh->env_vars.first);
-	cmd->path = exec_get_path(msh);
-	status = exec_find_command(cmd, cmd->path);
+		ch_exit(ch, 0);
+	cmd->envp = ch_to_array((t_evar *)ch->evars.first);
+	cmd->path = exec_get_path(ch);
+	status = exec_find_cmd(cmd, cmd->path);
 	if (status != 0)
 	{
 		ft_close(cmd->fd_in);
 		ft_close(cmd->fd_out);
-		msh_exit(msh, status);
+		ch_exit(ch, status);
 	}
 	if (exec_dup2(cmd) != 0)
 		return (errno);

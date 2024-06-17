@@ -1,33 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_pwd.c                                          :+:      :+:    :+:   */
+/*   ch_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/02 10:05:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/07 12:13:14 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/06 06:53:03 by lrichaud          #+#    #+#             */
+/*   Updated: 2024/06/17 22:04:13 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-int	msh_pwd(t_msh *msh)
+int	ch_unset(t_cmd *cmd, t_ch *ch)
 {
-	char		*pwd;
-	t_env_var	*oldpwd;
+	t_evar		*vars;
+	t_llst_head	*previous_vars;
 
-	pwd = getcwd(NULL, 0);
-	if (pwd)
+	previous_vars = &ch->evars;
+	if (cmd->argc < 2)
+		return (0);
+	vars = (t_evar *)ch->evars.first;
+	while (vars && ft_strncmp(vars->name, cmd->argv[1], \
+		ft_strlen(cmd->argv[1])))
 	{
-		printf("%s\n", pwd);
-		free(pwd);
+		previous_vars = (t_llst_head *) previous_vars->first;
+		vars = vars->next;
 	}
-	else
-	{
-		oldpwd = env_var_get(msh, "OLDPWD");
-		if (oldpwd && oldpwd->value)
-			printf("%s\n", oldpwd->value);
-	}
+	if (vars)
+		llst_delone((void *) previous_vars, evar_free);
 	return (0);
 }

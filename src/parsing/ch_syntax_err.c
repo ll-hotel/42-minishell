@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
+/*   ch_syntax_err.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/02 14:59:00 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 06:44:04 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/26 04:38:12 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/06/04 21:45:55 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-void	command_free(void *command)
+void	ch_syntax_err(char c)
 {
-	t_command *const	cmd = command;
-
-	if (cmd)
+	if (c > 0)
+		ft_dprintf(2, "miniChell: syntax error near " \
+				"unexpected token `%c'\n", c);
+	else if (c < 0)
 	{
-		cmd->fd_in = ft_close(cmd->fd_in);
-		cmd->fd_out = ft_close(cmd->fd_out);
-		ft_free(cmd->executable);
-		llst_clear(&cmd->redirects, token_free);
-		ft_free_parray(cmd->argv);
-		ft_free_parray(cmd->envp);
-		if (cmd->path)
-			ft_free(cmd->path[0]);
-		ft_free(cmd->path);
-		ft_bzero(cmd, sizeof(*cmd));
-		free(cmd);
+		ft_dprintf(2, \
+			"miniChell: unexpected EOF while looking for matching `%c'\n", -c);
 	}
+	if (!c || c == - '\'' || c == - '\"')
+		ft_dprintf(2, "miniChell: syntax error: unexpected end of file\n");
+	ch_status_set(2);
 }

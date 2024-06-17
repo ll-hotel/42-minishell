@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_env_vars.c                                  :+:      :+:    :+:   */
+/*   expand_evars.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,20 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-int	expand_env_vars(t_token *head, t_msh *env)
+int	expand_evars(t_token *head, t_ch *ch)
 {
 	while (head->next)
 	{
 		if (head->next->type == TOKEN_ENV_VAR)
 		{
-			if (!env_var_expand((t_llst_head *)head, env))
+			if (!evar_expand((t_llst_head *)head, ch))
 				return (0);
 		}
 		if (head->next->type == TOKEN_DQUOTE)
 		{
-			if (!parse_dquote(head, env))
+			if (!parse_dquote(head, ch))
 				return (0);
 		}
 		head = head->next;

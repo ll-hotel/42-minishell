@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 #include <unistd.h>
 
 static int	ft_is_quote(char *str, size_t *i);
@@ -26,7 +26,7 @@ t_token	*lexer_heredoc(char *line, int *p_i)
 	delimiter = cut_delimiter(line, p_i);
 	if (!delimiter)
 	{
-		perror("minishell");
+		perror("miniChell");
 		return (NULL);
 	}
 	i = 0;
@@ -50,7 +50,7 @@ static char	*cut_delimiter(char *line, int *p_i)
 		i++;
 	if (!line[i] || line[i] == '|')
 	{
-		msh_syntax_err(line[i]);
+		ch_syntax_err(line[i]);
 		return (NULL);
 	}
 	*p_i = i;
@@ -96,7 +96,7 @@ static int	ft_is_quote(char *str, size_t *i)
 	*i += ft_strichr(str + *i, quote);
 	if (!str[*i])
 	{
-		msh_syntax_err(0);
+		ch_syntax_err(0);
 		return (-1);
 	}
 	return (0);
