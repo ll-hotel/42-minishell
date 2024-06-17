@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 02:32:14 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/15 17:42:22 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 03:36:32 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_token	*lexer_heredoc(char *line, int *p_i)
 	{
 		if (ft_is_quote(line, &i) == -1)
 			return (NULL);
-		i++;
+		i += (line[i] != 0);
 	}
 	limiter = ft_substr(line, *p_i, i - *p_i);
 	*p_i = i;
@@ -42,18 +42,17 @@ t_token	*lexer_heredoc(char *line, int *p_i)
 
 static int	ft_is_quote(char *str, size_t *i)
 {
-	char	temp;
+	char	quote;
 
-	if (str[*i] == '\'' || str[*i] == '\"')
+	if (str[*i] != '\'' && str[*i] != '\"')
+		return (0);
+	quote = str[*i];
+	*i += 1;
+	*i += ft_strichr(str + *i, quote);
+	if (!str[*i])
 	{
-		temp = str[*i];
-		while (str[*i] && str[*i] != temp)
-			(*i)++;
-		if (!str[*i])
-		{
-			write(1, "Quote Error\n", 12);
-			return (-1);
-		}
+		msh_syntax_err(0);
+		return (-1);
 	}
 	return (0);
 }
