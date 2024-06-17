@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:48:01 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/11 19:30:34 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:50:04 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ static int	sig_return_value(int signal);
 
 int	exec_dup2(t_command *cmd)
 {
-	if (cmd->fd_in > 0)
+	if (cmd->fd_in != -1)
 	{
 		if (dup2(cmd->fd_in, 0) == -1)
 			return (perror("minishell: fd_in dup2"), 1);
-		close(cmd->fd_in);
+		cmd->fd_in = ft_close(cmd->fd_in);
 	}
-	if (cmd->fd_out > 1)
+	if (cmd->fd_out != -1)
 	{
 		if (dup2(cmd->fd_out, 1) == -1)
 			return (perror("minishell: fd_out dup2"), 1);
-		close(cmd->fd_out);
+		cmd->fd_out = ft_close(cmd->fd_out);
 	}
 	return (0);
 }
