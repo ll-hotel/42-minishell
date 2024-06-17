@@ -21,16 +21,16 @@ endif
 
 OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				builtins/chooser.c \
-				builtins/mch_cd.c \
-				builtins/mch_echo.c \
-				builtins/mch_env.c \
-				builtins/mch_exit.c \
-				builtins/mch_export.c \
-				builtins/mch_pwd.c \
-				builtins/mch_unset.c \
+				builtins/ch_cd.c \
+				builtins/ch_echo.c \
+				builtins/ch_env.c \
+				builtins/ch_exit.c \
+				builtins/ch_export.c \
+				builtins/ch_pwd.c \
+				builtins/ch_unset.c \
 				core/env.c \
 				core/main.c \
-				core/mch_status.c \
+				core/ch_status.c \
 				core/signal_gestionnary.c \
 				exec/exec_find_cmd.c \
 				exec/exec_one.c \
@@ -38,7 +38,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				exec/exec_path.c \
 				exec/exec_pipeline.c \
 				exec/exec_utils.c \
-				exec/mch_exec.c \
+				exec/ch_exec.c \
 				llst/cmd.c \
 				llst/evar.c \
 				llst/llst_addback.c \
@@ -51,7 +51,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				llst/llst_next.c \
 				llst/token.c \
 				parsing/cmd_creator.c \
-				parsing/env_var_expand.c \
+				parsing/evar_expand.c \
 				parsing/heredoc_expand.c \
 				parsing/lexer_append.c \
 				parsing/lexer_dollar.c \
@@ -61,18 +61,17 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				parsing/lexer_redir.c \
 				parsing/lexer_utils.c \
 				parsing/lexer_word.c \
-				parsing/mch_parser.c \
+				parsing/ch_parser.c \
 				parsing/parse_dquote.c \
 				parsing/parse_redir.c \
 				parsing/parser_heredoc.c \
-				parsing/split_env_vars.c \
-				parsing/expand_env_vars.c \
-				parsing/mch_syntax_err.c \
+				parsing/split_evars.c \
+				parsing/expand_evars.c \
+				parsing/ch_syntax_err.c \
 				utils/display_prompt.c \
 				utils/ft_close.c \
 				utils/ft_free.c \
 				utils/ft_free_parray.c \
-				utils/welcome.c \
 				)
 DEPS		=	$(OBJECTS:.o=.d)
 
