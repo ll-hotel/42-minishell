@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 17:49:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 14:23:47 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 20:25:02 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ static int	open_file(int type, char *filename, int *p_fdin, int *p_fdout)
 		*p_fdout = open(filename, REDIR_OUT_FLAGS, FILE_PERMS);
 	else if (type == TOKEN_APPEND)
 		*p_fdout = open(filename, APPEND_FLAGS, FILE_PERMS);
-	if ((type == TOKEN_REDIR_OUT || type == TOKEN_APPEND) && *p_fdout == -1)
-		return (open_perror(filename));
+	if (type == TOKEN_REDIR_OUT || type == TOKEN_APPEND)
+	{
+		if (*p_fdout == -1)
+			return (open_perror(filename));
+	}
 	else if (*p_fdin == -1)
 		return (open_perror(filename));
 	return (0);
