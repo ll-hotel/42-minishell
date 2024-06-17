@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_syntax_err.c                                   :+:      :+:    :+:   */
+/*   ch_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/26 04:38:12 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/04 21:45:55 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/22 19:56:14 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/06/17 22:00:16 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-void	msh_syntax_err(char c)
+int	ch_env(t_cmd *cmd, t_ch *ch)
 {
-	if (c > 0)
-		ft_dprintf(2, "minishell: syntax error near " \
-				"unexpected token `%c'\n", c);
-	else if (c < 0)
+	t_evar	*vars;
+
+	if (cmd->argc > 1)
+		return (0);
+	vars = (t_evar *)ch->evars.first;
+	while (vars)
 	{
-		ft_dprintf(2, \
-			"minishell: unexpected EOF while looking for matching `%c'\n", -c);
+		printf("%s=", vars->name);
+		if (vars->value)
+			printf("%s", vars->value);
+		printf("\n");
+		vars = vars->next;
 	}
-	if (!c || c == - '\'' || c == - '\"')
-		ft_dprintf(2, "minishell: syntax error: unexpected end of file\n");
-	msh_status_set(2);
+	return (0);
 }

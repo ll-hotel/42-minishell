@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 static void	reception(int sig);
 
@@ -28,6 +28,6 @@ static void	reception(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		msh_status_set(130);
+		ch_status_set(130);
 	}
 }

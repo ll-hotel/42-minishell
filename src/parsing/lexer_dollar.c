@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 t_token	*lexer_dollar(char *line, int *p_i)
 {

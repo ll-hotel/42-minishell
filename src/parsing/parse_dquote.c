@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-int	parse_dquote(t_token *head, t_msh *env)
+int	parse_dquote(t_token *head, t_ch *ch)
 {
 	t_token	*subtoken;
 	char	*joined;
@@ -23,7 +23,7 @@ int	parse_dquote(t_token *head, t_msh *env)
 	while (subtoken->next)
 	{
 		if (subtoken->next->type == TOKEN_ENV_VAR && \
-				!env_var_expand((t_llst_head *)subtoken, env))
+				!evar_expand((t_llst_head *)subtoken, ch))
 			return (0);
 		joined = ft_strjoin(subtoken->str, subtoken->next->str);
 		subtoken->str = ft_free(subtoken->str);

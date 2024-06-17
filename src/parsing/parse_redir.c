@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 void	parse_redir(t_token *head)
 {
@@ -45,7 +45,7 @@ int	check_redir_validity(t_token *head)
 					(ft_strchr(tok->next->str, ' ') || \
 					ft_strchr(tok->next->str, '\t')))
 			{
-				ft_dprintf(2, "minishell: %s: ambiguous redirect\n", \
+				ft_dprintf(2, "miniChell: %s: ambiguous redir\n", \
 						tok->next->str);
 				return (0);
 			}

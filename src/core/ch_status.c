@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   msh_status.c                                       :+:      :+:    :+:   */
+/*   ch_status.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 static uint8_t	status_storage(int action, uint8_t value)
 {
@@ -28,18 +28,18 @@ static uint8_t	status_storage(int action, uint8_t value)
 	return (status & 0xff);
 }
 
-uint8_t	msh_status_set(uint8_t value)
+uint8_t	ch_status_set(uint8_t value)
 {
 	status_storage(1, value);
 	return (value);
 }
 
-uint8_t	msh_status_get(void)
+uint8_t	ch_status_get(void)
 {
 	return (status_storage(0, 0));
 }
 
-uint8_t	msh_status_get_error(void)
+uint8_t	ch_status_get_error(void)
 {
 	return (status_storage(2, 0));
 }

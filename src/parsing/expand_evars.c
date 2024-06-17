@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command.c                                          :+:      :+:    :+:   */
+/*   expand_evars.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/02 14:59:00 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/03 06:44:04 by ll-hotel         ###   ########.fr       */
+/*   Created: 2024/05/30 02:52:10 by ll-hotel          #+#    #+#             */
+/*   Updated: 2024/06/02 23:29:35 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-void	command_free(void *command)
+int	expand_evars(t_token *head, t_ch *ch)
 {
-	t_command *const	cmd = command;
-
-	if (cmd)
+	while (head->next)
 	{
-		cmd->fd_in = ft_close(cmd->fd_in);
-		cmd->fd_out = ft_close(cmd->fd_out);
-		ft_free(cmd->executable);
-		llst_clear(&cmd->redirects, token_free);
-		ft_free_parray(cmd->argv);
-		ft_free_parray(cmd->envp);
-		if (cmd->path)
-			ft_free(cmd->path[0]);
-		ft_free(cmd->path);
-		ft_bzero(cmd, sizeof(*cmd));
-		free(cmd);
+		if (head->next->type == TOKEN_ENV_VAR)
+		{
+			if (!evar_expand((t_llst_head *)head, ch))
+				return (0);
+		}
+		if (head->next->type == TOKEN_DQUOTE)
+		{
+			if (!parse_dquote(head, ch))
+				return (0);
+		}
+		head = head->next;
 	}
+	return (1);
 }

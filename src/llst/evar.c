@@ -1,41 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_var.c                                          :+:      :+:    :+:   */
+/*   evar.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/07 22:00:43 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:18:52 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-static char	*env_var_join(t_env_var *var);
+static char	*evar_join(t_evar *var);
 
-char	**env_to_array(t_env_var *evar_head)
+char	**ch_to_array(t_evar *evar_head)
 {
-	const long	env_var_nb = llst_len((t_llst_head *)evar_head);
+	const long	evar_nb = llst_len((t_llst_head *)evar_head);
 	char		**envp;
 	long		i;
 
-	envp = ft_calloc(env_var_nb + 1, sizeof(*envp));
+	envp = ft_calloc(evar_nb + 1, sizeof(*envp));
 	if (!envp)
 		return (NULL);
 	i = 0;
-	while (i < env_var_nb)
+	while (i < evar_nb)
 	{
-		envp[i++] = env_var_join(evar_head->next);
+		envp[i++] = evar_join(evar_head->next);
 		evar_head = evar_head->next;
 	}
 	return (envp);
 }
 
-t_env_var	*env_var_new(char *envp_var)
+t_evar	*evar_new(char *envp_var)
 {
-	t_env_var		*var;
-	unsigned int	i;
+	t_evar		*var;
+	uint32_t	i;
 
 	var = ft_calloc(1, sizeof(*var));
 	if (!var)
@@ -51,32 +51,32 @@ t_env_var	*env_var_new(char *envp_var)
 		var->value = ft_substr(envp_var, i + 1, ft_strlen(envp_var) - i - 1);
 		if (!var->value)
 		{
-			env_var_free(var);
+			evar_free(var);
 			return (NULL);
 		}
 	}
 	return (var);
 }
 
-t_env_var	*env_var_get(t_msh *msh, char *name)
+t_evar	*evar_get(t_ch *ch, char *name)
 {
 	int const	name_len = ft_strlen(name);
-	t_env_var	*var;
+	t_evar		*var;
 
-	var = (t_env_var *)msh->env_vars.first;
+	var = (t_evar *)ch->evars.first;
 	while (var && ft_strncmp(var->name, name, name_len + 1))
 		var = var->next;
 	return (var);
 }
 
-void	env_var_free(void *var)
+void	evar_free(void *var)
 {
-	ft_free(((t_env_var *)var)->name);
-	ft_free(((t_env_var *)var)->value);
+	ft_free(((t_evar *)var)->name);
+	ft_free(((t_evar *)var)->value);
 	ft_free(var);
 }
 
-static char	*env_var_join(t_env_var *var)
+static char	*evar_join(t_evar *var)
 {
 	char	*str;
 	int		name_len;

@@ -10,12 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 static void	heredoc_sighandler(int signal);
-static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2]);
+static int	here_document(t_ch *ch, t_token *heredoc, int linex, int fds[2]);
 
-int	parser_heredoc(t_token *head, t_msh *msh)
+int	parser_heredoc(t_token *head, t_ch *ch)
 {
 	int	fds[2];
 	int	std_in;
@@ -33,7 +33,7 @@ int	parser_heredoc(t_token *head, t_msh *msh)
 		{
 			if (pipe(fds) == -1)
 				return (perror("here-document"), 0);
-			ongoing = here_document(msh, head, 0, fds);
+			ongoing = here_document(ch, head, 0, fds);
 			head->str = ft_free(head->str);
 		}
 	}
@@ -44,7 +44,7 @@ int	parser_heredoc(t_token *head, t_msh *msh)
 	return (ongoing);
 }
 
-static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2])
+static int	here_document(t_ch *ch, t_token *heredoc, int linex, int fds[2])
 {
 	const char	found_quote = heredoc->fd;
 	char		*line;
@@ -62,13 +62,13 @@ static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2])
 	}
 	line = ft_free(line);
 	if (!found_delimiter)
-		ft_dprintf(2, "minishell: warning: here-document at line %d " \
+		ft_dprintf(2, "miniChell: warning: here-document at line %d " \
 			"delimited by end-of-file (wanted `%s')\n", \
 			linex, heredoc->str);
 	close(fds[1]);
 	heredoc->fd = fds[0];
 	if (!found_quote)
-		return (heredoc_expand(msh, fds[0], &heredoc->fd));
+		return (heredoc_expand(ch, fds[0], &heredoc->fd));
 	return (1);
 }
 
@@ -77,7 +77,7 @@ static void	heredoc_sighandler(int signal)
 	if (signal == SIGINT)
 	{
 		ft_putstr_fd("\n", 1);
-		msh_status_set(130);
+		ch_status_set(130);
 		close(0);
 	}
 }

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 t_token	*lexer_append(char *line, int *p_i)
 {
@@ -20,7 +20,7 @@ t_token	*lexer_append(char *line, int *p_i)
 	while (ft_isblank(line[i]))
 		i += 1;
 	if (!line[i] || line[i] == '|' || line[i] == '<' || line[i] == '>')
-		return (msh_syntax_err(line[i]), NULL);
+		return (ch_syntax_err(line[i]), NULL);
 	*p_i = i;
 	return (token_new(NULL, TOKEN_APPEND));
 }

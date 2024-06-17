@@ -10,28 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 static int	count_path_nb(char *path);
 static int	next_subpath(char *path);
 static void	fill_paths(char **paths, char *path, int path_nb);
 
-char	**exec_get_path(t_msh *env)
+char	**exec_get_path(t_ch *ch)
 {
 	void	*path;
 	char	**paths;
 	int		path_nb;
 
-	path = (char *)env_var_get(env, "PATH");
-	if (!path || !((t_env_var *)path)->value)
+	path = (char *)evar_get(ch, "PATH");
+	if (!path || !((t_evar *)path)->value)
 		return (NULL);
-	path = ft_strdup(((t_env_var *)path)->value);
+	path = ft_strdup(((t_evar *)path)->value);
 	if (!path)
 		return (NULL);
 	path_nb = count_path_nb(path);
 	paths = ft_calloc(path_nb + 1, sizeof(*paths));
 	if (!paths)
-		return (perror("minishell:"), NULL);
+		return (perror("miniChell:"), NULL);
 	fill_paths(paths, path, path_nb);
 	return (paths);
 }

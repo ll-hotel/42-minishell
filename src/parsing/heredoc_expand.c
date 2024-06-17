@@ -6,15 +6,15 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 17:49:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 01:55:16 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:18:27 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
-static void	loop(t_msh *msh, char *line, int fd_out);
+static void	loop(t_ch *ch, char *line, int fd_out);
 
-int	heredoc_expand(t_msh *msh, int hd_input, int *hd_expanded)
+int	heredoc_expand(t_ch *ch, int hd_input, int *hd_expanded)
 {
 	int		fds[2];
 	char	*line;
@@ -25,7 +25,7 @@ int	heredoc_expand(t_msh *msh, int hd_input, int *hd_expanded)
 	line = get_next_line(hd_input);
 	while (line)
 	{
-		loop(msh, line, fds[1]);
+		loop(ch, line, fds[1]);
 		free(line);
 		line = get_next_line(hd_input);
 	}
@@ -34,12 +34,12 @@ int	heredoc_expand(t_msh *msh, int hd_input, int *hd_expanded)
 	return (1);
 }
 
-static void	loop(t_msh *msh, char *line, int fd_out)
+static void	loop(t_ch *ch, char *line, int fd_out)
 {
-	t_env_var	*evar;
-	char		*evar_name;
-	int			name_len;
-	char		c;
+	t_evar	*evar;
+	char	*evar_name;
+	int		name_len;
+	char	c;
 
 	evar_name = ft_strtok(line, "$");
 	if (evar_name == line)
@@ -53,7 +53,7 @@ static void	loop(t_msh *msh, char *line, int fd_out)
 			name_len += 1;
 		c = evar_name[name_len];
 		evar_name[name_len] = 0;
-		evar = env_var_get(msh, evar_name);
+		evar = evar_get(ch, evar_name);
 		evar_name[name_len] = c;
 		if (evar && evar->value)
 			ft_dprintf(fd_out, "%s", evar->value);

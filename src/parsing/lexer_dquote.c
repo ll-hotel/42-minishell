@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "miniChell.h"
 
 static void		*init(t_token **dq_token, char *line);
 static t_token	*sub_word(char *line, int *p_i);
@@ -42,7 +42,7 @@ t_token	*lexer_dquote(char *line, int *p_i)
 static void	*init(t_token **dq_token, char *line)
 {
 	if (!ft_strchr(line + 1, '\"'))
-		return (msh_syntax_err(- '\"'), NULL);
+		return (ch_syntax_err(- '\"'), NULL);
 	dq_token[0] = token_new(NULL, TOKEN_DQUOTE);
 	if (!dq_token[0])
 		return (NULL);

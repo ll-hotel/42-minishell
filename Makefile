@@ -20,59 +20,58 @@ CFLAGS += $(DEBUG)
 endif
 
 OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
-				builtins/chooser.c \
-				builtins/msh_cd.c \
-				builtins/msh_echo.c \
-				builtins/msh_env.c \
-				builtins/msh_exit.c \
-				builtins/msh_export.c \
-				builtins/msh_pwd.c \
-				builtins/msh_unset.c \
-				core/env.c \
+				parsing/lexer_append.c \
+				parsing/lexer_word.c \
+				parsing/cmd_creator.c \
+				parsing/expand_evars.c \
+				parsing/lexer_line.c \
+				parsing/evar_expand.c \
+				parsing/ch_parser.c \
+				parsing/parse_dquote.c \
+				parsing/lexer_dquote.c \
+				parsing/lexer_redir.c \
+				parsing/lexer_dollar.c \
+				parsing/heredoc_expand.c \
+				parsing/parser_heredoc.c \
+				parsing/ch_syntax_err.c \
+				parsing/lexer_heredoc.c \
+				parsing/parse_redir.c \
+				parsing/split_evars.c \
+				utils/ft_free.c \
+				utils/ft_close.c \
+				utils/ft_free_parray.c \
+				utils/lexer_utils.c \
+				utils/exec_utils.c \
+				utils/display_prompt.c \
+				core/ch_status.c \
+				core/ch_env_init.c \
 				core/main.c \
-				core/msh_status.c \
 				core/signal_gestionnary.c \
-				exec/exec_find_command.c \
-				exec/exec_one.c \
-				exec/exec_open_redirects.c \
-				exec/exec_path.c \
-				exec/exec_pipeline.c \
-				exec/exec_utils.c \
-				exec/msh_exec.c \
-				llst/command.c \
-				llst/env_var.c \
-				llst/llst_addback.c \
-				llst/llst_addfront.c \
+				builtins/ch_exit.c \
+				builtins/ch_unset.c \
+				builtins/chooser.c \
+				builtins/ch_pwd.c \
+				builtins/ch_cd.c \
+				builtins/ch_export.c \
+				builtins/ch_echo.c \
+				builtins/ch_env.c \
+				llst/token.c \
 				llst/llst_at.c \
 				llst/llst_clear.c \
-				llst/llst_delone.c \
-				llst/llst_get_last.c \
+				llst/cmd.c \
 				llst/llst_len.c \
+				llst/llst_delone.c \
+				llst/llst_addfront.c \
+				llst/evar.c \
+				llst/llst_addback.c \
+				llst/llst_get_last.c \
 				llst/llst_next.c \
-				llst/token.c \
-				parsing/command_creator.c \
-				parsing/env_var_expand.c \
-				parsing/heredoc_expand.c \
-				parsing/lexer_append.c \
-				parsing/lexer_dollar.c \
-				parsing/lexer_dquote.c \
-				parsing/lexer_heredoc.c \
-				parsing/lexer_line.c \
-				parsing/lexer_redir.c \
-				parsing/lexer_utils.c \
-				parsing/lexer_word.c \
-				parsing/msh_parser.c \
-				parsing/parse_dquote.c \
-				parsing/parse_redir.c \
-				parsing/parser_heredoc.c \
-				parsing/split_env_vars.c \
-				parsing/expand_env_vars.c \
-				parsing/msh_syntax_err.c \
-				utils/display_prompt.c \
-				utils/ft_close.c \
-				utils/ft_free.c \
-				utils/ft_free_parray.c \
-				utils/welcome.c \
+				exec/exec_open_redirects.c \
+				exec/ch_exec.c \
+				exec/exec_path.c \
+				exec/exec_pipeline.c \
+				exec/exec_one.c \
+				exec/exec_find_cmd.c \
 				)
 DEPS		=	$(OBJECTS:.o=.d)
 

@@ -6,36 +6,35 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:48:01 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 13:50:04 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:10:09 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-#include <stdlib.h>
+#include "miniChell.h"
 
 static int	sig_return_value(int signal);
 
-int	exec_dup2(t_command *cmd)
+int	exec_dup2(t_cmd *cmd)
 {
 	if (cmd->fd_in != -1)
 	{
 		if (dup2(cmd->fd_in, 0) == -1)
-			return (perror("minishell: fd_in dup2"), 1);
+			return (perror("miniChell: fd_in dup2"), 1);
 		cmd->fd_in = ft_close(cmd->fd_in);
 	}
 	if (cmd->fd_out != -1)
 	{
 		if (dup2(cmd->fd_out, 1) == -1)
-			return (perror("minishell: fd_out dup2"), 1);
+			return (perror("miniChell: fd_out dup2"), 1);
 		cmd->fd_out = ft_close(cmd->fd_out);
 	}
 	return (0);
 }
 
-void	exec_perror_exit(t_msh *msh, int exit_status)
+void	exec_perror_exit(t_ch *ch, int exit_status)
 {
-	perror("minishell");
-	msh_exit(msh, exit_status);
+	perror("miniChell");
+	ch_exit(ch, exit_status);
 }
 
 int	exec_wait_children(int last_pid)
