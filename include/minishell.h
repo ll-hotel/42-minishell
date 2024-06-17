@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 12:57:47 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:25:02 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,13 @@ enum	e_token_type
 	TOKEN_SPACE,
 	TOKEN_HEREDOC,
 	TOKEN_APPEND,
+};
+
+enum	e_open_flags
+{
+	REDIR_OUT_FLAGS = (O_CREAT | O_WRONLY | O_TRUNC),
+	APPEND_FLAGS = (O_CREAT | O_WRONLY | O_APPEND),
+	FILE_PERMS = (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH),
 };
 
 /*	----	STRUCT		----	*/

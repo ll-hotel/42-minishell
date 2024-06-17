@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 17:49:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/12 22:49:23 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 14:23:47 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ int	exec_open_redirects(t_command *cmd)
 	{
 		if (redir->type == TOKEN_HEREDOC)
 			error = open_file(redir->type, (char *)(long)redir->fd, \
-					&cmd->fd_in, &cmd->fd_out) == -1;
+					&cmd->fd_in, &cmd->fd_out);
 		else
 			error = open_file(redir->type, redir->str, \
-					&cmd->fd_in, &cmd->fd_out) == -1;
+					&cmd->fd_in, &cmd->fd_out);
 		redir = redir->next;
 	}
 	if (error)
@@ -42,29 +42,21 @@ int	exec_open_redirects(t_command *cmd)
 
 static int	open_file(int type, char *filename, int *p_fdin, int *p_fdout)
 {
-	int	oldin;
-	int	oldout;
-
-	oldin = *p_fdin;
-	oldout = *p_fdout;
 	if (type == TOKEN_REDIR_OUT || type == TOKEN_APPEND)
-		ft_close(oldout);
+		ft_close(*p_fdout);
 	else
-		ft_close(oldin);
+		ft_close(*p_fdin);
 	if (type == TOKEN_REDIR_IN)
 		*p_fdin = open(filename, O_RDONLY);
-	else if (type == TOKEN_REDIR_OUT)
-		*p_fdout = open(filename, O_CREAT | O_WRONLY | O_TRUNC, \
-				S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-	else if (type == TOKEN_APPEND)
-		*p_fdout = open(filename, O_CREAT | O_WRONLY | O_APPEND, \
-				S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	else if (type == TOKEN_HEREDOC)
 		*p_fdin = (long)filename;
-	if ((type == TOKEN_REDIR_OUT || type == TOKEN_APPEND) \
-			&& oldout >= 0 && *p_fdout == -1)
+	else if (type == TOKEN_REDIR_OUT)
+		*p_fdout = open(filename, REDIR_OUT_FLAGS, FILE_PERMS);
+	else if (type == TOKEN_APPEND)
+		*p_fdout = open(filename, APPEND_FLAGS, FILE_PERMS);
+	if ((type == TOKEN_REDIR_OUT || type == TOKEN_APPEND) && *p_fdout == -1)
 		return (open_perror(filename));
-	else if (oldin >= 0 && *p_fdin == -1)
+	else if (*p_fdin == -1)
 		return (open_perror(filename));
 	return (0);
 }
@@ -81,5 +73,5 @@ static int	open_perror(char *filename)
 	}
 	else
 		perror("minishell");
-	return (-1);
+	return (1);
 }
