@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 17:49:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 01:55:16 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:18:27 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ int	heredoc_expand(t_ch *ch, int hd_input, int *hd_expanded)
 static void	loop(t_ch *ch, char *line, int fd_out)
 {
 	t_evar	*evar;
-	char		*evar_name;
-	int			name_len;
-	char		c;
+	char	*evar_name;
+	int		name_len;
+	char	c;
 
 	evar_name = ft_strtok(line, "$");
 	if (evar_name == line)

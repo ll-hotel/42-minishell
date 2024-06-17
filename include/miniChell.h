@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 22:06:33 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:17:49 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@
 
 /*	----	TYPEDEFS	----	*/
 
-typedef struct s_evar	t_evar;
+typedef struct s_evar		t_evar;
 typedef struct s_miniChell	t_ch;
 typedef struct s_token		t_token;
-typedef struct s_cmd	t_cmd;
+typedef struct s_cmd		t_cmd;
 
 enum	e_token_type
 {

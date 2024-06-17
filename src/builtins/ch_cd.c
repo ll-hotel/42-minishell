@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/17 21:58:43 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:19:10 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	chdir_cd(t_ch *ch, t_cmd *cmd, char *old_path, char *new_path);
 
 int	ch_cd(t_cmd *cmd, t_ch *ch)
 {
-	char		*new_path;
-	char		*old_path;
+	char	*new_path;
+	char	*old_path;
 
 	new_path = NULL;
 	if (cmd->argc > 2)
@@ -37,7 +37,7 @@ int	ch_cd(t_cmd *cmd, t_ch *ch)
 int	chdir_cd(t_ch *ch, t_cmd *cmd, char *old_path, char *new_path)
 {
 	t_evar	*home;
-	int			test;
+	int		test;
 
 	if (cmd->argc == 1)
 	{

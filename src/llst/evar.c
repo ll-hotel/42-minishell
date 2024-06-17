@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 23:19:08 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 22:11:23 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 22:18:52 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	**ch_to_array(t_evar *evar_head)
 t_evar	*evar_new(char *envp_var)
 {
 	t_evar		*var;
-	unsigned int	i;
+	uint32_t	i;
 
 	var = ft_calloc(1, sizeof(*var));
 	if (!var)
