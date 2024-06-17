@@ -6,107 +6,78 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 18:19:56 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/11 19:20:05 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:07:45 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdlib.h>
 
-static void	heredoc_sighandler(int sig);
-static int	here_fork(t_msh *msh, int fd_pipe[2], char *delimiter);
-static void	heredocking(int fd, char *delimiter);
-static void	update_str(char *delimiter, char **str, int *len, int *delfound);
+static void	heredoc_sighandler(int signal);
+static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2]);
 
 int	parser_heredoc(t_token *head, t_msh *msh)
 {
-	int	fd_pipe[2];
+	int	fds[2];
+	int	std_in;
+	int	ongoing;
 
-	while (head && head->next)
+	signal(SIGINT, heredoc_sighandler);
+	std_in = dup(0);
+	if (std_in == -1)
+		return (perror("here-document"), 0);
+	ongoing = 1;
+	while (head->next && ongoing)
 	{
-		while (head->next && head->next->type != TOKEN_HEREDOC)
-			head = head->next;
-		if (!head->next)
-			continue ;
-		if (pipe(fd_pipe) == -1)
-		{
-			perror("here-document");
-			return (0);
-		}
-		here_fork(msh, fd_pipe, head->next->str);
-		head->next->str = ft_free(head->next->str);
-		head->next->fd = fd_pipe[0];
 		head = head->next;
+		if (head->type == TOKEN_HEREDOC)
+		{
+			if (pipe(fds) == -1)
+				return (perror("here-document"), 0);
+			ongoing = here_document(msh, head, 0, fds);
+			head->str = ft_free(head->str);
+		}
 	}
+	if (dup2(std_in, 0) == -1)
+		return (perror("here-document"), 0);
+	close(std_in);
+	signal_gestionnary();
+	return (ongoing);
+}
+
+static int	here_document(t_msh *msh, t_token *heredoc, int linex, int fds[2])
+{
+	const char	found_quote = heredoc->fd;
+	char		*line;
+	int			found_delimiter;
+
+	line = readline("> ");
+	found_delimiter = (line && ft_strcmp(line, heredoc->str) == 0);
+	while (line && !found_delimiter)
+	{
+		linex += 1;
+		ft_dprintf(fds[1], "%s\n", line);
+		free(line);
+		line = readline("> ");
+		found_delimiter = (line && ft_strcmp(line, heredoc->str) == 0);
+	}
+	line = ft_free(line);
+	if (!found_delimiter)
+		ft_dprintf(2, "minishell: warning: here-document at line %d " \
+			"delimited by end-of-file (wanted `%s')\n", \
+			linex, heredoc->str);
+	close(fds[1]);
+	heredoc->fd = fds[0];
+	if (!found_quote)
+		return (heredoc_expand(msh, fds[0], &heredoc->fd));
 	return (1);
 }
 
-static int	here_fork(t_msh *msh, int fd_pipe[2], char *delimiter)
+static void	heredoc_sighandler(int signal)
 {
-	pid_t	pid;
-	int		status;
-
-	status = 0;
-	pid = fork();
-	if (pid == -1)
+	if (signal == SIGINT)
 	{
-		perror("here-document");
-		return (0);
-	}
-	else if (pid == 0)
-	{
-		signal(SIGINT, heredoc_sighandler);
-		close(fd_pipe[0]);
-		signal(SIGINT, heredoc_sighandler);
-		heredocking(fd_pipe[1], delimiter);
-		msh_exit(msh, 0);
-	}
-	close(fd_pipe[1]);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-		msh_status_set(WEXITSTATUS(status));
-	return (0);
-}
-
-static void	heredocking(int fd, char *delimiter)
-{
-	char	*str;
-	int		str_len;
-	int		line_index;
-	int		delimiter_found;
-
-	line_index = 1;
-	delimiter_found = 0;
-	update_str(delimiter, &str, &str_len, &delimiter_found);
-	while (str && !delimiter_found)
-	{
-		str[str_len] = '\n';
-		write(fd, str, str_len + 1);
-		free(str);
-		update_str(delimiter, &str, &str_len, &delimiter_found);
-		line_index += 1;
-	}
-	if (!delimiter_found && msh_status_get() != 130)
-		ft_dprintf(2, "minishell: warning: here-document at line %d " \
-				"delimited by end-of-file (wanted `%s')\n", \
-				line_index, delimiter);
-	close(fd);
-	ft_free(str);
-}
-
-static void	update_str(char *delimiter, char **str, int *len, int *delfound)
-{
-	*str = readline("");
-	*len = ft_strlen(*str);
-	if (*str)
-		*delfound = ft_strncmp(*str, delimiter, *len) == 0;
-}
-
-static void	heredoc_sighandler(int sig)
-{
-	if (sig == SIGINT)
-	{
-		close(0);
+		ft_putstr_fd("\n", 1);
 		msh_status_set(130);
+		close(0);
 	}
 }

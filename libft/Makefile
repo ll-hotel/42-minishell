@@ -30,7 +30,8 @@ FT_PRINTF_OBJS = $(patsubst %.c,$(OBJ_DIR)/ft_printf/%.o, \
 				 ft_printf.c ft_printf_handlers.c ft_printf_xtoa.c)				 
 
 GNL_OBJS = $(patsubst %.c,$(OBJ_DIR)/get_next_line/%.o, \
-		   get_next_line.c get_next_line_utils.c)
+		   lrichaud-get_next_line.c)
+		   #get_next_line.c get_next_line_utils.c)
 
 VECTOR_OBJS = $(patsubst %.c,$(OBJ_DIR)/vector/%.o, \
 			  vector_addback.c vector_at.c vector_clear.c vector_new.c vector_del_at.c)
@@ -39,50 +40,56 @@ FT_DPRINTF_OBJS = $(patsubst %.c,$(OBJ_DIR)/ft_dprintf/%.o, \
 				  dprintf_ascii.c dprintf_atoi32.c dprintf_atoi64.c dprintf_buffer.c \
 				  dprintf.c dprintf_specifier.c dprintf_utils.c)
 
-EXTRA_OBJS = $(patsubst %.c,$(OBJ_DIR)/extra/%.o, \
+EXTRA_OBJS = $(patsubst %.c,${OBJ_DIR}/extra/%.o, \
 			 ft_realloc.c \
 			 ft_strichr.c \
 			 ft_isspace.c \
 			 ft_isblank.c \
 			 ft_memdup.c \
 			 ft_min.c \
-			 ft_splat.c)
+			 ft_splat.c \
+			 ft_strcmp.c \
+			 ft_strtok.c)
 
-OBJS = $(BASICS_OBJS) $(FT_PRINTF_OBJS) $(GNL_OBJS) $(VECTOR_OBJS) $(FT_DPRINTF_OBJS) $(EXTRA_OBJS)
+OBJS = ${BASICS_OBJS} ${FT_PRINTF_OBJS} ${GNL_OBJS} ${VECTOR_OBJS} ${FT_DPRINTF_OBJS} ${EXTRA_OBJS}
 
-DEPS = $(patsubst %.o,%.d,$(OBJS))
+DEPS = $(patsubst %.o,%.d,${OBJS})
 
 NAME = libft.a
 
-.PHONY: all clean fclean re
+.PHONY: all
+all: ${NAME}
 
-all: $(NAME)
+-include ${DEPS}
 
--include $(DEPS)
+.SILENT: ${NAME}
+${NAME}: ${OBJS}
+	ar -rc $@ ${OBJS}
+	${ECHO} "\e[33mLibft:  Done!\e[0m"
 
-.SILENT: $(NAME)
-$(NAME): $(OBJS)
-	ar -rc $@ $(OBJS)
-	$(ECHO) "\e[33mLibft:  Done!\e[0m"
+${OBJ_DIR}/%.o: %.c | ${OBJ_DIR}
+	${CC} ${CFLAGS} ${IFLAGS} ${DFLAGS} -o $@ -c $<
 
-$(OBJ_DIR)/%.o: %.c
-	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<
-	@$(ECHO) "\e[2m$(CC) $(CFLAGS) $(IFLAGS) $(DFLAGS) -o $@ -c $<\e[0m"
+${OBJ_DIR}:
+	mkdir -p $(sort $(dir ${OBJS}))
 
 .SILENT: clean
+.PHONY: clean
 clean:
-ifneq ("$(wildcard $(OBJ_DIR))", "")
-	rm -rf $(OBJ_DIR)
+ifneq ("$(wildcard ${OBJ_DIR})", "")
+	rm -rf ${OBJ_DIR}
 	echo "Libft:  Object file directory removed"
 endif
 
 .SILENT: fclean
+.PHONY: fclean
 fclean: clean
-ifneq ("$(wildcard $(NAME))", "")
-	rm -f $(NAME)
-	echo "Libft:  $(NAME) removed"
+ifneq ("$(wildcard ${NAME})", "")
+	rm -f ${NAME}
+	echo "Libft:  ${NAME} removed"
 endif
 
+.SILENT: re
+.PHONY: re
 re:	fclean
-	$(MAKE) all
+	${MAKE} all

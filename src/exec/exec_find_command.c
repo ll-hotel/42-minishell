@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:43:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/06 16:32:35 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/17 13:11:33 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ static char	*slash_or_empty_path(t_command *cmd)
 			return (perror("minishell"), msh_status_set(errno), NULL);
 		if (S_ISDIR(buf.st_mode))
 		{
-			ft_dprintf(2, "\001\e[0m\e[91m\002%s: Is a directory\n", cmd->argv[0]);
+			ft_dprintf(2, "\001\e[0m\e[91m\002%s: Is a directory\n", \
+					cmd->argv[0]);
 			msh_status_set(126);
 			return (NULL);
 		}

@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 13:36:34 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/05/26 05:23:35 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/16 01:46:23 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,7 @@ long	ft_minl(long a, long b);
 float	ft_minf(float a, float b);
 double	ft_mind(double a, double b);
 void	*ft_minp(void *a, void *b);
+int		ft_strcmp(const char *s1, const char *s2);
+char	*ft_strtok(char *str, const char *delim);
 
 #endif
