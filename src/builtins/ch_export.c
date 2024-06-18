@@ -21,10 +21,23 @@ int	ch_export(t_cmd *cmd, t_ch *ch)
 	int		i;
 
 	i = 0;
+	// evar = (t_evar *) ch->evars.first;
+	// if (cmd->argc == 1)
+	// {
+	// 	while(evar)
+	// 	{
+	// 		printf("declare -x %s", evar->name);
+	// 		if (evar->value)
+	// 			printf("=%s", evar->value);
+	// 		printf("\n");
+	// 		evar= evar->next;
+	// 	}
+	// 	return (0);
+	// }
 	while (++i < cmd->argc)
 	{
 		evar = evar_new(cmd->argv[i]);
-		if (!evar)
+		if (evar == NULL)
 			perror("export");
 		else if (!evar_is_valid(evar->name))
 		{
@@ -33,10 +46,7 @@ int	ch_export(t_cmd *cmd, t_ch *ch)
 			return (1);
 		}
 		else if (evar->value && !insert_evar((t_evar *)&ch->evars, evar))
-		{
-			perror("export");
-			return (1);
-		}
+			return (perror("export"), 1);
 		else
 			evar_free(evar);
 	}
@@ -73,7 +83,7 @@ static int	evar_is_valid(char *arg)
 	i = 1;
 	if (!ft_isalpha(arg[0]))
 		return (0);
-	while (ft_isalnum(arg[i]))
+	while (ft_isalnum(arg[i]) || arg[i] == '_')
 		i++;
 	if (arg[i])
 		return (0);
