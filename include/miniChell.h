@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 22:17:49 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 00:59:52 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ struct	s_cmd
 /*	----	ENVIRONMENT	----	*/
 
 int		ch_env_init(t_ch *ch, char *const *envp);
-t_evar	*evar_get(t_ch *ch, char *name);
+int		ch_insert_evar(t_evar *evar_head, t_evar *evar);
+t_evar	*find_evar(t_ch *ch, char *name);
 char	**ch_to_array(t_evar *evar_head);
 int		evar_expand(t_llst_head *evar, t_ch *ch);
 t_evar	*evar_new(char *p);

@@ -53,7 +53,7 @@ static void	loop(t_ch *ch, char *line, int fd_out)
 			name_len += 1;
 		c = evar_name[name_len];
 		evar_name[name_len] = 0;
-		evar = evar_get(ch, evar_name);
+		evar = find_evar(ch, evar_name);
 		evar_name[name_len] = c;
 		if (evar && evar->value)
 			ft_dprintf(fd_out, "%s", evar->value);

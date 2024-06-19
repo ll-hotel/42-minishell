@@ -55,7 +55,7 @@ static void	expand_var(t_ch *ch, char **p_str)
 {
 	t_evar	*evar;
 
-	evar = evar_get(ch, *p_str);
+	evar = find_evar(ch, *p_str);
 	free(*p_str);
 	if (!evar)
 		*p_str = ft_calloc(1, 1);

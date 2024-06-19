@@ -41,7 +41,7 @@ int	chdir_cd(t_ch *ch, t_cmd *cmd, char *old_path, char *new_path)
 
 	if (cmd->argc == 1)
 	{
-		home = evar_get(ch, "HOME");
+		home = find_evar(ch, "HOME");
 		if (home == NULL || chdir(home->value) == -1)
 		{
 			ft_free(old_path);
@@ -92,7 +92,7 @@ int	set_evar_value(t_ch *ch, char *name, char *value)
 {
 	t_evar	*evar;
 
-	evar = evar_get(ch, name);
+	evar = find_evar(ch, name);
 	if (evar == NULL)
 	{
 		name = free_to_join(name, "=");

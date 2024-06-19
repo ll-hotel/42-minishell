@@ -58,7 +58,7 @@ t_evar	*evar_new(char *envp_var)
 	return (var);
 }
 
-t_evar	*evar_get(t_ch *ch, char *name)
+t_evar	*find_evar(t_ch *ch, char *name)
 {
 	int const	name_len = ft_strlen(name);
 	t_evar		*var;

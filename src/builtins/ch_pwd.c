@@ -25,7 +25,7 @@ int	ch_pwd(t_ch *ch)
 	}
 	else
 	{
-		oldpwd = evar_get(ch, "OLDPWD");
+		oldpwd = find_evar(ch, "OLDPWD");
 		if (oldpwd && oldpwd->value)
 			printf("%s\n", oldpwd->value);
 	}

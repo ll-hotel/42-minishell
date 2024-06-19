@@ -6,13 +6,13 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/20 00:40:10 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 01:30:46 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "llst.h"
 #include "miniChell.h"
 
-static int	insert_evar(t_evar *evar_head, t_evar *evar);
 static int	evar_is_valid(char *arg);
 void		printer(t_ch *ch);
 
@@ -35,7 +35,7 @@ int	ch_export(t_cmd *cmd, t_ch *ch)
 			evar_free(evar);
 			return (1);
 		}
-		else if (!insert_evar((t_evar *)&ch->evars, evar))
+		else if (!ch_insert_evar((t_evar *)&ch->evars, evar))
 		{
 			evar_free(evar);
 			perror("export");
@@ -60,17 +60,15 @@ void	printer(t_ch *ch)
 	}
 }
 
-static int	insert_evar(t_evar *evar_head, t_evar *evar)
+int	ch_insert_evar(t_evar *evar_head, t_evar *evar)
 {
-	const int	length = ft_strlen(evar->name) + 1;
-
 	while (evar_head->next && \
-			ft_strncmp(evar_head->next->name, evar->name, length))
+			ft_strcmp(evar_head->next->name, evar->name) < 0)
 	{
 		evar_head = evar_head->next;
 	}
-	if (!evar_head->next)
-		evar_head->next = evar;
+	if (!evar_head->next || ft_strcmp(evar_head->next->name, evar->name) > 0)
+		llst_addfront((t_llst_head *)evar_head, (t_llst *)evar);
 	else if (evar->value)
 	{
 		ft_free(evar_head->next->value);

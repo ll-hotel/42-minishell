@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/12 21:51:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/12 21:55:49 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 01:34:54 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,5 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i1 += 1;
 		i2 += 1;
 	}
-	return ((s1[i1] - s2[i2]) & 0xff);
+	return (s1[i1] - s2[i2]);
 }

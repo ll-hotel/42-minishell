@@ -22,7 +22,7 @@ char	**exec_get_path(t_ch *ch)
 	char	**paths;
 	int		path_nb;
 
-	path = (char *)evar_get(ch, "PATH");
+	path = (char *)find_evar(ch, "PATH");
 	if (!path || !((t_evar *)path)->value)
 		return (NULL);
 	path = ft_strdup(((t_evar *)path)->value);

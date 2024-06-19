@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 19:56:14 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 22:00:16 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 01:39:45 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,8 @@ int	ch_env(t_cmd *cmd, t_ch *ch)
 	vars = (t_evar *)ch->evars.first;
 	while (vars)
 	{
-		printf("%s=", vars->name);
 		if (vars->value)
-			printf("%s", vars->value);
-		printf("\n");
+			printf("%s=%s\n", vars->name, vars->value);
 		vars = vars->next;
 	}
 	return (0);

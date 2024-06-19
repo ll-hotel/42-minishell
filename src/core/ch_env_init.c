@@ -6,13 +6,14 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:26:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 22:05:56 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 01:29:37 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniChell.h"
 
 static char	*get_shlvl(char *old_value);
+static int	loop_body(t_evar *evar_head, t_evar *var);
 
 int	ch_env_init(t_ch *ch, char *const *envp)
 {
@@ -20,17 +21,37 @@ int	ch_env_init(t_ch *ch, char *const *envp)
 	long	i;
 
 	i = 0;
-	while (envp[i])
+	while (i >= 0 && envp[i])
 	{
 		var = evar_new(envp[i++]);
 		if (!var)
+			i = -1;
+		else if (!loop_body((t_evar *)&ch->evars, var))
+			i = -1;
+	}
+	if (i == -1)
+	{
+		llst_clear(&ch->evars, &evar_free);
+		return (0);
+	}
+	return (1);
+}
+
+static int	loop_body(t_evar *evar_head, t_evar *var)
+{
+	if (ft_strcmp(var->name, "SHLVL") == 0)
+	{
+		var->value = get_shlvl(var->value);
+		if (!var->value)
 		{
-			llst_clear(&ch->evars, &evar_free);
+			evar_free(var);
 			return (0);
 		}
-		llst_addback(&ch->evars, (t_llst *)var);
-		if (ft_strncmp(var->name, "SHLVL", 6) == 0)
-			var->value = get_shlvl(var->value);
+	}
+	if (!ch_insert_evar(evar_head, var))
+	{
+		evar_free(var);
+		return (0);
 	}
 	return (1);
 }
