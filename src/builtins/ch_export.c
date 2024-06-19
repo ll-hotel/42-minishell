@@ -14,8 +14,7 @@
 
 static int	insert_evar(t_evar *evar_head, t_evar *evar);
 static int	evar_is_valid(char *arg);
-void	truc(t_cmd *cmd);
-void	printer(t_ch *ch);
+void		printer(t_ch *ch);
 
 int	ch_export(t_cmd *cmd, t_ch *ch)
 {
@@ -23,10 +22,7 @@ int	ch_export(t_cmd *cmd, t_ch *ch)
 	int		i;
 
 	if (cmd->argc == 1)
-	{
-		printer(ch);
-		return (0);
-	}
+		return (printer(ch), 0);
 	i = 0;
 	while (++i < cmd->argc)
 	{
@@ -54,13 +50,13 @@ void	printer(t_ch *ch)
 	t_evar	*evar;
 
 	evar = (t_evar *) ch->evars.first;
-	while(evar && evar->name)
+	while (evar && evar->name)
 	{
 		printf("declare -x %s", evar->name);
 		if (evar->value)
 			printf("=%s", evar->value);
 		printf("\n");
-		evar= evar->next;
+		evar = evar->next;
 	}
 }
 
