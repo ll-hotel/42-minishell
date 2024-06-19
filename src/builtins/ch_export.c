@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/17 22:03:10 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 00:40:10 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	evar_is_valid(char *arg)
 	size_t	i;
 
 	i = 1;
-	if (!ft_isalpha(arg[0]))
+	if (!ft_isalpha(arg[0]) && arg[0] != '_')
 		return (0);
 	while (ft_isalnum(arg[i]) || arg[i] == '_')
 		i++;
