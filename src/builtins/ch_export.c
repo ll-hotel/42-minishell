@@ -14,30 +14,24 @@
 
 static int	insert_evar(t_evar *evar_head, t_evar *evar);
 static int	evar_is_valid(char *arg);
+void	truc(t_cmd *cmd);
+void	printer(t_ch *ch);
 
 int	ch_export(t_cmd *cmd, t_ch *ch)
 {
 	t_evar	*evar;
 	int		i;
 
+	if (cmd->argc == 1)
+	{
+		printer(ch);
+		return (0);
+	}
 	i = 0;
-	// evar = (t_evar *) ch->evars.first;
-	// if (cmd->argc == 1)
-	// {
-	// 	while(evar)
-	// 	{
-	// 		printf("declare -x %s", evar->name);
-	// 		if (evar->value)
-	// 			printf("=%s", evar->value);
-	// 		printf("\n");
-	// 		evar= evar->next;
-	// 	}
-	// 	return (0);
-	// }
 	while (++i < cmd->argc)
 	{
 		evar = evar_new(cmd->argv[i]);
-		if (evar == NULL)
+		if (!evar)
 			perror("export");
 		else if (!evar_is_valid(evar->name))
 		{
@@ -45,12 +39,29 @@ int	ch_export(t_cmd *cmd, t_ch *ch)
 			evar_free(evar);
 			return (1);
 		}
-		else if (evar->value && !insert_evar((t_evar *)&ch->evars, evar))
-			return (perror("export"), 1);
-		else
+		else if (!insert_evar((t_evar *)&ch->evars, evar))
+		{
 			evar_free(evar);
+			perror("export");
+			return (1);
+		}
 	}
 	return (0);
+}
+
+void	printer(t_ch *ch)
+{
+	t_evar	*evar;
+
+	evar = (t_evar *) ch->evars.first;
+	while(evar && evar->name)
+	{
+		printf("declare -x %s", evar->name);
+		if (evar->value)
+			printf("=%s", evar->value);
+		printf("\n");
+		evar= evar->next;
+	}
 }
 
 static int	insert_evar(t_evar *evar_head, t_evar *evar)
