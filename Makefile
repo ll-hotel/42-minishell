@@ -120,14 +120,14 @@ ${OBJECT_DIR}:
 
 .PHONY: clean
 clean:
-	${MAKE} -C ${LIBFT_DIR} clean
+	@${MAKE} -C ${LIBFT_DIR} clean
 ifneq ("$(wildcard ${OBJECT_DIR})", "")
 	rm -rf ${OBJECT_DIR}
 endif
 
 .PHONY: fclean
 fclean:	clean
-	${MAKE} -C ${LIBFT_DIR} fclean
+	@${MAKE} -C ${LIBFT_DIR} fclean
 ifneq ("$(wildcard ${NAME})", "")
 	rm -f ${NAME}
 endif
