@@ -6,12 +6,12 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 23:14:42 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/17 01:53:40 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 00:21:34 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/basics.h"
-#include "../include/get_next_line.h"
+#include "../include/lrichaud_get_next_line.h"
 #include <stdlib.h>
 #include <unistd.h>
 

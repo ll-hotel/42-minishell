@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:17:03 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 13:27:23 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 00:22:29 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static char	*get_input(void)
 	char	*prompt;
 
 	input = NULL;
-	if (1 || isatty(0))
+	if (isatty(0))
 	{
 		prompt = pwd_prompt();
 		if (prompt)
