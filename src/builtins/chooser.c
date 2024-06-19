@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/04 11:10:45 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/17 22:03:37 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 01:53:17 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,17 @@ static int	select_builtin(t_ch *ch, t_cmd *cmd)
 	if (exec_dup2(cmd) != 0)
 		return (1);
 	status = -1;
-	if (!ft_strncmp(cmd->argv[0], "echo", 5))
+	if (!ft_strcmp(cmd->argv[0], "echo"))
 		status = ch_echo(cmd);
-	else if (!ft_strncmp(cmd->argv[0], "cd", 3))
-		status = ch_cd(cmd, ch);
-	else if (!ft_strncmp(cmd->argv[0], "pwd", 4))
-		status = ch_pwd(ch);
-	else if (!ft_strncmp(cmd->argv[0], "ch", 4))
+	else if (!ft_strcmp(cmd->argv[0], "env"))
 		status = ch_env(cmd, ch);
-	else if (!ft_strncmp(cmd->argv[0], "export", 7))
+	else if (!ft_strcmp(cmd->argv[0], "cd"))
+		status = ch_cd(cmd, ch);
+	else if (!ft_strcmp(cmd->argv[0], "pwd"))
+		status = ch_pwd(ch);
+	else if (!ft_strcmp(cmd->argv[0], "export"))
 		status = ch_export(cmd, ch);
-	else if (!ft_strncmp(cmd->argv[0], "unset", 6))
+	else if (!ft_strcmp(cmd->argv[0], "unset"))
 		status = ch_unset(cmd, ch);
 	return (status);
 }
@@ -88,11 +88,11 @@ static int	dup_fds(int *old_in, int *old_out, int saving)
 
 static int	is_not_builtin(char *cmd)
 {
-	return (ft_strncmp(cmd, "echo", 5) && \
-			ft_strncmp(cmd, "cd", 3) && \
-			ft_strncmp(cmd, "pwd", 4) && \
-			ft_strncmp(cmd, "ch", 4) && \
-			ft_strncmp(cmd, "export", 7) && \
-			ft_strncmp(cmd, "unset", 6) && \
-			ft_strncmp(cmd, "exit", 5));
+	return (ft_strcmp(cmd, "echo") && \
+			ft_strcmp(cmd, "env") && \
+			ft_strcmp(cmd, "cd") && \
+			ft_strcmp(cmd, "pwd") && \
+			ft_strcmp(cmd, "export") && \
+			ft_strcmp(cmd, "unset") && \
+			ft_strcmp(cmd, "exit"));
 }
