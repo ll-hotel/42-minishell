@@ -71,15 +71,14 @@ static int	insert_evar(t_evar *evar_head, t_evar *evar)
 	}
 	if (!evar_head->next)
 		evar_head->next = evar;
-	else if (evar->value)
+	else
 	{
 		ft_free(evar_head->next->value);
-		evar_head->next->value = ft_strdup(evar->value);
+		if (evar->value)
+			evar_head->next->value = ft_strdup(evar->value);
 		if (!evar_head->next->value)
 			return (perror("miniChell"), 0);
 	}
-	else
-		return (0);
 	return (1);
 }
 
