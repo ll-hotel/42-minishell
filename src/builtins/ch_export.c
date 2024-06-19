@@ -54,7 +54,7 @@ void	printer(t_ch *ch)
 	{
 		printf("declare -x %s", evar->name);
 		if (evar->value)
-			printf("=%s", evar->value);
+			printf("=\"%s\"", evar->value);
 		printf("\n");
 		evar = evar->next;
 	}
@@ -71,11 +71,10 @@ static int	insert_evar(t_evar *evar_head, t_evar *evar)
 	}
 	if (!evar_head->next)
 		evar_head->next = evar;
-	else
+	else if (evar->value)
 	{
 		ft_free(evar_head->next->value);
-		if (evar->value)
-			evar_head->next->value = ft_strdup(evar->value);
+		evar_head->next->value = ft_strdup(evar->value);
 		if (!evar_head->next->value)
 			return (perror("miniChell"), 0);
 	}
