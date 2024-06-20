@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:48:01 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/20 02:55:13 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 03:18:45 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	exec_wait_children(int last_pid)
 		if (pid == last_pid)
 			old_status = status;
 		pid = waitpid(-1, &status, 0);
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		if (WIFSIGNALED(status))
 			newline = 1;
 	}
 	if (newline)
@@ -67,13 +67,6 @@ int	exec_wait_children(int last_pid)
 static int	sig_return_value(int signal)
 {
 	if (signal == SIGQUIT)
-	{
 		ft_putstr_fd("Quit (core dumped)\n", 2);
-		return (131);
-	}
-	if (signal == SIGINT)
-	{
-		return (130);
-	}
-	return (1);
+	return (128 + signal);
 }
