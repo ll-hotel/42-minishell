@@ -6,21 +6,21 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 19:17:03 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/20 00:22:29 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 16:42:08 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniChell.h"
 
-static char	*get_input(void);
-static char	*pwd_prompt(void);
+static char	*get_input(t_ch *ch);
+static char	*pwd_prompt(t_ch *ch);
 static int	is_only_space(char *str);
 
-char	*display_prompt(void)
+char	*display_prompt(t_ch *ch)
 {
 	char	*input;
 
-	input = get_input();
+	input = get_input(ch);
 	if (input && !is_only_space(input))
 	{
 		add_history(input);
@@ -29,7 +29,7 @@ char	*display_prompt(void)
 	return (input);
 }
 
-static char	*get_input(void)
+static char	*get_input(t_ch *ch)
 {
 	char	*line;
 	char	*input;
@@ -38,7 +38,7 @@ static char	*get_input(void)
 	input = NULL;
 	if (isatty(0))
 	{
-		prompt = pwd_prompt();
+		prompt = pwd_prompt(ch);
 		if (prompt)
 		{
 			input = readline(prompt);
@@ -55,24 +55,22 @@ static char	*get_input(void)
 	return (input);
 }
 
-static char	*pwd_prompt(void)
+static char	*pwd_prompt(t_ch *ch)
 {
 	const char	*prefix = "\001\e[96m\e[1m\002📂 ";
 	const char	*suffix = " ➜ \001\e[0m\e[39m\002";
 	char		*pwd;
 	char		*temp;
 
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		temp = ft_strdup(prefix);
-	else
-	{
+	pwd = get_pwd(ch);
+	if (pwd)
 		temp = ft_strjoin(prefix, ft_strrchr(pwd, '/') + (pwd[1] != 0));
-		free(pwd);
-	}
+	else
+		temp = ft_strjoin(prefix, "CPT");
+	ft_free(pwd);
 	if (!temp)
 	{
-		perror("pwd_prompt");
+		perror("miniChell: prompt");
 		return (NULL);
 	}
 	pwd = ft_strjoin(temp, suffix);

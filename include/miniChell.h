@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/20 00:59:52 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 16:44:28 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,13 +142,14 @@ void	cmd_free(void *cmd);
 /*	----	UTILS	----	*/
 
 void	welcome_test_subject(void);
-char	*display_prompt(void);
+char	*display_prompt(t_ch *ch);
 void	*ft_free(void *p);
 int		ft_close(int fd);
 void	ft_free_parray(void *array);
 void	ft_free_array(void *array);
 int		ft_is_number(char *str);
 void	closer(t_cmd *cmd);
+char	*get_pwd(t_ch *ch);
 
 /*	----	Builtins	----	*/
 
