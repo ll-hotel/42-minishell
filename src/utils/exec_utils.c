@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/28 19:48:01 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 22:10:09 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 02:27:16 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,7 @@ static int	sig_return_value(int signal)
 		ft_putstr_fd("Quit (core dumped)\n", 2);
 		return (131);
 	}
+	if (signal == SIGINT)
+		return (130);
 	return (1);
 }
