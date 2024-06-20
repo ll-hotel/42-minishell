@@ -6,10 +6,11 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 18:19:56 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/17 13:07:45 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 04:00:37 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "include/ft_dprintf.h"
 #include "miniChell.h"
 
 static void	heredoc_sighandler(int signal);
@@ -38,7 +39,7 @@ int	parser_heredoc(t_token *head, t_ch *ch)
 		}
 	}
 	if (dup2(std_in, 0) == -1)
-		return (perror("here-document"), 0);
+	 	return (perror("here-document"), 0);
 	close(std_in);
 	signal_gestionnary();
 	return (ongoing);
@@ -54,18 +55,19 @@ static int	here_document(t_ch *ch, t_token *heredoc, int linex, int fds[2])
 	found_delimiter = (line && ft_strcmp(line, heredoc->str) == 0);
 	while (line && !found_delimiter)
 	{
-		linex += 1;
 		ft_dprintf(fds[1], "%s\n", line);
 		free(line);
 		line = readline("> ");
-		found_delimiter = (line && ft_strcmp(line, heredoc->str) == 0);
+		found_delimiter = (line && ++linex && !ft_strcmp(line, heredoc->str));
 	}
 	line = ft_free(line);
+	close(fds[1]);
+	if (ch_status_get() == 130)
+		return (0);
 	if (!found_delimiter)
 		ft_dprintf(2, "miniChell: warning: here-document at line %d " \
 			"delimited by end-of-file (wanted `%s')\n", \
 			linex, heredoc->str);
-	close(fds[1]);
 	heredoc->fd = fds[0];
 	if (!found_quote)
 		return (heredoc_expand(ch, fds[0], &heredoc->fd));
