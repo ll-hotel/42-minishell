@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/20 16:44:28 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 17:22:42 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@
 # include <readline/history.h>
 
 /*	----	TYPEDEFS	----	*/
+
+extern int	g_signal;
 
 typedef struct s_evar		t_evar;
 typedef struct s_miniChell	t_ch;
