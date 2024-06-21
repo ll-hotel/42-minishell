@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 02:53:57 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/20 17:49:21 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/21 14:54:33 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ int	g_signal = 0;
 void	signal_gestionnary(void)
 {
 	g_signal = 0;
-	signal(SIGINT, reception);
-	signal(SIGQUIT, SIG_IGN);
+	ch_signal(SIGINT, reception);
+	ch_signal(SIGQUIT, SIG_IGN);
 }
 
 static void	reception(int sig)

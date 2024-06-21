@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:36 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/20 17:22:42 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/21 14:53:33 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,5 +186,6 @@ uint8_t	ch_status_get_error(void);
 /*	----	Signal	----	*/
 
 void	signal_gestionnary(void);
+int		ch_signal(int sig, void (*hook)(int));
 
 #endif
