@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 18:19:56 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/21 17:14:47 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/21 19:02:00 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static char	*loop_body(int linex, int fd[2], _Bool *found_delim, char *delim);
 static void	heredoc_sighandler(int signal);
 static int	here_document(t_ch *ch, t_token *heredoc, int linex, int fds[2]);
-static int	quit_here_document(char *line, int fd[2]);
 
 int	parser_heredoc(t_token *head, t_ch *ch)
 {
@@ -54,7 +53,7 @@ static int	here_document(t_ch *ch, t_token *heredoc, int linex, int fds[2])
 
 	heredoc->fd = fds[0];
 	found_delimiter = 0;
-	line = NULL + 1;
+	line = (char *)1;
 	while (line && !found_delimiter)
 		line = loop_body(linex++, fds, &found_delimiter, heredoc->str);
 	close(fds[1]);
