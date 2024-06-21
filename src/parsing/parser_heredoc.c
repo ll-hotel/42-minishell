@@ -6,10 +6,13 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 18:19:56 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/21 16:21:28 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/21 17:14:47 by ll-hotel         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "miniChell.h"
 
+static char	*loop_body(int linex, int fd[2], _Bool *found_delim, char *delim);
 static void	heredoc_sighandler(int signal);
 static int	here_document(t_ch *ch, t_token *heredoc, int linex, int fds[2]);
 static int	quit_here_document(char *line, int fd[2]);
@@ -18,9 +21,12 @@ int	parser_heredoc(t_token *head, t_ch *ch)
 {
 	int		fds[2];
 	int		ongoing;
+	int		std_in;
 
 	ch_signal(SIGINT, heredoc_sighandler);
-	int std_in = dup(0);
+	std_in = dup(0);
+	if (std_in == -1)
+		return (perror("miniChell"), 0);
 	ongoing = 1;
 	while (head->next && ongoing)
 	{
@@ -33,7 +39,8 @@ int	parser_heredoc(t_token *head, t_ch *ch)
 			head->str = ft_free(head->str);
 		}
 	}
-	dup2(std_in, 0);
+	if (dup2(std_in, 0) == -1)
+		return (perror("miniChell"), 0);
 	close(std_in);
 	signal_gestionnary();
 	return (ongoing);
@@ -43,35 +50,44 @@ static int	here_document(t_ch *ch, t_token *heredoc, int linex, int fds[2])
 {
 	const char	found_quote = heredoc->fd;
 	char		*line;
-	int			found_delimiter;
+	_Bool		found_delimiter;
 
 	heredoc->fd = fds[0];
 	found_delimiter = 0;
 	line = NULL + 1;
 	while (line && !found_delimiter)
-	{
-		line = readline("> ");
-		if (line && ft_strcmp(line, heredoc->str))
-			ft_dprintf(fds[1], "%s\n", line);
-		if (g_signal == SIGINT)
-			return (quit_here_document(NULL, fds));
-		else if (!line)
-			ft_dprintf(2, "miniChell: warning: here-document at line %d deli" \
-				"mited by end-of-file (wanted `%s')\n", linex, heredoc->str);
-		found_delimiter = (line && ++linex && !ft_strcmp(line, heredoc->str));
-		ft_free(line);
-	}
+		line = loop_body(linex++, fds, &found_delimiter, heredoc->str);
 	close(fds[1]);
+	if (g_signal == SIGINT)
+		return (0);
 	if (!found_quote)
 		return (heredoc_expand(ch, fds[0], &heredoc->fd));
 	return (1);
 }
 
-static int	quit_here_document(char *line, int fd[2])
+static char	*loop_body(int linex, int fds[2], _Bool *found_delim, char *delim)
 {
-	ft_free(line);
-	close(fd[1]);
-	return (0);
+	char	*line;
+	char	*trimmed;
+
+	line = get_next_line(0);
+	if (g_signal == SIGINT)
+		return (ft_free(line));
+	if (!line)
+	{
+		ft_dprintf(2, "miniChell: warning: here-document at line %d deli" \
+				"mited by end-of-file (wanted `%s')\n", linex, delim);
+		return (NULL);
+	}
+	trimmed = ft_strtrim(line, "\n");
+	free(line);
+	if (!trimmed)
+		return (perror("miniChell"), NULL);
+	*found_delim = !ft_strcmp(trimmed, delim);
+	if (*found_delim == 0)
+		ft_dprintf(fds[1], "%s\n", trimmed);
+	free(trimmed);
+	return (trimmed);
 }
 
 static void	heredoc_sighandler(int signal)

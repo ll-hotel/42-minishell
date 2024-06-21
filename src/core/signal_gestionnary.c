@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/25 02:53:57 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/21 16:19:50 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/21 16:46:48 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	reception(int sig)
 	g_signal = sig;
 	if (sig == SIGINT)
 	{
-		ft_putstr_fd("\n", 1);
+		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 1);
 		rl_redisplay();

@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 02:32:14 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/17 13:05:00 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/21 17:07:32 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ t_token	*lexer_heredoc(char *line, int *p_i)
 
 	delimiter = cut_delimiter(line, p_i);
 	if (!delimiter)
-	{
-		perror("miniChell");
 		return (NULL);
-	}
 	i = 0;
 	while (delimiter[i] && delimiter[i] != '\'' && delimiter[i] != '\"')
 		i += 1;
