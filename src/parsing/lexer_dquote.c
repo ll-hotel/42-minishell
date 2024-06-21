@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static void		*init(t_token **dq_token, char *line);
 static t_token	*sub_word(char *line, int *p_i);

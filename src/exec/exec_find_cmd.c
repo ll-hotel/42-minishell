@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static int	is_valid_executable(char *path);
 static char	*create_executable(char *dir, char *program);

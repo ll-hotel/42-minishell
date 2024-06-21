@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 int	set_evar_value(t_ch *ch, char *name, char *value);
 int	refresh_pwd(t_ch *ch, char *old_path, char *new_path);

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static t_cmd	*create_cmd(t_token *token);
 static char		*create_arg(t_cmd *cmd, t_token *token, int *pnext);

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "llst.h"
-#include "miniChell.h"
+#include "minichell.h"
 
 static int	evar_is_valid(char *arg);
 void		printer(t_ch *ch);

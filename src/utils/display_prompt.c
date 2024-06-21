@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static char	*get_input(t_ch *ch);
 static char	*pwd_prompt(t_ch *ch);
