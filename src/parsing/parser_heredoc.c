@@ -6,14 +6,11 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 18:19:56 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/21 15:39:12 by ll-hotel         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+/*   Updated: 2024/06/21 16:21:28 by ll-hotel         ###   ########.fr       */
 
 #include "miniChell.h"
-#include <sys/ioctl.h>
 
-//static void	heredoc_sighandler(int signal);
+static void	heredoc_sighandler(int signal);
 static int	here_document(t_ch *ch, t_token *heredoc, int linex, int fds[2]);
 static int	quit_here_document(char *line, int fd[2]);
 
@@ -22,6 +19,7 @@ int	parser_heredoc(t_token *head, t_ch *ch)
 	int		fds[2];
 	int		ongoing;
 
+	ch_signal(SIGINT, heredoc_sighandler);
 	int std_in = dup(0);
 	ongoing = 1;
 	while (head->next && ongoing)
@@ -36,6 +34,8 @@ int	parser_heredoc(t_token *head, t_ch *ch)
 		}
 	}
 	dup2(std_in, 0);
+	close(std_in);
+	signal_gestionnary();
 	return (ongoing);
 }
 
@@ -45,25 +45,23 @@ static int	here_document(t_ch *ch, t_token *heredoc, int linex, int fds[2])
 	char		*line;
 	int			found_delimiter;
 
+	heredoc->fd = fds[0];
 	found_delimiter = 0;
-	while (!found_delimiter)
+	line = NULL + 1;
+	while (line && !found_delimiter)
 	{
 		line = readline("> ");
 		if (line && ft_strcmp(line, heredoc->str))
 			ft_dprintf(fds[1], "%s\n", line);
-		if (!line)
-		{
+		if (g_signal == SIGINT)
+			return (quit_here_document(NULL, fds));
+		else if (!line)
 			ft_dprintf(2, "miniChell: warning: here-document at line %d deli" \
 				"mited by end-of-file (wanted `%s')\n", linex, heredoc->str);
-			return (quit_here_document(NULL, fds));
-		}
-		found_delimiter = (++linex && !ft_strcmp(line, heredoc->str));
-		free(line);
+		found_delimiter = (line && ++linex && !ft_strcmp(line, heredoc->str));
+		ft_free(line);
 	}
 	close(fds[1]);
-	if (!line)
-		return (0);
-	heredoc->fd = fds[0];
 	if (!found_quote)
 		return (heredoc_expand(ch, fds[0], &heredoc->fd));
 	return (1);
@@ -72,17 +70,17 @@ static int	here_document(t_ch *ch, t_token *heredoc, int linex, int fds[2])
 static int	quit_here_document(char *line, int fd[2])
 {
 	ft_free(line);
-	close(fd[0]);
 	close(fd[1]);
 	return (0);
 }
 
-// static void	heredoc_sighandler(int signal)
-// {
-// 	g_signal = signal;
-// 	if (signal == SIGINT)
-// 	{
-// 		ch_status_set(130);
-// 		ioctl(0, TIOCSIG, "\n");
-// 	}
-// }
+static void	heredoc_sighandler(int signal)
+{
+	g_signal = signal;
+	if (signal == SIGINT)
+	{
+		close(0);
+		ch_status_set(130);
+		printf("\n");
+	}
+}
