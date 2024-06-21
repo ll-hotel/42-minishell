@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 02:32:14 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/21 17:07:32 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/21 19:24:26 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	remove_quotes(char *delimiter)
 	{
 		if (*delimiter == '\'' || *delimiter == '\"')
 		{
-			closing_quote = ft_strichr(delimiter + 1, '\'');
+			closing_quote = ft_strichr(delimiter + 1, *delimiter);
 			ft_memmove(delimiter + 1 + closing_quote, \
 					delimiter + 2 + closing_quote, \
 					ft_strlen(delimiter + 1 + closing_quote));
