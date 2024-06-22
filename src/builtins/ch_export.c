@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/20 01:30:46 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/22 20:25:01 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minichell.h"
 
 static int	evar_is_valid(char *arg);
-void		printer(t_ch *ch);
+static void	printer(t_ch *ch);
 
 int	ch_export(t_cmd *cmd, t_ch *ch)
 {
@@ -33,7 +33,6 @@ int	ch_export(t_cmd *cmd, t_ch *ch)
 		{
 			ft_dprintf(2, "export: %s: not a valid identifier\n", evar->name);
 			evar_free(evar);
-			return (1);
 		}
 		else if (!ch_insert_evar((t_evar *)&ch->evars, evar))
 		{
@@ -45,7 +44,7 @@ int	ch_export(t_cmd *cmd, t_ch *ch)
 	return (0);
 }
 
-void	printer(t_ch *ch)
+static void	printer(t_ch *ch)
 {
 	t_evar	*evar;
 

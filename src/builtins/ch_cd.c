@@ -6,110 +6,101 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/17 22:19:10 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/22 20:57:01 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minichell.h"
 
-int	set_evar_value(t_ch *ch, char *name, char *value);
-int	refresh_pwd(t_ch *ch, char *old_path, char *new_path);
-int	chdir_cd(t_ch *ch, t_cmd *cmd, char *old_path, char *new_path);
+static int	set_evar_value(t_ch *ch, char *name, char *value);
+static int	refresh_pwd(t_ch *ch, char *old_pwd);
+static int	chdir_cd(t_ch *ch, t_cmd *cmd, char **new_pwd);
 
 int	ch_cd(t_cmd *cmd, t_ch *ch)
 {
-	char	*new_path;
-	char	*old_path;
+	char	*old_pwd;
+	char	*new_pwd;
 
-	new_path = NULL;
 	if (cmd->argc > 2)
 		return (write(2, "miniChell: too many arguments\n", 30), 1);
-	old_path = getcwd(NULL, 0);
-	if (old_path == NULL)
+	old_pwd = get_pwd(ch);
+	if (old_pwd == NULL)
 		return (perror("cd"), 1);
-	if (chdir_cd(ch, cmd, old_path, new_path))
+	if (chdir_cd(ch, cmd, &new_pwd))
 		return (1);
-	if (refresh_pwd(ch, old_path, new_path))
+	if (refresh_pwd(ch, old_pwd))
 		return (1);
 	return (0);
 }
 
-int	chdir_cd(t_ch *ch, t_cmd *cmd, char *old_path, char *new_path)
+static int	chdir_cd(t_ch *ch, t_cmd *cmd, char **new_pwd)
 {
 	t_evar	*home;
-	int		test;
 
 	if (cmd->argc == 1)
 	{
 		home = find_evar(ch, "HOME");
-		if (home == NULL || chdir(home->value) == -1)
+		if (home == NULL || !home->value)
 		{
-			ft_free(old_path);
-			return (write(2, "cd: HOME not set\n", 18), 1);
+			write(2, "miniChell: cd: HOME not set\n", 18);
+			return (1);
 		}
+		*new_pwd = home->value;
 	}
 	else
+		*new_pwd = cmd->argv[1];
+	if (chdir(*new_pwd) == -1)
 	{
-		new_path = cmd->argv[1];
-		test = chdir(new_path);
-		if (test == -1)
-		{
-			ft_free(old_path);
-			return (perror("cd"), 1);
-		}
+		ft_dprintf(2, "miniChell: cd: `%s': %s\n", *new_pwd, strerror(errno));
+		return (1);
 	}
 	return (0);
 }
 
-int	refresh_pwd(t_ch *ch, char *old_path, char *new_path)
+static int	refresh_pwd(t_ch *ch, char *old_pwd)
 {
-	if (set_evar_value(ch, "OLDPWD", old_path))
+	char	*new_pwd;
+
+	if (set_evar_value(ch, "OLDPWD", old_pwd))
 		return (1);
-	new_path = getcwd(NULL, 0);
-	if (new_path == NULL)
+	free(old_pwd);
+	new_pwd = getcwd(NULL, 0);
+	if (!new_pwd)
+	{
+		perror("miniChell: cd: error retrieving current directory");
 		return (1);
-	if (set_evar_value(ch, "PWD", new_path))
+	}
+	if (set_evar_value(ch, "PWD", new_pwd))
+	{
+		free(new_pwd);
 		return (1);
-	free(old_path);
-	free(new_path);
+	}
+	free(new_pwd);
 	return (0);
 }
 
-char	*free_to_join(char *str1, char *str2)
-{
-	char	*temp;
-
-	temp = ft_strdup(str1);
-	if (temp == NULL)
-		return (NULL);
-	free(str1);
-	str1 = ft_strjoin(temp, str2);
-	free(temp);
-	return (str1);
-}
-
-int	set_evar_value(t_ch *ch, char *name, char *value)
+static int	set_evar_value(t_ch *ch, char *name, char *value)
 {
 	t_evar	*evar;
 
 	evar = find_evar(ch, name);
-	if (evar == NULL)
+	if (evar)
 	{
-		name = free_to_join(name, "=");
-		if (name == NULL)
+		ft_free(evar->value);
+		evar->value = ft_strdup(value);
+		if (!evar->value)
 		{
-			perror("cd");
+			perror("miniChell: cd");
 			return (1);
 		}
-		evar = evar_new(name);
-		if (evar == NULL)
-			return (0);
+		return (0);
 	}
-	ft_free(evar->value);
-	evar->value = ft_strdup(value);
-	if (evar->value == NULL)
+	evar = evar_new(name);
+	if (evar)
+		evar->value = ft_strdup(value);
+	if (!evar || !evar->value)
 	{
-		perror("cd");
+		perror("miniChell: cd");
 		return (1);
 	}
 	return (0);
