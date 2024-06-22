@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/22 20:25:01 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/22 21:59:32 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,7 @@ int	ch_export(t_cmd *cmd, t_ch *ch)
 			ft_dprintf(2, "export: %s: not a valid identifier\n", evar->name);
 			evar_free(evar);
 		}
-		else if (!ch_insert_evar((t_evar *)&ch->evars, evar))
-		{
-			evar_free(evar);
-			perror("export");
-			return (1);
-		}
+		ch_insert_evar((t_evar *)&ch->evars, evar);
 	}
 	return (0);
 }
@@ -59,7 +54,7 @@ static void	printer(t_ch *ch)
 	}
 }
 
-int	ch_insert_evar(t_evar *evar_head, t_evar *evar)
+void	ch_insert_evar(t_evar *evar_head, t_evar *evar)
 {
 	while (evar_head->next && \
 			ft_strcmp(evar_head->next->name, evar->name) < 0)
@@ -70,12 +65,11 @@ int	ch_insert_evar(t_evar *evar_head, t_evar *evar)
 		llst_addfront((t_llst_head *)evar_head, (t_llst *)evar);
 	else if (evar->value)
 	{
-		ft_free(evar_head->next->value);
-		evar_head->next->value = ft_strdup(evar->value);
-		if (!evar_head->next->value)
-			return (perror("miniChell"), 0);
+		llst_delone((t_llst_head *)evar_head, evar_free);
+		llst_addfront((t_llst_head *)evar_head, (t_llst *)evar);
 	}
-	return (1);
+	else
+		evar_free(evar);
 }
 
 static int	evar_is_valid(char *arg)

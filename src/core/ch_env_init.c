@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 22:26:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/20 01:29:37 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/22 21:58:11 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,7 @@ static int	loop_body(t_evar *evar_head, t_evar *var)
 			return (0);
 		}
 	}
-	if (!ch_insert_evar(evar_head, var))
-	{
-		evar_free(var);
-		return (0);
-	}
+	ch_insert_evar(evar_head, var);
 	return (1);
 }
 
