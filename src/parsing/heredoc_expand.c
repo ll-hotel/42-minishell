@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static void	loop(t_ch *ch, char *line, int fd_out);
 

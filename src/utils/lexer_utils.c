@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 int	is_operator(int c)
 {

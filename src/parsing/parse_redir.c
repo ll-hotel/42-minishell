@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 void	parse_redir(t_token *head)
 {

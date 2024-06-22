@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 void	token_free(void *token)
 {

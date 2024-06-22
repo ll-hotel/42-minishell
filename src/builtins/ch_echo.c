@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static int	is_param(char *str);
 

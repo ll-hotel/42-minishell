@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 #include <unistd.h>
 
 static int	ft_is_quote(char *str, size_t *i);

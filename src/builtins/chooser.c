@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static int	select_builtin(t_ch *ch, t_cmd *cmd);
 static int	is_not_builtin(char *cmd);

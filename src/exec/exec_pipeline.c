@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static void	mini_pipe(t_ch *ch, t_cmd *cmd, int fd_pipe[2]);
 static void	mini_chooser(t_ch *ch, t_cmd *cmd);

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static int	count_path_nb(char *path);
 static int	next_subpath(char *path);

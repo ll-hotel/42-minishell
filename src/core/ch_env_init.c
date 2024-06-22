@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static char	*get_shlvl(char *old_value);
 static int	loop_body(t_evar *evar_head, t_evar *var);

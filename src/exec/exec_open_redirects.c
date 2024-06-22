@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static int	open_file(int type, char *filename, int *p_fdin, int *p_fdout);
 static int	open_perror(char *filename);

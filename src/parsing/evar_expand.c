@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static void	expand_empty(char **p_str);
 static void	expand_status(char **p_str);

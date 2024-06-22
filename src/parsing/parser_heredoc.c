@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "miniChell.h"
+#include "minichell.h"
 
 static char	*loop_body(int linex, int fd[2], _Bool *found_delim, char *delim);
 static void	heredoc_sighandler(int signal);
