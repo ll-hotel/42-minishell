@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/30 02:32:14 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/21 19:29:47 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/22 21:36:42 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,17 @@ static char	*cut_delimiter(char *line, int *p_i)
 
 static void	remove_quotes(char *delimiter)
 {
-	uint64_t	closing_quote;
+	char	*closing_quote;
 
 	while (*delimiter)
 	{
 		if (*delimiter == '\'' || *delimiter == '\"')
 		{
-			closing_quote = ft_strichr(delimiter + 1, *delimiter);
-			ft_memmove(delimiter + 1 + closing_quote, \
-					delimiter + 2 + closing_quote, \
-					ft_strlen(delimiter + 1 + closing_quote));
-			ft_memmove(delimiter, delimiter + 1, closing_quote + 1);
-			delimiter += closing_quote;
+			closing_quote = ft_strchr(delimiter + 1, *delimiter);
+			ft_memmove(closing_quote, closing_quote + 1, \
+					ft_strlen(closing_quote + 1) + 1);
+			ft_memmove(delimiter, delimiter + 1, ft_strlen(delimiter + 1) + 1);
+			delimiter = closing_quote - 2;
 		}
 		else
 			delimiter += 1;
