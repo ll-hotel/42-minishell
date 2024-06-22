@@ -6,12 +6,13 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/15 19:43:59 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 22:08:39 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 03:09:40 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniChell.h"
 
+static int	is_valid_executable(char *path);
 static char	*create_executable(char *dir, char *program);
 static char	*slash_or_empty_path(t_cmd *cmd);
 
@@ -35,7 +36,7 @@ int	exec_find_cmd(t_cmd *cmd, char **path)
 		while (path[++i])
 		{
 			cmd->executable = create_executable(path[i], cmd->argv[0]);
-			if (access(cmd->executable, X_OK) == 0)
+			if (is_valid_executable(cmd->executable))
 				return (0);
 			cmd->executable = ft_free(cmd->executable);
 		}
@@ -89,4 +90,23 @@ static char	*create_executable(char *dir, char *program)
 		ft_strlcat(executable, program, executable_len + 1);
 	}
 	return (executable);
+}
+
+static int	is_valid_executable(char *path)
+{
+	struct stat	buf;
+
+	if (access(path, F_OK) != 0)
+		return (0);
+	else if (stat(path, &buf) != 0)
+	{
+		perror("miniChell");
+		ch_status_set(1);
+		return (0);
+	}
+	else if (S_ISDIR(buf.st_mode))
+		return (0);
+	else if (access(path, X_OK) != 0)
+		return (0);
+	return (1);
 }

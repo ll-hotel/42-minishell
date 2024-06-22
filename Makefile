@@ -37,6 +37,7 @@ OBJECTS		=	$(patsubst %.c,$(OBJECT_DIR)%.o, \
 				parsing/lexer_heredoc.c \
 				parsing/parse_redir.c \
 				parsing/split_evars.c \
+				utils/ch_signal.c \
 				utils/ft_free.c \
 				utils/ft_close.c \
 				utils/ft_free_parray.c \

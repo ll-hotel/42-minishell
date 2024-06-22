@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 18:39:19 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 22:06:56 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/21 16:10:24 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,11 @@ int	main(int argc, char **argv, char *const *envp)
 	while (1)
 	{
 		signal_gestionnary();
-		line = display_prompt();
+		line = display_prompt(&ch);
 		if (!line)
 			break ;
 		ch_on_line(&ch, line);
-		free(line);
+		ft_free(line);
 	}
 	ft_putstr_fd("exit\n", 1);
 	ch_exit(&ch, ch_status_get());

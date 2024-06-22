@@ -6,7 +6,7 @@
 /*   By: ll-hotel <ll-hotel@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/23 13:28:45 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 22:09:52 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/20 02:41:13 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	mini_pipe(t_ch *ch, t_cmd *cmd, int fd_pipe[2]);
 static void	mini_chooser(t_ch *ch, t_cmd *cmd);
-static void	mini_sighandler(int signal);
 
 int	exec_pipeline(t_ch *ch)
 {
@@ -24,7 +23,7 @@ int	exec_pipeline(t_ch *ch)
 
 	fd_pipe[0] = -1;
 	fd_pipe[1] = -1;
-	signal(SIGINT, mini_sighandler);
+	signal(SIGINT, SIG_IGN);
 	while (ch->cmds.first)
 	{
 		cmd = (t_cmd *)ch->cmds.first;
@@ -65,13 +64,4 @@ static void	mini_chooser(t_ch *ch, t_cmd *cmd)
 		exec_one(ch, cmd);
 	}
 	ch_exit(ch, status);
-}
-
-static void	mini_sighandler(int signal)
-{
-	if (signal == SIGINT)
-	{
-		ft_putstr_fd("\n", 1);
-		ch_status_set(130);
-	}
 }
