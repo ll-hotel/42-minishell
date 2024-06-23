@@ -22,7 +22,7 @@ int	ch_cd(t_cmd *cmd, t_ch *ch)
 	char	*new_pwd;
 
 	if (cmd->argc > 2)
-		return (write(2, "cd: too many arguments\n", 30), 1);
+		return (ft_dprintf(2, "cd: too many arguments\n"), 1);
 	old_pwd = get_pwd(ch);
 	if (old_pwd == NULL)
 		return (perror("cd"), 1);
@@ -42,7 +42,7 @@ static int	chdir_cd(t_ch *ch, t_cmd *cmd, char **new_pwd)
 		home = find_evar(ch, "HOME");
 		if (home == NULL || !home->value)
 		{
-			write(2, "cd: HOME not set\n", 18);
+			ft_dprintf(2, "cd: HOME not set\n");
 			return (1);
 		}
 		*new_pwd = home->value;
