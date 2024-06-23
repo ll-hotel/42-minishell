@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/22 21:59:32 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/23 20:45:18 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	ch_export(t_cmd *cmd, t_ch *ch)
 		{
 			ft_dprintf(2, "export: %s: not a valid identifier\n", evar->name);
 			evar_free(evar);
+			continue ;
 		}
 		ch_insert_evar((t_evar *)&ch->evars, evar);
 	}
