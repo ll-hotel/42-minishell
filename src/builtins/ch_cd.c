@@ -6,15 +6,16 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/23 03:07:55 by lrichaud         ###   ########.fr       */
+/*   Updated: 2024/06/23 21:13:54 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minichell.h"
 
-static int	set_evar_value(t_ch *ch, char *name, char *value);
-static int	refresh_pwd(t_ch *ch, char *old_pwd);
 static int	chdir_cd(t_ch *ch, t_cmd *cmd, char **new_pwd);
+static int	refresh_pwd(t_ch *ch, char *old_pwd, char *fresh_pwd);
+static int	broken_pwd(char *old_pwd, char *fresh_pwd, char **new_pwd);
+static int	set_evar_value(t_ch *ch, char *name, char *value);
 
 int	ch_cd(t_cmd *cmd, t_ch *ch)
 {
@@ -28,7 +29,7 @@ int	ch_cd(t_cmd *cmd, t_ch *ch)
 		return (perror("cd"), 1);
 	if (chdir_cd(ch, cmd, &new_pwd))
 		return (1);
-	if (refresh_pwd(ch, old_pwd))
+	if (refresh_pwd(ch, old_pwd, new_pwd))
 		return (1);
 	return (0);
 }
@@ -57,25 +58,39 @@ static int	chdir_cd(t_ch *ch, t_cmd *cmd, char **new_pwd)
 	return (0);
 }
 
-static int	refresh_pwd(t_ch *ch, char *old_pwd)
+static int	refresh_pwd(t_ch *ch, char *old_pwd, char *fresh_pwd)
 {
 	char	*new_pwd;
+	int		ret;
 
+	ret = 0;
 	if (set_evar_value(ch, "OLDPWD", old_pwd))
 		return (1);
-	free(old_pwd);
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd)
-	{
-		perror("cd: error retrieving current directory");
-		return (1);
-	}
-	if (set_evar_value(ch, "PWD", new_pwd))
-	{
-		free(new_pwd);
-		return (1);
-	}
-	free(new_pwd);
+		ret = broken_pwd(old_pwd, fresh_pwd, &new_pwd);
+	free(old_pwd);
+	if (!ret)
+		ret = set_evar_value(ch, "PWD", new_pwd);
+	ft_free(new_pwd);
+	return (ret);
+}
+
+static int	broken_pwd(char *old_pwd, char *fresh_pwd, char **new_pwd)
+{
+	char	*tmp;
+
+	perror("cd: error retrieving current directory");
+	tmp = old_pwd;
+	if (old_pwd[ft_strlen(old_pwd)] != '/')
+		tmp = ft_strjoin(old_pwd, "/");
+	if (!tmp)
+		return (perror("miniChell: cd"), 1);
+	*new_pwd = ft_strjoin(tmp, fresh_pwd);
+	if (tmp != old_pwd)
+		free(tmp);
+	if (!*new_pwd)
+		return (perror("miniChell: cd"), 1);
 	return (0);
 }
 
