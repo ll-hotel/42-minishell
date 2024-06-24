@@ -6,37 +6,50 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 06:51:48 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/23 20:45:18 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/24 10:48:15 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "llst.h"
 #include "minichell.h"
 
+static int	export_one(t_ch *ch, char *arg);
 static int	evar_is_valid(char *arg);
 static void	printer(t_ch *ch);
 
 int	ch_export(t_cmd *cmd, t_ch *ch)
 {
-	t_evar	*evar;
 	int		i;
+	int		error;
 
 	if (cmd->argc == 1)
 		return (printer(ch), 0);
+	error = 0;
 	i = 0;
 	while (++i < cmd->argc)
 	{
-		evar = evar_new(cmd->argv[i]);
-		if (!evar)
-			perror("export");
-		else if (!evar_is_valid(evar->name))
-		{
-			ft_dprintf(2, "export: %s: not a valid identifier\n", evar->name);
-			evar_free(evar);
-			continue ;
-		}
-		ch_insert_evar((t_evar *)&ch->evars, evar);
+		error |= export_one(ch, cmd->argv[i]);
 	}
+	return (error);
+}
+
+static int	export_one(t_ch *ch, char *arg)
+{
+	t_evar	*evar;
+
+	evar = evar_new(arg);
+	if (!evar)
+	{
+		perror("export");
+		return (1);
+	}
+	else if (!evar_is_valid(evar->name))
+	{
+		ft_dprintf(2, "export: %s: not a valid identifier\n", evar->name);
+		evar_free(evar);
+		return (1);
+	}
+	ch_insert_evar((t_evar *)&ch->evars, evar);
 	return (0);
 }
 
