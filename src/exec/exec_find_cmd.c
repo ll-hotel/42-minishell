@@ -41,7 +41,7 @@ int	exec_find_cmd(t_cmd *cmd, char **path)
 			cmd->executable = ft_free(cmd->executable);
 		}
 	}
-	ft_dprintf(2, "miniChell: %s: cmd not found\n", cmd->argv[0]);
+	ft_dprintf(2, "miniChell: %s: command not found\n", cmd->argv[0]);
 	return (127);
 }
 
