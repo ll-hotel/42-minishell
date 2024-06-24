@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 10:05:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/24 12:12:45 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/24 15:27:16 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ int	ch_pwd(t_ch *ch)
 		if (oldpwd && oldpwd->value)
 			printf("%s\n", oldpwd->value);
 		else
+		{
 			printf("CPT\n");
+			return (1);
+		}
 	}
 	return (0);
 }
