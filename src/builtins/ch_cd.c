@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/23 21:13:54 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:13:48 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ int	ch_cd(t_cmd *cmd, t_ch *ch)
 	if (old_pwd == NULL)
 		return (perror("cd"), 1);
 	if (chdir_cd(ch, cmd, &new_pwd))
+	{
+		free(old_pwd);
 		return (1);
+	}
 	if (refresh_pwd(ch, old_pwd, new_pwd))
 		return (1);
 	return (0);
@@ -65,7 +68,10 @@ static int	refresh_pwd(t_ch *ch, char *old_pwd, char *fresh_pwd)
 
 	ret = 0;
 	if (set_evar_value(ch, "OLDPWD", old_pwd))
+	{
+		free(old_pwd);
 		return (1);
+	}
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd)
 		ret = broken_pwd(old_pwd, fresh_pwd, &new_pwd);

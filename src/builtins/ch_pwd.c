@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 10:05:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/20 16:45:25 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:12:45 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,11 @@ char	*get_pwd(t_ch *ch)
 
 	evar_pwd = find_evar(ch, "PWD");
 	if (evar_pwd)
-		return (ft_strdup(evar_pwd->value));
+	{
+		if (evar_pwd->value)
+			return (ft_strdup(evar_pwd->value));
+		return (ft_calloc(1, sizeof(char)));
+	}
 	else
 		return (getcwd(NULL, 0));
 }
