@@ -6,39 +6,58 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/17 22:13:34 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:53:30 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minichell.h"
 
+static int		loop_body(t_llst_head *cmd_head, t_token **p_token);
 static t_cmd	*create_cmd(t_token *token);
 static char		*create_arg(t_cmd *cmd, t_token *token, int *pnext);
 static char		*arg_redir(t_llst_head *redirs, t_token *token);
 
 t_cmd	*cmd_creator(t_llst_head *tokenlst_head)
 {
-	t_llst_head	cmdlst_head;
-	void		*cmd;
+	t_llst_head	cmd_head;
 	t_token		*token;
 
-	cmdlst_head.first = NULL;
+	cmd_head.first = NULL;
 	token = (t_token *)tokenlst_head->first;
 	while (token)
 	{
-		cmd = create_cmd(token);
-		if (!cmd)
-		{
-			llst_clear(&cmdlst_head, &cmd_free);
+		if (loop_body(&cmd_head, &token) != 1)
 			return (NULL);
-		}
-		llst_addback(&cmdlst_head, cmd);
-		while (token && token->type != TOKEN_PIPE)
-			token = token->next;
-		if (token)
-			token = token->next;
 	}
-	return ((t_cmd *)cmdlst_head.first);
+	return ((t_cmd *)cmd_head.first);
+}
+
+static int	loop_body(t_llst_head *cmd_head, t_token **p_token)
+{
+	t_cmd	*cmd;
+
+	cmd = create_cmd(p_token[0]);
+	if (!cmd)
+		return (0);
+	if (cmd->argc == 0)
+	{
+		ch_syntax_err('|');
+		return (0);
+	}
+	llst_addback(cmd_head, (t_llst *)cmd);
+	while (p_token[0] && p_token[0]->type != TOKEN_PIPE)
+		p_token[0] = p_token[0]->next;
+	if (p_token[0])
+		p_token[0] = p_token[0]->next;
+	if (p_token[0] == NULL || (p_token[0] && p_token[0]->type == TOKEN_PIPE))
+	{
+		if (!*p_token)
+			ch_syntax_err(0);
+		else
+			ch_syntax_err('|');
+		return (0);
+	}
+	return (1);
 }
 
 static t_cmd	*create_cmd(t_token *token)
