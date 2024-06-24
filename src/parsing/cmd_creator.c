@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/24 11:59:17 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:25:20 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int	loop_body(t_llst_head *cmd_head, t_token **p_token)
 	if (p_token[0])
 	{
 		*p_token = p_token[0]->next;
-		if (p_token[0] == NULL || (p_token[0] && p_token[0]->type == TOKEN_PIPE))
+		if (!*p_token || (p_token[0] && p_token[0]->type == TOKEN_PIPE))
 		{
 			if (!*p_token)
 				ch_syntax_err(0);
