@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/24 11:53:30 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:59:17 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,23 @@ static int	loop_body(t_llst_head *cmd_head, t_token **p_token)
 	if (!cmd)
 		return (0);
 	if (cmd->argc == 0)
-	{
 		ch_syntax_err('|');
+	if (cmd->argc == 0)
 		return (0);
-	}
 	llst_addback(cmd_head, (t_llst *)cmd);
 	while (p_token[0] && p_token[0]->type != TOKEN_PIPE)
 		p_token[0] = p_token[0]->next;
 	if (p_token[0])
-		p_token[0] = p_token[0]->next;
-	if (p_token[0] == NULL || (p_token[0] && p_token[0]->type == TOKEN_PIPE))
 	{
-		if (!*p_token)
-			ch_syntax_err(0);
-		else
-			ch_syntax_err('|');
-		return (0);
+		*p_token = p_token[0]->next;
+		if (p_token[0] == NULL || (p_token[0] && p_token[0]->type == TOKEN_PIPE))
+		{
+			if (!*p_token)
+				ch_syntax_err(0);
+			else
+				ch_syntax_err('|');
+			return (0);
+		}
 	}
 	return (1);
 }
