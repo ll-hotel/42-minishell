@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/02 10:05:58 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/24 15:27:16 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:00:05 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,20 @@ int	ch_pwd(t_ch *ch)
 
 char	*get_pwd(t_ch *ch)
 {
-	t_evar		*evar_pwd;
+	t_evar	*evar_pwd;
+	char	*pwd;
 
-	evar_pwd = find_evar(ch, "PWD");
-	if (evar_pwd)
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
 	{
-		if (evar_pwd->value)
-			return (ft_strdup(evar_pwd->value));
-		return (ft_calloc(1, sizeof(char)));
+		ch_status_set(1);
+		evar_pwd = find_evar(ch, "PWD");
+		if (evar_pwd)
+		{
+			if (evar_pwd->value)
+				return (ft_strdup(evar_pwd->value));
+			return (ft_calloc(1, sizeof(char)));
+		}
 	}
-	else
-		return (getcwd(NULL, 0));
+	return (pwd);
 }
