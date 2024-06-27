@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 11:09:06 by ll-hotel          #+#    #+#             */
-/*   Updated: 2024/06/24 15:39:40 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/27 15:44:08 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	syntax_err(t_cmd *cmd, t_token **p_token)
 			return (0);
 		}
 		*p_token = p_token[0]->next;
-		if (!*p_token || (p_token[0] && p_token[0]->type == TOKEN_PIPE))
+		if (!*p_token || p_token[0]->type == TOKEN_PIPE)
 		{
 			ch_syntax_err((*p_token != NULL) * '|');
 			return (0);
