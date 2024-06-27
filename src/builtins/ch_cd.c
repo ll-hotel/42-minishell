@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/27 16:30:14 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:45:31 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ch_cd(t_cmd *cmd, t_ch *ch)
 		return (ft_dprintf(2, "cd: too many arguments\n"), 1);
 	old_pwd = get_pwd(ch);
 	if (old_pwd == NULL)
-		perror("cd: error retrieving current directory");
+		ft_putstr_fd("cd: PWD not set\n", 2);
 	if (chdir_cd(ch, cmd, &new_pwd))
 	{
 		ft_free(old_pwd);
@@ -75,7 +75,7 @@ static int	refresh_pwd(t_ch *ch, char *old_pwd, char *fresh_pwd)
 	new_pwd = getcwd(NULL, 0);
 	if (!new_pwd)
 		ret = broken_pwd(old_pwd, fresh_pwd, &new_pwd);
-	free(old_pwd);
+	ft_free(old_pwd);
 	if (!ret)
 		ret = set_evar_value(ch, "PWD", new_pwd);
 	ft_free(new_pwd);
@@ -87,6 +87,8 @@ static int	broken_pwd(char *old_pwd, char *fresh_pwd, char **new_pwd)
 	char	*tmp;
 
 	perror("cd: error retrieving current directory");
+	if (!old_pwd)
+		old_pwd = "";
 	tmp = old_pwd;
 	if (old_pwd[ft_strlen(old_pwd)] != '/')
 		tmp = ft_strjoin(old_pwd, "/");
