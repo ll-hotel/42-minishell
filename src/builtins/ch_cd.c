@@ -6,7 +6,7 @@
 /*   By: lrichaud <lrichaud@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/03 00:43:29 by lrichaud          #+#    #+#             */
-/*   Updated: 2024/06/24 12:13:48 by ll-hotel         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:30:14 by ll-hotel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ int	ch_cd(t_cmd *cmd, t_ch *ch)
 		return (ft_dprintf(2, "cd: too many arguments\n"), 1);
 	old_pwd = get_pwd(ch);
 	if (old_pwd == NULL)
-		return (perror("cd"), 1);
+		perror("cd: error retrieving current directory");
 	if (chdir_cd(ch, cmd, &new_pwd))
 	{
-		free(old_pwd);
+		ft_free(old_pwd);
 		return (1);
 	}
 	if (refresh_pwd(ch, old_pwd, new_pwd))
@@ -69,7 +69,7 @@ static int	refresh_pwd(t_ch *ch, char *old_pwd, char *fresh_pwd)
 	ret = 0;
 	if (set_evar_value(ch, "OLDPWD", old_pwd))
 	{
-		free(old_pwd);
+		ft_free(old_pwd);
 		return (1);
 	}
 	new_pwd = getcwd(NULL, 0);
@@ -109,8 +109,9 @@ static int	set_evar_value(t_ch *ch, char *name, char *value)
 		perror("miniChell");
 		return (1);
 	}
-	evar->value = ft_strdup(value);
-	if (!evar->value)
+	if (value)
+		evar->value = ft_strdup(value);
+	if (value && !evar->value)
 	{
 		perror("miniChell");
 		evar_free(evar);
